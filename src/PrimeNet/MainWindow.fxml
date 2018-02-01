@@ -6,13 +6,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <top>
         <VBox prefHeight="122.0" prefWidth="731.0" BorderPane.alignment="CENTER">
             <children>
@@ -39,6 +40,9 @@
         </VBox>
     </top>
     <left>
-        <TableView fx:id="tableofFilm" prefHeight="400.0" prefWidth="546.0" BorderPane.alignment="CENTER_LEFT" />
+        <TableView fx:id="tableofFilm" BorderPane.alignment="CENTER_LEFT" />
     </left>
+   <center>
+      <ImageView fx:id="previewPane" preserveRatio="true" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

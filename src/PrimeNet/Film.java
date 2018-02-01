@@ -3,6 +3,9 @@ package PrimeNet;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
+
+import java.awt.image.BufferedImage;
 
 public class Film {
     private  SimpleBooleanProperty favourite;
@@ -10,15 +13,20 @@ public class Film {
     private SimpleIntegerProperty year;
     private SimpleBooleanProperty remember;
     private SimpleStringProperty rate;
+    private Image poster;
 
-    public Film(boolean favourite, String title, int year, boolean remember, String rate){
+    public Film(boolean favourite, String title, int year, boolean remember, String rate, Image poster){
         this.favourite = new SimpleBooleanProperty(favourite);
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
         this.remember = new SimpleBooleanProperty(remember) ;
         this.rate = new SimpleStringProperty(rate);
+        this.poster = poster;
     }
 
+    public Image getPoster() {
+        return poster;
+    }
 
     public boolean getRemember() {
         return remember.get();

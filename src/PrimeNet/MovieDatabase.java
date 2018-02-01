@@ -2,12 +2,24 @@ package PrimeNet;
 
 //import com.google.gson.Gson;
 
+import PrimeNet.movies.Movie;
+import PrimeNet.movies.Posters;
+import PrimeNet.movies.Results;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
+import javax.net.ssl.HttpsURLConnection;
+import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -15,36 +27,75 @@ import java.util.Properties;
  */
 
 public class MovieDatabase {
+
+    private static final Gson GSON = new GsonBuilder()
+            .create();
+
     private static String apiKey;
 
     private static final String HOST = "api.themoviedb.org";
-    private static final String PATH_PREFIX = "3/search/";
+    private static final String PATH_PREFIX = "3/search/movie";
+    private static final String POSTER_PREFIX = "3/movie/";
 
     // read API key from file (happens only once after JVM start)
     static {
-        try {
+        try (BufferedReader stream = Files.newBufferedReader(Paths.get("config.properties"))) {
             Properties properties = new Properties();
-            BufferedInputStream stream = new BufferedInputStream(new FileInputStream("config.properties"));
             properties.load(stream);
-            stream.close();
             apiKey = properties.getProperty("api.key");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace(System.err);
         }
     }
 
-    public static MovieData getCurrentWeatherDataForCity(String city) {
-        String path = PATH_PREFIX + "movie?";
-        String queryString = "api_key=" + apiKey + "&query=" + "Filmname durch Suchfeld" + "&page=" + "1" + "&include_adult=" + "false";
-
-        try {
-            URL url = new URI("http", HOST, path, queryString, null).toURL();
-            Reader reader = new InputStreamReader(url.openStream());
-            return new Gson().fromJson(reader, MovieData.class);
-        } catch (URISyntaxException | IOException e) {
-            System.err.println("An error occurred while requesting data from weather API.");
+    public static Results getMoviesByName(String query) {
+        query = query.trim();
+        if (query.isEmpty()) {
+            return getEmpty();
         }
 
-        return null;
+        String queryString = "api_key=" + apiKey + "&query=" + query
+                + "&page=" + "1" + "&include_adult=" + "false";
+
+        HttpsURLConnection conn = null;
+        try {
+            URL url = new URL("https://" + HOST + "/" + PATH_PREFIX + "?" + queryString);
+            conn = (HttpsURLConnection) url.openConnection();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            return GSON.fromJson(reader, Results.class);
+        } catch (IOException ioException) {
+            if (conn != null) {
+                try {
+                    if (conn.getResponseCode() == 422) {
+                        return getEmpty();
+                    }
+                } catch (IOException ioException2) { }
+            }
+
+            ioException.printStackTrace(System.err);
+            System.err.println("An error occurred while requesting data from API.");
+        }
+
+        return getEmpty();
+    }
+
+    public static Image getPoster(Movie movie) {
+        String poster = movie.getPosterPath();
+        if (poster == null || (poster = poster.trim()).isEmpty()) {
+            return null;
+        }
+
+        try {
+            URL url = new URL("https://image.tmdb.org/t/p/w342/" + movie.getPosterPath());
+            try(InputStream in = url.openStream()) {
+                return new Image(in);
+            }
+        } catch (IOException ioException) {
+            return null;
+        }
+    }
+
+    public static Results getEmpty() {
+        return new Results(new ArrayList<>());
     }
 }
