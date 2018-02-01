@@ -97,14 +97,6 @@ public class Controller{
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
 
         tableofFilm.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn);
-    }
-
-    //if enter is pressed table of film will be filled with new content
-    public void onEnter() {
-        originalFilms = getFilm();
-        ObservableList<Film> films = FXCollections.observableArrayList();
-        films.addAll(originalFilms);
-        tableofFilm.setItems(films);
 
         tableofFilm.setOnMouseClicked((event) -> {
             Film film = tableofFilm.getSelectionModel().getSelectedItem();
@@ -115,6 +107,17 @@ public class Controller{
 
             previewPane.setImage(film.getPoster());
         });
+    }
+
+    //if enter is pressed table of film will be filled with new content
+    public void onEnter() {
+        new Thread(() -> {
+            originalFilms = getFilm();
+
+            ObservableList<Film> films = FXCollections.observableArrayList();
+            films.addAll(originalFilms);
+            tableofFilm.setItems(films);
+        }).start();
     }
 
     public ObservableList<Film> getFilm() {
