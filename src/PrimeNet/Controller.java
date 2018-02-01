@@ -1,11 +1,8 @@
 package PrimeNet;
 
-import PrimeNet.movies.Movie;
 import PrimeNet.movies.Results;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -15,15 +12,8 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.converter.DefaultStringConverter;
-
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-
 import javafx.scene.image.ImageView;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+
 
 public class Controller{
     @FXML
