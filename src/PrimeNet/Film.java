@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 
-import java.awt.image.BufferedImage;
 
 public class Film {
     private  SimpleBooleanProperty favourite;

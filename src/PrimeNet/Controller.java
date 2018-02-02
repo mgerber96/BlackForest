@@ -21,7 +21,7 @@ public class Controller{
     @FXML
     TextField searchField = new TextField();
     @FXML
-    TableView<Film> tableofFilm = new TableView<>();
+    TableView<Film> filmTable = new TableView<>();
     @FXML
     TableColumn<Film, String> rateColumn = new TableColumn<>("Bewerten");
     @FXML
@@ -64,7 +64,7 @@ public class Controller{
     }
 
     public void setUpTableOfFilm() {
-        tableofFilm.setEditable(true);
+        filmTable.setEditable(true);
 
         //titleColumn
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -86,10 +86,10 @@ public class Controller{
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
 
-        tableofFilm.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn);
+        filmTable.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn);
 
-        tableofFilm.setOnMouseClicked((event) -> {
-            Film film = tableofFilm.getSelectionModel().getSelectedItem();
+        filmTable.setOnMouseClicked((event) -> {
+            Film film = filmTable.getSelectionModel().getSelectedItem();
             if (film == null) {
                 previewPane.setImage(null);
                 return;
@@ -106,7 +106,7 @@ public class Controller{
 
             ObservableList<Film> films = FXCollections.observableArrayList();
             films.addAll(originalFilms);
-            tableofFilm.setItems(films);
+            filmTable.setItems(films);
         }).start();
     }
 
@@ -141,7 +141,7 @@ public class Controller{
             selectedYearFilms = originalFilms;
         }
 
-        tableofFilm.setItems(selectedYearFilms);
+        filmTable.setItems(selectedYearFilms);
     }
 
 

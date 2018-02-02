@@ -5,7 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 public class ControllerForLogin {
 
@@ -24,6 +28,7 @@ public class ControllerForLogin {
             Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
             Stage PrimeNet = new Stage();
             PrimeNet.setTitle("PrimeNet");
+            Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
             PrimeNet.setScene(new Scene(root, 1600, 1200));
             PrimeNet.show();
             Main.Login.close();

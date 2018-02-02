@@ -44,7 +44,7 @@
         </VBox>
     </top>
     <left>
-        <TableView fx:id="tableofFilm" BorderPane.alignment="CENTER_LEFT" />
+        <TableView fx:id="filmTable" BorderPane.alignment="CENTER_LEFT" />
     </left>
    <center>
       <ImageView fx:id="previewPane" preserveRatio="true" BorderPane.alignment="CENTER" />

@@ -1,30 +1,18 @@
 package PrimeNet;
 
-//import com.google.gson.Gson;
-
 import PrimeNet.movies.Movie;
-import PrimeNet.movies.Posters;
 import PrimeNet.movies.Results;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
-/**
- * Created by behrends on 11/04/16.
- */
 
 public class MovieDatabase {
 
@@ -37,7 +25,7 @@ public class MovieDatabase {
     private static final String PATH_PREFIX = "3/search/movie";
     private static final String POSTER_PREFIX = "3/movie/";
 
-    // read API key from file (happens only once after JVM start)
+
     static {
         try (BufferedReader stream = Files.newBufferedReader(Paths.get("config.properties"))) {
             Properties properties = new Properties();
