@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -8,12 +9,11 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.ControllerForLogin">
+   <stylesheets>
+      <URL value="@Design.css" />
+   </stylesheets>
    <children>
-      <Button layoutX="34.0" layoutY="234.0" mnemonicParsing="false" onAction="#Login" text="Login">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
+      <Button layoutX="34.0" layoutY="234.0" mnemonicParsing="false" onAction="#Login" text="Login" />
       <TextField fx:id="TextUserName" layoutX="34.0" layoutY="75.0" promptText="Benutzername">
          <font>
             <Font size="14.0" />
@@ -24,15 +24,11 @@
             <Font size="14.0" />
          </font>
       </PasswordField>
-      <Label fx:id="LabelStatus" layoutX="40.0" layoutY="32.0" maxHeight="23.0" maxWidth="500.0" minHeight="23.0" minWidth="56.0" prefHeight="23.0" prefWidth="225.0" text="Status" textFill="#24545c">
+      <Label fx:id="LabelStatus" layoutX="34.0" layoutY="32.0" maxHeight="23.0" maxWidth="500.0" minHeight="23.0" minWidth="56.0" prefHeight="23.0" prefWidth="181.0" text="Login Status" textAlignment="CENTER" textFill="#24545c">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Button layoutX="150.0" layoutY="233.0" mnemonicParsing="false" onAction="#Reset" prefHeight="35.0" prefWidth="79.0" text="Reset">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
+      <Button layoutX="118.0" layoutY="234.0" mnemonicParsing="false" onAction="#Reset" prefHeight="28.0" prefWidth="64.0" text="Reset" />
    </children>
 </AnchorPane>
