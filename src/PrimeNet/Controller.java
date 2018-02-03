@@ -1,18 +1,33 @@
 package PrimeNet;
 
 import PrimeNet.movies.Results;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class Controller{
+    @FXML
+    Button favouriteButton = new Button();
     @FXML
     public ProgressIndicator progressbar;
     @FXML
@@ -37,6 +52,11 @@ public class Controller{
     private ObservableList<String> rate = FXCollections.observableArrayList();
 
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
+
+    private Stage favouriteWindow = new Stage();
+
+    File file;
+    FileWriter writer;
 
     @FXML
     private void initialize(){
@@ -79,9 +99,23 @@ public class Controller{
         rememberColumn.setEditable(true);
 
         //favouriteColumn
-        favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
-        favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
+        //favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
+        //favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
         favouriteColumn.setEditable(true);
+
+        favouriteColumn.setCellFactory(column -> new CheckBoxTableCell<>());
+        favouriteColumn.setCellValueFactory(cellData -> {
+            Film cellValue = cellData.getValue();
+            BooleanProperty property = cellValue.favouriteProperty();
+
+            // Add listener to handler change
+            property.addListener((observable, oldValue, newValue) -> {
+               cellValue.setFavourite(newValue);
+               writeInFavourite(cellValue.getTitle(), String.valueOf(cellValue.getYear()));
+            });
+
+            return property;
+        });
 
         //rateColumn
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
@@ -100,15 +134,39 @@ public class Controller{
         });
     }
 
+    //write in favouriteFile to save favourite
+    public void writeInFavourite(String filmTitle, String filmYear){
+        file = new File ("Favoriten.txt");
+        try{
+            writer = new FileWriter(file, true);
+            writer.write(filmTitle);
+            writer.write("\t");
+            writer.write(filmYear);
+            writer.write(System.getProperty("line.separator"));
+            writer.flush();
+        }catch (IOException e) { e.printStackTrace(); }
+    }
+
+    //by clicking the button "Favoriten" a new window will be opened
+    public void clickFavourite() throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("Favourite.fxml"));
+        favouriteWindow.setTitle("Favoriten");
+        favouriteWindow.setResizable(false);
+        favouriteWindow.initModality(Modality.APPLICATION_MODAL);
+        favouriteWindow.setScene(new Scene(root,600, 400));
+        favouriteWindow.show();
+        Main.Login.close();
+    }
+
     //if enter is pressed table of film will be filled with new content
     public void onEnter() {
         progressbar.setVisible(true);
         new Thread(() -> {
             originalFilms = getFilm();
-
             ObservableList<Film> films = FXCollections.observableArrayList();
             films.addAll(originalFilms);
             filmTable.setItems(films);
+            filterTableView(yearComboBox.getValue());
         }).start();
     }
 
