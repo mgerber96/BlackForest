@@ -4,10 +4,7 @@ import PrimeNet.movies.Results;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,6 +13,8 @@ import javafx.scene.image.ImageView;
 
 
 public class Controller{
+    @FXML
+    public ProgressIndicator progressbar;
     @FXML
     ComboBox<String> categoriesComboBox;
     @FXML
@@ -43,6 +42,8 @@ public class Controller{
     private void initialize(){
         setUpEverything();
         rate.addAll("Like", "Dislike");
+        progressbar.setProgress(-1.0f);
+        progressbar.setVisible(false);
     }
 
     @FXML
@@ -101,6 +102,7 @@ public class Controller{
 
     //if enter is pressed table of film will be filled with new content
     public void onEnter() {
+        progressbar.setVisible(true);
         new Thread(() -> {
             originalFilms = getFilm();
 
@@ -119,6 +121,7 @@ public class Controller{
                     return new Film(false, movie.getTitle(), movie.getReleaseYear(), false, "", MovieDatabase.getPoster(movie));
                 })
                 .forEach(films::add);
+        progressbar.setVisible(false);
         return films;
     }
 
