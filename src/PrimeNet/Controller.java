@@ -81,7 +81,10 @@ public class Controller{
     }
 
     public void fillYearComboBox(){
-        yearComboBox.getItems().addAll("Alle", "2015","2016","2017");
+        yearComboBox.getItems().add("Alle");
+        for (int n = 2000; n <= 2018; n++){
+            yearComboBox.getItems().add(String.valueOf(n));
+        }
     }
 
     public void setUpTableOfFilm() {
@@ -148,14 +151,16 @@ public class Controller{
     }
 
     //by clicking the button "Favoriten" a new window will be opened
-    public void clickFavourite() throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Favourite.fxml"));
-        favouriteWindow.setTitle("Favoriten");
-        favouriteWindow.setResizable(false);
-        favouriteWindow.initModality(Modality.APPLICATION_MODAL);
-        favouriteWindow.setScene(new Scene(root,600, 400));
-        favouriteWindow.show();
-        Main.Login.close();
+    public void clickFavourite() throws IOException{
+        Parent root =  FXMLLoader.load(getClass().getResource("Favourite.fxml"));
+        try{
+            favouriteWindow.setTitle("Favoriten");
+            favouriteWindow.setResizable(false);
+            favouriteWindow.setScene(new Scene(root,600, 400));
+            favouriteWindow.show();
+        }catch (IllegalStateException e){
+            favouriteWindow.show();
+        }
     }
 
     //if enter is pressed table of film will be filled with new content
