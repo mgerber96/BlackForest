@@ -172,7 +172,9 @@ public class Controller{
 
     public ObservableList<Film> getFilm() {
         ObservableList<Film> films = FXCollections.observableArrayList();
-        Results r = MovieDatabase.getMoviesByName(searchField.getText());
+        String pattern = "\\s+";
+        String searchCorrection = searchField.getText().replaceAll(pattern, "+");
+        Results r = MovieDatabase.getMoviesByName(searchCorrection);
         r.getMovies()
                 .stream()
                 .map(movie -> {
