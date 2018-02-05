@@ -29,7 +29,8 @@ public class ControllerForLogin {
             Stage PrimeNet = new Stage();
             PrimeNet.setTitle("PrimeNet");
             Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-            PrimeNet.setScene(new Scene(root, 800, 600));
+            //PrimeNet.setScene(new Scene(root,screen.width,screen.height-65));
+            PrimeNet.setScene(new Scene(root,800,600));
             PrimeNet.show();
             Main.Login.close();
         }else {
