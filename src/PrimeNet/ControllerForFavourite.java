@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.lang.reflect.Array;
+import java.util.NoSuchElementException;
 
 public class ControllerForFavourite {
     @FXML
@@ -57,9 +57,11 @@ public class ControllerForFavourite {
 
     //Action by pressing the delete button
     public void deleteFilm(){
-        ObservableList<Film> productSelected;
-        productSelected = favouriteTable.getSelectionModel().getSelectedItems();
-        productSelected.forEach(allFilms::remove);
+        try{
+            ObservableList<Film> productSelected;
+            productSelected = favouriteTable.getSelectionModel().getSelectedItems();
+            productSelected.forEach(allFilms::remove);
+        } catch (NoSuchElementException e){Controller.favouriteWindow.close();}
     }
 
     private void readLinesFromFile(String datName) {
