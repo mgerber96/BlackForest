@@ -23,6 +23,16 @@ public class Film {
         this.poster = poster;
     }
 
+    //this constructor will only be used in ControllerForFavourite
+    public Film(String title, int year){
+        this.favourite = new SimpleBooleanProperty(true);
+        this.title = new SimpleStringProperty(title);
+        this.year = new SimpleIntegerProperty(year);
+        this.remember = new SimpleBooleanProperty(true ) ;
+        this.rate = new SimpleStringProperty("");
+        this.poster = null;
+    }
+
     public Image getPoster() {
         return poster;
     }

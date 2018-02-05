@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.ControllerForFavourite">
    <top>
       <VBox prefHeight="358.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView VBox.vgrow="ALWAYS">
+            <TableView fx:id="favouriteTable"  VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="favouriteTitleColumn" prefWidth="202.0" text="Titel" />
+                <TableColumn fx:id="favouriteYearColumn" prefWidth="127.0" text="Jahr" />
               </columns>
             </TableView>
          </children>
@@ -24,7 +24,7 @@
    <bottom>
       <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="200.0">
          <children>
-          <Button mnemonicParsing="false" text="Entfernen">
+          <Button mnemonicParsing="false" onAction="#deleteFilm" text="Entfernen">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></Button>

@@ -53,7 +53,7 @@ public class Controller{
 
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
 
-    private Stage favouriteWindow = new Stage();
+    public static Stage favouriteWindow = new Stage();
 
     File file;
     FileWriter writer;
