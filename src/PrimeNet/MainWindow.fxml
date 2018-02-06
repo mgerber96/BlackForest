@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <stylesheets>
         <URL value="@Design.css" />
     </stylesheets>
@@ -40,18 +40,44 @@
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                     </VBox.margin>
                 </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <ProgressIndicator fx:id="progressbar" prefHeight="43.0" prefWidth="251.0" progress="0.0" />
-               </children>
-            </HBox>
             </children>
         </VBox>
     </top>
-    <left>
-        <TableView fx:id="filmTable" BorderPane.alignment="CENTER_LEFT" />
-    </left>
+   <left>
+      <VBox prefHeight="408.0" prefWidth="322.0" BorderPane.alignment="CENTER">
+         <children>
+            <ProgressIndicator fx:id="progressbar" mouseTransparent="true" prefHeight="53.0" prefWidth="322.0" progress="0.0" />
+              <TableView fx:id="filmTable" prefHeight="424.0" prefWidth="322.0" />
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <VBox prefHeight="5.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+         </children>
+      </VBox>
+   </bottom>
+   <right>
+      <VBox prefHeight="474.0" prefWidth="584.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="482.0" prefWidth="584.0">
+               <children>
+                  <ImageView fx:id="previewPane" fitHeight="250.0" fitWidth="150.0" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="390.0" top="50.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
    <center>
-      <ImageView fx:id="previewPane" preserveRatio="true" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="473.0" prefWidth="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="5.0" prefWidth="473.0" />
+         </children>
+      </VBox>
    </center>
 </BorderPane>
