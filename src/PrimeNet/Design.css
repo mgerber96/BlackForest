@@ -13,7 +13,7 @@
 }
 .label{
     -fx-font-weight: normal;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-alignment: center;
 }
 .combo-box{
