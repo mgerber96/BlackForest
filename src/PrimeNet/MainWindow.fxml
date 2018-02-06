@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <stylesheets>
         <URL value="@Design.css" />
     </stylesheets>
@@ -64,9 +64,9 @@
          <children>
             <HBox prefHeight="51.0" prefWidth="270.0">
                <children>
-                  <Label prefHeight="54.0" prefWidth="108.0" text="Label" />
+                  <Label fx:id="previewTitle" prefHeight="54.0" prefWidth="108.0" text="Label" />
                   <Region prefHeight="51.0" prefWidth="49.0" />
-                  <Label prefHeight="81.0" prefWidth="122.0" text="Label" />
+                  <Label fx:id="previewDate" prefHeight="81.0" prefWidth="122.0" text="Label" />
                </children>
             </HBox>
          </children>

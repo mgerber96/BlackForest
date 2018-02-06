@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -68,6 +69,10 @@ public class Controller{
 
     @FXML
     ImageView previewPane = new ImageView();
+    @FXML
+    Label previewTitle = new Label();
+    @FXML
+    Label previewDate = new Label();
 
     public void setUpEverything(){
         fillCategoriesComboBox();
@@ -130,10 +135,16 @@ public class Controller{
             Film film = filmTable.getSelectionModel().getSelectedItem();
             if (film == null) {
                 previewPane.setImage(null);
+                previewTitle.setText("");
+                previewDate.setText("");
                 return;
             }
 
+
             previewPane.setImage(film.getPoster());
+            previewTitle.setText(film.getTitle());
+            String year = Integer.toString(film.getYear());
+            previewDate.setText(year);
         });
     }
 
