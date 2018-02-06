@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.ControllerForLogin">
    <stylesheets>
-      <URL value="@Design.css" />
+      <URL value="@Design_Login.css" />
    </stylesheets>
    <children>
       <HBox layoutX="43.0" layoutY="226.0" prefHeight="43.0" prefWidth="201.0">

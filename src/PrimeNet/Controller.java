@@ -73,6 +73,8 @@ public class Controller{
     Label previewTitle = new Label();
     @FXML
     Label previewDate = new Label();
+    @FXML
+    Label previewRate = new Label();
 
     public void setUpEverything(){
         fillCategoriesComboBox();
@@ -97,20 +99,23 @@ public class Controller{
 
         //titleColumn
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        titleColumn.setPrefWidth(200);
 
         //yearColumn
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        yearColumn.setPrefWidth(45);
 
         //rememberColumn
         rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
         rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
         rememberColumn.setEditable(true);
+        rememberColumn.setPrefWidth(60);
 
         //favouriteColumn
         //favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
         //favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
         favouriteColumn.setEditable(true);
-
+        favouriteColumn.setPrefWidth(60);
         favouriteColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         favouriteColumn.setCellValueFactory(cellData -> {
             Film cellValue = cellData.getValue();
@@ -128,6 +133,7 @@ public class Controller{
         //rateColumn
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
+        rateColumn.setPrefWidth(75);
 
         filmTable.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn);
 
@@ -137,14 +143,14 @@ public class Controller{
                 previewPane.setImage(null);
                 previewTitle.setText("");
                 previewDate.setText("");
+                previewRate.setText("");
                 return;
             }
-
-
             previewPane.setImage(film.getPoster());
             previewTitle.setText(film.getTitle());
             String year = Integer.toString(film.getYear());
-            previewDate.setText(year);
+            previewDate.setText("(" + year + ")");
+            previewRate.setText(film.getRate());
         });
     }
 

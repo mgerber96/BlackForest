@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <stylesheets>
         <URL value="@Design.css" />
     </stylesheets>
@@ -43,7 +43,9 @@
                 </HBox>
             <HBox prefHeight="40.0" prefWidth="458.0">
                <children>
+                  <Region prefHeight="40.0" prefWidth="215.0" />
                   <ProgressIndicator fx:id="progressbar" progress="0.0" />
+                  <Region prefHeight="40.0" prefWidth="481.0" />
                </children>
             </HBox>
             </children>
@@ -55,18 +57,38 @@
    <right>
       <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="214.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="previewPane" fitHeight="239.0" fitWidth="180.0" preserveRatio="true" />
+            <ImageView fx:id="previewPane" fitHeight="259.0" fitWidth="173.0" preserveRatio="true" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </right>
    <center>
-      <VBox prefHeight="348.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="269.0" prefWidth="270.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="51.0" prefWidth="270.0">
+            <HBox prefHeight="235.0" prefWidth="270.0">
                <children>
-                  <Label fx:id="previewTitle" prefHeight="54.0" prefWidth="108.0" text="Label" />
-                  <Region prefHeight="51.0" prefWidth="49.0" />
-                  <Label fx:id="previewDate" prefHeight="81.0" prefWidth="122.0" text="Label" />
+                  <Region prefHeight="37.0" prefWidth="18.0" />
+                  <VBox prefHeight="89.0" prefWidth="122.0">
+                     <children>
+                        <Label fx:id="previewTitle" text="Filmtitel">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="previewDate" prefHeight="0.0" prefWidth="122.0" text="(Jahr)">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Region prefHeight="29.0" prefWidth="122.0" />
+                        <Label text="Handlung" underline="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Region prefHeight="10.0" prefWidth="122.0" />
+                        <Label text="Handlungstext" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </children>
