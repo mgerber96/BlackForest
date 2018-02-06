@@ -43,7 +43,6 @@
                 </HBox>
             <HBox prefHeight="40.0" prefWidth="458.0">
                <children>
-                  <Region prefHeight="40.0" prefWidth="105.0" />
                   <ProgressIndicator fx:id="progressbar" progress="0.0" />
                </children>
             </HBox>
