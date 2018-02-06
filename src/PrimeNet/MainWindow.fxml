@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <stylesheets>
         <URL value="@Design.css" />
     </stylesheets>
@@ -40,7 +40,11 @@
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                     </VBox.margin>
                 </HBox>
-            <ProgressIndicator fx:id="progressbar" prefHeight="84.0" prefWidth="731.0" progress="0.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ProgressIndicator fx:id="progressbar" prefHeight="43.0" prefWidth="251.0" progress="0.0" />
+               </children>
+            </HBox>
             </children>
         </VBox>
     </top>

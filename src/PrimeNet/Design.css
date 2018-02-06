@@ -6,11 +6,31 @@
     -fx-background-radius: 22;
 }
 .root{
-    -fx-background-color: #286090;
-
+    -fx-background-color:
+            #3c7fb1,
+            linear-gradient(#fafdfe, #e8f5fc),
+            linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 3,2,1;
+    -fx-padding: 3 30 3 30;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
 }
 .label{
     -fx-font-weight: normal;
     -fx-text-fill: white;
     -fx-alignment: center;
+}
+.combo-box{
+
+    -fx-border-width: 0.5px;
+    -fx-border-color: #2196f3;
+    -fx-border-radius: 22;
+    -fx-font-weight: 700;
+    -fx-background-radius: 50;
+    -fx-padding: 0;
+    -fx-font-size: 15;
+}
+.table-view{
+    -fx-background-color: #2196f3;
 }
