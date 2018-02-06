@@ -51,7 +51,11 @@
     <left>
         <TableView fx:id="filmTable" BorderPane.alignment="CENTER_LEFT" />
     </left>
-   <center>
-      <ImageView fx:id="previewPane" preserveRatio="true" BorderPane.alignment="CENTER" />
-   </center>
+   <right>
+      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="251.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="previewPane" fitHeight="239.0" fitWidth="180.0" preserveRatio="true" />
+         </children>
+      </VBox>
+   </right>
 </BorderPane>
