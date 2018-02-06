@@ -51,13 +51,6 @@
          </children>
       </VBox>
    </left>
-   <bottom>
-      <VBox prefHeight="5.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="100.0" prefWidth="200.0" />
-         </children>
-      </VBox>
-   </bottom>
    <right>
       <VBox prefHeight="474.0" prefWidth="584.0" BorderPane.alignment="CENTER">
          <children>
@@ -73,11 +66,4 @@
          </children>
       </VBox>
    </right>
-   <center>
-      <VBox prefHeight="473.0" prefWidth="5.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="5.0" prefWidth="473.0" />
-         </children>
-      </VBox>
-   </center>
 </BorderPane>
