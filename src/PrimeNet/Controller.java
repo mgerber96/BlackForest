@@ -75,6 +75,8 @@ public class Controller{
     Label previewDate = new Label();
     @FXML
     Label previewRate = new Label();
+    @FXML
+    Label previewOverview = new Label();
 
     public void setUpEverything(){
         fillCategoriesComboBox();
@@ -144,6 +146,7 @@ public class Controller{
                 previewTitle.setText("");
                 previewDate.setText("");
                 previewRate.setText("");
+                previewOverview.setText("");
                 return;
             }
             previewPane.setImage(film.getPoster());
@@ -151,6 +154,7 @@ public class Controller{
             String year = Integer.toString(film.getYear());
             previewDate.setText("(" + year + ")");
             previewRate.setText(film.getRate());
+            previewOverview.setText(film.getOverview());
         });
     }
 
@@ -200,7 +204,7 @@ public class Controller{
         r.getMovies()
                 .stream()
                 .map(movie -> {
-                    return new Film(false, movie.getTitle(), movie.getReleaseYear(), false, "", MovieDatabase.getPoster(movie));
+                    return new Film(false, movie.getTitle(), movie.getReleaseYear(), movie.getOverview(), false, "", MovieDatabase.getPoster(movie));
                 })
                 .forEach(films::add);
         progressbar.setVisible(false);

@@ -10,14 +10,16 @@ public class Film {
     private  SimpleBooleanProperty favourite;
     private SimpleStringProperty title;
     private SimpleIntegerProperty year;
+    private SimpleStringProperty overview;
     private SimpleBooleanProperty remember;
     private SimpleStringProperty rate;
     private Image poster;
 
-    public Film(boolean favourite, String title, int year, boolean remember, String rate, Image poster){
+    public Film(boolean favourite, String title, int year, String overview, boolean remember, String rate, Image poster){
         this.favourite = new SimpleBooleanProperty(favourite);
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
+        this.overview = new SimpleStringProperty(overview);
         this.remember = new SimpleBooleanProperty(remember) ;
         this.rate = new SimpleStringProperty(rate);
         this.poster = poster;
@@ -25,12 +27,8 @@ public class Film {
 
     //this constructor will only be used in ControllerForFavourite
     public Film(String title, int year){
-        this.favourite = new SimpleBooleanProperty(true);
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
-        this.remember = new SimpleBooleanProperty(true ) ;
-        this.rate = new SimpleStringProperty("");
-        this.poster = null;
     }
 
     public Image getPoster() {
@@ -71,6 +69,18 @@ public class Film {
 
     public void setYear(int year) {
         this.year.set(year);
+    }
+
+    public String getOverview() {
+        return overview.get();
+    }
+
+    public SimpleStringProperty overviewProperty() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview.set(overview);
     }
 
     public boolean isFavourite() {

@@ -85,7 +85,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Region prefHeight="10.0" prefWidth="122.0" />
+                        <Region fx:id="previewOverview" prefHeight="10.0" prefWidth="122.0" />
                         <Label text="Handlungstext" />
                      </children>
                   </VBox>
