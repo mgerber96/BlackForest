@@ -49,6 +49,8 @@ public class Controller{
     @FXML
     TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
+    TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
+    @FXML
     ComboBox<String> yearComboBox = new ComboBox<>();
     File file;
     FileWriter writer;
@@ -133,7 +135,10 @@ public class Controller{
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
         rateColumn.setPrefWidth(75);
 
-        filmTable.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn);
+        //categoriesColumn
+        categoriesColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
+
+        filmTable.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn, categoriesColumn);
 
         filmTable.setOnMouseClicked((event) -> {
             Film film = filmTable.getSelectionModel().getSelectedItem();
@@ -200,7 +205,7 @@ public class Controller{
         r.getMovies()
                 .stream()
                 .map(movie -> {
-                    return new Film(false, movie.getTitle(), movie.getReleaseYear(), movie.getOverview(), false, "", MovieDatabase.getPoster(movie));
+                    return new Film(false, movie.getTitle(), movie.getReleaseYear(), movie.getOverview(), false, "", MovieDatabase.getPoster(movie),"") ;
                 })
                 .forEach(films::add);
         progressbar.setVisible(false);

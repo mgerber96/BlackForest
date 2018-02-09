@@ -14,8 +14,9 @@ public class Film {
     private SimpleBooleanProperty remember;
     private SimpleStringProperty rate;
     private Image poster;
+    private SimpleStringProperty categories;
 
-    public Film(boolean favourite, String title, int year, String overview, boolean remember, String rate, Image poster) {
+    public Film(boolean favourite, String title, int year, String overview, boolean remember, String rate, Image poster,String categories) {
         this.favourite = new SimpleBooleanProperty(favourite);
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
@@ -23,6 +24,7 @@ public class Film {
         this.remember = new SimpleBooleanProperty(remember);
         this.rate = new SimpleStringProperty(rate);
         this.poster = poster;
+        this.categories = new SimpleStringProperty(categories);
     }
 
     //this constructor will only be used in ControllerForFavourite
@@ -105,5 +107,17 @@ public class Film {
 
     public SimpleStringProperty rateProperty() {
         return rate;
+    }
+
+    public String getCategories() {
+        return categories.get();
+    }
+
+    public SimpleStringProperty categoriesProperty() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories.set(categories);
     }
 }
