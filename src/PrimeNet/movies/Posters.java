@@ -1,6 +1,7 @@
 package PrimeNet.movies;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,8 @@ public class Posters {
     @SerializedName("posters")
     private List<String> posterURLs;
 
-    public Posters() { }
+    public Posters() {
+    }
 
     public Posters(List<String> urls) {
         this.posterURLs = urls;

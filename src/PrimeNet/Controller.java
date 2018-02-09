@@ -27,10 +27,11 @@ import java.io.IOException;
 
 
 public class Controller{
-    @FXML
-    Button favouriteButton = new Button();
+    public static Stage favouriteWindow = new Stage();
     @FXML
     public ProgressIndicator progressbar;
+    @FXML
+    Button favouriteButton = new Button();
     @FXML
     ComboBox<String> categoriesComboBox;
     @FXML
@@ -49,24 +50,8 @@ public class Controller{
     TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
     ComboBox<String> yearComboBox = new ComboBox<>();
-    @FXML
-    private ObservableList<String> rate = FXCollections.observableArrayList();
-
-    private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
-
-    public static Stage favouriteWindow = new Stage();
-
     File file;
     FileWriter writer;
-
-    @FXML
-    private void initialize(){
-        setUpEverything();
-        rate.addAll("Like", "Dislike");
-        progressbar.setProgress(-1.0f);
-        progressbar.setVisible(false);
-    }
-
     @FXML
     ImageView previewPane = new ImageView();
     @FXML
@@ -77,6 +62,17 @@ public class Controller{
     Label previewRate = new Label();
     @FXML
     Label previewOverview = new Label();
+    @FXML
+    private ObservableList<String> rate = FXCollections.observableArrayList();
+    private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
+
+    @FXML
+    private void initialize(){
+        setUpEverything();
+        rate.addAll("Like", "Dislike");
+        progressbar.setProgress(-1.0f);
+        progressbar.setVisible(false);
+    }
 
     public void setUpEverything(){
         fillCategoriesComboBox();

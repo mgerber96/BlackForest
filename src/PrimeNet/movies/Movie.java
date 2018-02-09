@@ -18,7 +18,7 @@ public class Movie {
     private String overview;
 
     @SerializedName("release_date")
-    private  String releaseDate;
+    private String releaseDate;
 
     @SerializedName("poster_path")
     private String posterPath;

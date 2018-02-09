@@ -1,19 +1,20 @@
 .button {
     -fx-background-color: red,
-            linear-gradient(#FF0000   50%, #990000 100%),
-            radial-gradient(center 50% -40%, radius 200%, #FF0000  45%, rgba(230,230,230,0) 50%);
+    linear-gradient(#FF0000 50%, #990000 100%),
+    radial-gradient(center 50% -40%, radius 200%, #FF0000 45%, rgba(230, 230, 230, 0) 50%);
     -fx-background-radius: 30;
-    -fx-background-insets: 0,1,1;
+    -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
     -fx-font-size: 15;
 }
-.root{
+
+.root {
     -fx-background-color: white;
 
 }
 
-.combo-box{
+.combo-box {
     -fx-border-width: 0.5px;
     -fx-border-color: #2196f3;
     -fx-border-radius: 22;
@@ -21,16 +22,19 @@
     -fx-padding: 0;
     -fx-font-size: 15;
     -fx-background-color: red,
-    linear-gradient(#FF0000   50%, #990000 100%),
-    radial-gradient(center 50% -40%, radius 200%, #FF0000  45%, rgba(230,230,230,0) 50%);
+    linear-gradient(#FF0000 50%, #990000 100%),
+    radial-gradient(center 50% -40%, radius 200%, #FF0000 45%, rgba(230, 230, 230, 0) 50%);
     -fx-background-radius: 30;
-    -fx-background-insets: 0,1,1;
-    -fx-text-fill: black;
+    -fx-background-insets: 0, 1, 1;
+    -fx-text-fill: white;
 }
+
 .table-view {
     -fx-background-color: white;
 }
-.label{
+
+.label {
     -fx-text-fill: black;
 }
+
 .

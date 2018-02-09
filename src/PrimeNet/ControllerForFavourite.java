@@ -17,11 +17,11 @@ import java.lang.reflect.Array;
 
 public class ControllerForFavourite {
     @FXML
-    TableView <Film> favouriteTable = new TableView();
+    TableView<Film> favouriteTable = new TableView();
     @FXML
-    TableColumn <Film, String> favouriteTitleColumn = new TableColumn<>();
+    TableColumn<Film, String> favouriteTitleColumn = new TableColumn<>();
     @FXML
-    TableColumn <Film, Integer> favouriteYearColumn = new TableColumn<>();
+    TableColumn<Film, Integer> favouriteYearColumn = new TableColumn<>();
 
     ObservableList<Film> allFilms = FXCollections.observableArrayList();
 
@@ -29,7 +29,7 @@ public class ControllerForFavourite {
     FileWriter writer;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         setUpTable();
         readLinesFromFile("Favoriten.txt");
         closingWindowAction(Controller.favouriteWindow);
@@ -37,26 +37,28 @@ public class ControllerForFavourite {
 
     //Before finally closing the window
     //Favourite.txt will be changed according to latest ObservableList allFilms
-    private void closingWindowAction(Stage stage){
+    private void closingWindowAction(Stage stage) {
         stage.setOnHiding(event -> writeInFavourite(allFilms));
     }
 
-    public void writeInFavourite(ObservableList<Film> allFilms){
-        file = new File ("Favoriten.txt");
-        try{
+    public void writeInFavourite(ObservableList<Film> allFilms) {
+        file = new File("Favoriten.txt");
+        try {
             writer = new FileWriter(file);
-            for(Film f : allFilms){
+            for (Film f : allFilms) {
                 writer.write(f.getTitle());
                 writer.write("\t");
                 writer.write(String.valueOf(f.getYear()));
                 writer.write(System.getProperty("line.separator"));
             }
             writer.flush();
-        }catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Action by pressing the delete button
-    public void deleteFilm(){
+    public void deleteFilm() {
         ObservableList<Film> productSelected;
         productSelected = favouriteTable.getSelectionModel().getSelectedItems();
         productSelected.forEach(allFilms::remove);
@@ -88,12 +90,13 @@ public class ControllerForFavourite {
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) { }
+                } catch (IOException e) {
+                }
             }
         }
     }
 
-    private void setUpTable (){
+    private void setUpTable() {
         //favouriteTitleColumn
         favouriteTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
@@ -106,8 +109,8 @@ public class ControllerForFavourite {
         favouriteTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
                         System.out.println("Double click");
                     }
                 }
@@ -116,11 +119,10 @@ public class ControllerForFavourite {
     }
 
 
-    public Film getFavourite(String title, int year){
+    public Film getFavourite(String title, int year) {
         Film film = new Film(title, year);
         return film;
     }
-
 
 
 }

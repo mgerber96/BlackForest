@@ -5,6 +5,7 @@ import PrimeNet.movies.Results;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.image.Image;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
@@ -57,7 +58,8 @@ public class MovieDatabase {
                     if (conn.getResponseCode() == 422) {
                         return getEmpty();
                     }
-                } catch (IOException ioException2) { }
+                } catch (IOException ioException2) {
+                }
             }
 
             ioException.printStackTrace(System.err);
@@ -75,7 +77,7 @@ public class MovieDatabase {
 
         try {
             URL url = new URL("https://image.tmdb.org/t/p/w342/" + movie.getPosterPath());
-            try(InputStream in = url.openStream()) {
+            try (InputStream in = url.openStream()) {
                 return new Image(in);
             }
         } catch (IOException ioException) {
