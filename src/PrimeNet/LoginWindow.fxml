@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -16,33 +18,44 @@
       <URL value="@Design_Login.css" />
    </stylesheets>
    <children>
-      <HBox layoutX="43.0" layoutY="226.0" prefHeight="43.0" prefWidth="201.0">
+      <HBox layoutX="43.0" layoutY="226.0" prefHeight="28.0" prefWidth="201.0">
          <children>
             <Button mnemonicParsing="false" onAction="#Login" prefHeight="27.0" prefWidth="89.0" text="Login" />
             <Region prefHeight="43.0" prefWidth="36.0" />
             <Button mnemonicParsing="false" onAction="#Reset" prefHeight="28.0" prefWidth="96.0" text="Reset" />
          </children>
       </HBox>
-      <VBox layoutX="42.0" layoutY="14.0" prefHeight="166.0" prefWidth="201.0">
+      <VBox layoutX="42.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="166.0" prefWidth="201.0">
          <children>
-            <Label fx:id="LabelStatus" maxHeight="23.0" maxWidth="500.0" minHeight="23.0" minWidth="56.0" prefHeight="23.0" prefWidth="181.0" text="Login Status" textAlignment="CENTER" textFill="#24545c">
+            <Label prefHeight="71.0" prefWidth="201.0" text="Wilkommen bei PrimeNet" textAlignment="CENTER" textFill="TRANSPARENT" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Region prefHeight="150.0" prefWidth="201.0" />
-            <TextField fx:id="TextUserName" prefHeight="28.0" prefWidth="0.0" promptText="Benutzername">
+            <Region prefHeight="30.0" prefWidth="200.0" />
+            <Label fx:id="LabelStatus" maxHeight="23.0" maxWidth="500.0" minHeight="23.0" minWidth="56.0" prefHeight="23.0" prefWidth="181.0" textAlignment="CENTER" textFill="#24545c">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Region prefHeight="20.0" prefWidth="200.0" />
+            <TextField fx:id="TextUserName" prefHeight="30.0" prefWidth="0.0" promptText="Benutzername">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Region prefHeight="100.0" prefWidth="201.0" />
-            <PasswordField fx:id="TextPassword" promptText="Password">
+            <Region prefHeight="30.0" prefWidth="201.0" />
+            <PasswordField fx:id="TextPassword" prefHeight="30.0" promptText="Password">
                <font>
                   <Font size="14.0" />
                </font>
             </PasswordField>
          </children>
       </VBox>
+      <ImageView fitHeight="28.0" fitWidth="29.0" layoutX="7.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Downloads/1009757-200.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
