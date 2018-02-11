@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Movie {
@@ -25,6 +26,7 @@ public class Movie {
 
     @SerializedName("id")
     private String id;
+
 
     public String getTitle() {
         return title;
@@ -88,11 +90,14 @@ public class Movie {
 }
 
 /* Example JSON
-{"page":1,"total_results":1,"total_pages":1,
+{"page":1,
+"total_results":1,
+"total_pages":1,
 "results":[{"vote_count":4943,
 "id":497,
 "video":false,
-"vote_average":8.3,"title":"The Green Mile",
+"vote_average":8.3,
+"title":"The Green Mile",
 "popularity":32.818983,
 "posterPath":"\/3yJUlOtVa09CYJocwBU8eAryja0.jpg",
 "original_language":"en",

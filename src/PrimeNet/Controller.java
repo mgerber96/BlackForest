@@ -106,14 +106,12 @@ public class Controller{
         yearColumn.setPrefWidth(45);
 
         //rememberColumn
-        rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
-        rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
         rememberColumn.setEditable(true);
         rememberColumn.setPrefWidth(60);
+        rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
+        rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
 
         //favouriteColumn
-        //favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
-        //favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
         favouriteColumn.setEditable(true);
         favouriteColumn.setPrefWidth(60);
         favouriteColumn.setCellFactory(column -> new CheckBoxTableCell<>());
