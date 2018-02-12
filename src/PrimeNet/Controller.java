@@ -203,7 +203,9 @@ public class Controller{
         r.getMovies()
                 .stream()
                 .map(movie -> {
-                    return new Film(false, movie.getTitle(), movie.getReleaseYear(), movie.getOverview(), false, "", MovieDatabase.getPoster(movie),"") ;
+                    return new Film(false, movie.getTitle(), movie.getReleaseYear(),
+                            movie.getOverview(), false, "", MovieDatabase.getPoster(movie),
+                            movie.getCategories()) ;
                 })
                 .forEach(films::add);
         progressbar.setVisible(false);

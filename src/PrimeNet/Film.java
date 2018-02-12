@@ -16,7 +16,7 @@ public class Film {
     private Image poster;
     private SimpleStringProperty categories;
 
-    public Film(boolean favourite, String title, int year, String overview, boolean remember, String rate, Image poster,String categories) {
+    public Film(boolean favourite, String title, int year, String overview, boolean remember, String rate, Image poster, String categories) {
         this.favourite = new SimpleBooleanProperty(favourite);
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
