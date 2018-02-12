@@ -9,7 +9,8 @@ public class Results {
     @SerializedName("results")
     private List<Movie> movies;
 
-    public Results() { }
+    public Results() {
+    }
 
     public Results(List<Movie> movies) {
         this.movies = movies;

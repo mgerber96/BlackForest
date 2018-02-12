@@ -9,7 +9,8 @@ public class Posters {
     @SerializedName("posters")
     private List<String> posterURLs;
 
-    public Posters() { }
+    public Posters() {
+    }
 
     public Posters(List<String> urls) {
         this.posterURLs = urls;

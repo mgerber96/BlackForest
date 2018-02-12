@@ -1,16 +1,40 @@
 .button {
-    -fx-background-color: #2196f3;
+    -fx-background-color: red,
+    linear-gradient(#FF0000 50%, #990000 100%),
+    radial-gradient(center 50% -40%, radius 200%, #FF0000 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
     -fx-font-size: 15;
-    -fx-font-weight: normal;
-    -fx-background-radius: 22;
 }
-.root{
-    -fx-background-color: #286090;
+
+.root {
+    -fx-background-color: white;
 
 }
-.label{
-    -fx-font-weight: normal;
+
+.combo-box {
+    -fx-border-width: 0.5px;
+    -fx-border-color: #2196f3;
+    -fx-border-radius: 22;
+    -fx-font-weight: 700;
+    -fx-padding: 0;
+    -fx-font-size: 15;
+    -fx-background-color: red,
+    linear-gradient(#FF0000 50%, #990000 100%),
+    radial-gradient(center 50% -40%, radius 200%, #FF0000 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
-    -fx-alignment: center;
 }
+
+.table-view {
+    -fx-background-color: white;
+}
+
+.label {
+    -fx-text-fill: black;
+}
+
+.

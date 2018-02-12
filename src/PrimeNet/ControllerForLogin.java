@@ -23,17 +23,17 @@ public class ControllerForLogin {
     //login with username and password
     public void Login(javafx.event.ActionEvent event) throws Exception {
 
-        if (TextUserName.getText().equals("") &&  TextPassword.getText().equals ("") ) {
+        if (TextUserName.getText().equals("") && TextPassword.getText().equals("")) {
 
             Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
             Stage PrimeNet = new Stage();
             PrimeNet.setTitle("PrimeNet");
             Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-            PrimeNet.setScene(new Scene(root,screen.width/1.5,screen.height/1.1-65));
+            PrimeNet.setScene(new Scene(root, screen.width / 1.5, screen.height / 1.1 - 65));
             //PrimeNet.setScene(new Scene(root,800,600));
             PrimeNet.show();
             Main.Login.close();
-        }else {
+        } else {
             LabelStatus.setText("Login Failed");
         }
     }

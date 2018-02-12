@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,39 +16,87 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="PrimeNet.Controller">
     <stylesheets>
-        <URL value="@Design.css" />
+        <URL value="@Design.css"/>
     </stylesheets>
     <top>
         <VBox prefHeight="122.0" prefWidth="731.0" BorderPane.alignment="CENTER">
             <children>
                 <TitledPane animated="false" prefHeight="36.0" prefWidth="731.0" text="PrimeNet">
                     <font>
-                        <Font name="System Bold Italic" size="18.0" />
+                        <Font name="System Bold Italic" size="18.0"/>
                     </font>
                 </TitledPane>
                 <HBox prefHeight="24.0" prefWidth="731.0" spacing="10.0">
                     <children>
-                        <TextField fx:id="searchField" onAction="#onEnter" promptText="Suche" />
-                  <ComboBox fx:id="yearComboBox" onAction="#clickYearComboBox" prefWidth="150.0" promptText="Jahr" />
-                        <ComboBox fx:id="categoriesComboBox" prefWidth="150.0" promptText="Kategorien" />
-                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="favouriteButton" mnemonicParsing="false" onAction="#clickFavourite" text="Favoriten" />
-                        <Button mnemonicParsing="false" text="Merkliste" />
+                        <TextField fx:id="searchField" onAction="#onEnter" promptText="Suche"/>
+                        <ComboBox fx:id="yearComboBox" onAction="#clickYearComboBox" prefWidth="150.0"
+                                  promptText="Jahr"/>
+                        <ComboBox fx:id="categoriesComboBox" prefWidth="150.0" promptText="Kategorien"/>
+                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="favouriteButton" mnemonicParsing="false" onAction="#clickFavourite"
+                                text="Favoriten"/>
+                        <Button mnemonicParsing="false" text="Merkliste"/>
                     </children>
                     <VBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                     </VBox.margin>
                 </HBox>
-            <ProgressIndicator fx:id="progressbar" prefHeight="84.0" prefWidth="731.0" progress="0.0" />
+                <HBox prefHeight="40.0" prefWidth="458.0">
+                    <children>
+                        <Region prefHeight="40.0" prefWidth="215.0"/>
+                        <ProgressIndicator fx:id="progressbar" progress="0.0"/>
+                        <Region prefHeight="40.0" prefWidth="481.0"/>
+                    </children>
+                </HBox>
             </children>
         </VBox>
     </top>
     <left>
-        <TableView fx:id="filmTable" BorderPane.alignment="CENTER_LEFT" />
+        <TableView fx:id="filmTable" BorderPane.alignment="CENTER_LEFT"/>
     </left>
-   <center>
-      <ImageView fx:id="previewPane" preserveRatio="true" BorderPane.alignment="CENTER" />
-   </center>
+    <right>
+        <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="214.0" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fx:id="previewPane" fitHeight="259.0" fitWidth="173.0" preserveRatio="true"
+                           VBox.vgrow="ALWAYS"/>
+            </children>
+        </VBox>
+    </right>
+    <center>
+        <VBox prefHeight="269.0" prefWidth="270.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox prefHeight="410.0" prefWidth="270.0">
+                    <children>
+                        <Region prefHeight="37.0" prefWidth="18.0"/>
+                        <VBox prefHeight="401.0" prefWidth="230.0">
+                            <children>
+                                <Label fx:id="previewTitle" prefHeight="35.0" prefWidth="232.0" text="Filmtitel">
+                                    <font>
+                                        <Font name="System Bold" size="24.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="previewDate" prefHeight="0.0" prefWidth="122.0" text="(Jahr)">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Region prefHeight="29.0" prefWidth="122.0"/>
+                                <Label text="Handlung" underline="true">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Region prefHeight="10.0" prefWidth="122.0"/>
+                                <Label fx:id="previewOverview" alignment="TOP_LEFT" prefHeight="242.0" prefWidth="248.0"
+                                       text="Handlungstext" wrapText="true"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
 </BorderPane>

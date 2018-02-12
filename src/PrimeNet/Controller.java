@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -26,10 +27,11 @@ import java.io.IOException;
 
 
 public class Controller{
-    @FXML
-    Button favouriteButton = new Button();
+    public static Stage favouriteWindow = new Stage();
     @FXML
     public ProgressIndicator progressbar;
+    @FXML
+    Button favouriteButton = new Button();
     @FXML
     ComboBox<String> categoriesComboBox;
     @FXML
@@ -47,16 +49,24 @@ public class Controller{
     @FXML
     TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
-    ComboBox<String> yearComboBox = new ComboBox<>();
+    TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
     @FXML
-    private ObservableList<String> rate = FXCollections.observableArrayList();
-
-    private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
-
-    public static Stage favouriteWindow = new Stage();
-
+    ComboBox<String> yearComboBox = new ComboBox<>();
     File file;
     FileWriter writer;
+    @FXML
+    ImageView previewPane = new ImageView();
+    @FXML
+    Label previewTitle = new Label();
+    @FXML
+    Label previewDate = new Label();
+    @FXML
+    Label previewRate = new Label();
+    @FXML
+    Label previewOverview = new Label();
+    @FXML
+    private ObservableList<String> rate = FXCollections.observableArrayList();
+    private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
 
     @FXML
     private void initialize(){
@@ -65,9 +75,6 @@ public class Controller{
         progressbar.setProgress(-1.0f);
         progressbar.setVisible(false);
     }
-
-    @FXML
-    ImageView previewPane = new ImageView();
 
     public void setUpEverything(){
         fillCategoriesComboBox();
@@ -92,20 +99,21 @@ public class Controller{
 
         //titleColumn
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        titleColumn.setPrefWidth(200);
 
         //yearColumn
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        yearColumn.setPrefWidth(45);
 
         //rememberColumn
-        rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
-        rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
         rememberColumn.setEditable(true);
+        rememberColumn.setPrefWidth(60);
+        rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
+        rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
 
         //favouriteColumn
-        //favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
-        //favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
         favouriteColumn.setEditable(true);
-
+        favouriteColumn.setPrefWidth(60);
         favouriteColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         favouriteColumn.setCellValueFactory(cellData -> {
             Film cellValue = cellData.getValue();
@@ -123,17 +131,29 @@ public class Controller{
         //rateColumn
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
+        rateColumn.setPrefWidth(75);
 
-        filmTable.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn);
+        //categoriesColumn
+        categoriesColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
+
+        filmTable.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn, categoriesColumn);
 
         filmTable.setOnMouseClicked((event) -> {
             Film film = filmTable.getSelectionModel().getSelectedItem();
             if (film == null) {
                 previewPane.setImage(null);
+                previewTitle.setText("");
+                previewDate.setText("");
+                previewRate.setText("");
+                previewOverview.setText("");
                 return;
             }
-
             previewPane.setImage(film.getPoster());
+            previewTitle.setText(film.getTitle());
+            String year = Integer.toString(film.getYear());
+            previewDate.setText("(" + year + ")");
+            previewRate.setText(film.getRate());
+            previewOverview.setText(film.getOverview());
         });
     }
 
@@ -183,7 +203,9 @@ public class Controller{
         r.getMovies()
                 .stream()
                 .map(movie -> {
-                    return new Film(false, movie.getTitle(), movie.getReleaseYear(), false, "", MovieDatabase.getPoster(movie));
+                    return new Film(false, movie.getTitle(), movie.getReleaseYear(),
+                            movie.getOverview(), false, "", MovieDatabase.getPoster(movie),
+                            movie.getCategories()) ;
                 })
                 .forEach(films::add);
         progressbar.setVisible(false);
