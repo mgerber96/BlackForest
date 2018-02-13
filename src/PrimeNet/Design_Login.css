@@ -1,17 +1,24 @@
 .label {
     -fx-font-weight: normal;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-alignment: center;
+    -fx-font-size: 24;
 }
 
 .button {
     -fx-background-color: white;
     -fx-background-radius: 30;
     -fx-background-insets: 0, 1, 1;
--fx-text-fill: black;
--fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
 }
 
 .root {
     -fx-background-image: url("3.jpg");
+}
+.text-field{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-prompt-text-fill: black;
+
 }

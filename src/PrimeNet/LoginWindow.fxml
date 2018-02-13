@@ -27,9 +27,9 @@
         </HBox>
         <VBox layoutX="42.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="166.0" prefWidth="201.0">
             <children>
-                <Label prefHeight="71.0" prefWidth="201.0" text="Wilkommen bei PrimeNet" textAlignment="CENTER" textFill="TRANSPARENT" wrapText="true">
+                <Label prefHeight="84.0" prefWidth="201.0" text="Wilkommen bei PrimeNet" textAlignment="CENTER" textFill="TRANSPARENT" wrapText="true">
                     <font>
-                        <Font size="18.0" />
+                        <Font size="24.0" />
                     </font>
                 </Label>
                 <Region prefHeight="30.0" prefWidth="200.0" />

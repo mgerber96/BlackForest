@@ -1,17 +1,10 @@
 .button {
-    -fx-background-color: red,
-    linear-gradient(#FF0000 50%, #990000 100%),
-    radial-gradient(center 50% -40%, radius 200%, #FF0000 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-color: #CD7F32;
     -fx-background-radius: 30;
     -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
     -fx-font-size: 15;
-}
-
-.root {
-    -fx-background-color: white;
-
 }
 
 .combo-box {
@@ -20,20 +13,49 @@
     -fx-font-weight: 700;
     -fx-padding: 0;
     -fx-font-size: 15;
-    -fx-background-color: red,
-    linear-gradient(#FF0000 50%, #990000 100%),
-    radial-gradient(center 50% -40%, radius 200%, #FF0000 45%, rgba(230, 230, 230, 0) 50%);
-    -fx-background-radius: 30;
-    -fx-background-insets: 0, 1, 1;
+    -fx-background-color: #CD7F32;
     -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1)
+
 }
 
-.table-view {
-    -fx-background-color: white;
+.combo-box .cell{
+    -fx-background-color: #CD7F32;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
 }
 
 .label {
-    -fx-text-fill: black;
+    -fx-text-fill: white;
+}
+.progress-indicator{
+    -fx-progress-color: #CD7F32;
 }
 
-.
+.root{
+    -fx-background-image: url("5.png");
+
+}
+
+.table-view{
+    -fx-progress-color: #CD7F32;
+}
+
+.table-view .cell{
+    -fx-background-color: #CD7F32;
+}
+.table-view .check-box{
+    -fx-progress-color: #CD7F32;
+}
+
+.table-view .{
+    -fx-progress-color: #CD7F32;
+}
+
+.text-field{
+    -fx-text-fill: white;
+    -fx-background-color: #CD7F32;
+    -fx-border-color: #CD7F32;
+    -fx-prompt-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
+}
