@@ -22,9 +22,11 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
-public class Controller{
+public class Controller {
     public static Stage favouriteWindow = new Stage();
     @FXML
     public ProgressIndicator progressbar;
@@ -65,9 +67,10 @@ public class Controller{
     @FXML
     private ObservableList<String> rate = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
+    private ObservableList<Film> originalFilmsForSecondFilterAction;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         setUpEverything();
         rate.addAll("Like", "Dislike");
         progressbar.setProgress(-1.0f);
@@ -83,22 +86,22 @@ public class Controller{
 */
     }
 
-    public void setUpEverything(){
+    public void setUpEverything() {
         fillCategoriesComboBox();
         fillYearComboBox();
         setUpTableOfFilm();
     }
 
-    public void fillCategoriesComboBox(){
+    public void fillCategoriesComboBox() {
         categoriesComboBox.getItems().add("Alle");
-        categoriesComboBox.getItems().addAll( "Abenteuer", "Action", "Animation", "Dokumentarfilm",
+        categoriesComboBox.getItems().addAll("Abenteuer", "Action", "Animation", "Dokumentarfilm",
                 "Drama", "Familie", "Fantasy", "Historie", "Horror", "Komödie", "Kriegsfilm", "Krimi",
                 "Liebesfilm", "Musik", "Mystery", "Science", "Fiction", "TV-Film", "Thriller", "Western");
     }
 
-    public void fillYearComboBox(){
+    public void fillYearComboBox() {
         yearComboBox.getItems().add("Alle");
-        for (int n = 1950; n <= 2018; n++){
+        for (int n = 1950; n <= 2018; n++) {
             yearComboBox.getItems().add(String.valueOf(n));
         }
     }
@@ -129,7 +132,7 @@ public class Controller{
 
         //rateColumn
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
-        rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
+        rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), rate));
         rateColumn.setPrefWidth(75);
 
         //categoriesColumn
@@ -157,27 +160,29 @@ public class Controller{
     }
 
     //write in favouriteFile to save favourite
-    public void writeInFavourite(String filmTitle, String filmYear){
-        file = new File ("Favoriten.txt");
-        try{
+    public void writeInFavourite(String filmTitle, String filmYear) {
+        file = new File("Favoriten.txt");
+        try {
             writer = new FileWriter(file, true);
             writer.write(filmTitle);
             writer.write("\t");
             writer.write(filmYear);
             writer.write(System.getProperty("line.separator"));
             writer.flush();
-        }catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //by clicking the button "Favoriten" a new window will be opened
-    public void clickFavourite() throws IOException{
-        Parent root =  FXMLLoader.load(getClass().getResource("Favourite.fxml"));
-        try{
+    public void clickFavourite() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Favourite.fxml"));
+        try {
             favouriteWindow.setTitle("Favoriten");
             favouriteWindow.setResizable(false);
-            favouriteWindow.setScene(new Scene(root,600, 400));
+            favouriteWindow.setScene(new Scene(root, 600, 400));
             favouriteWindow.show();
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             favouriteWindow.show();
         }
     }
@@ -190,32 +195,36 @@ public class Controller{
             ObservableList<Film> films = FXCollections.observableArrayList();
             films.addAll(originalFilms);
             filmTable.setItems(films);
-            filterTableViewAccToYears(yearComboBox.getValue());
+
+            //search result will be filtered according to selected years and categories
+            //filterTableViewAccToYears(yearComboBox.getValue());
+            //filterTableViewAccToCategories(categoriesComboBox.getValue());
+
             //settings for the favourite column
             //if favourite Checkbox is clicked the film will be written in a File
             for (Film film : originalFilms) {
                 film.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
-                    if(newValue && !oldValue)
+                    if (newValue && !oldValue)
                         writeInFavourite(film.getTitle(), String.valueOf(film.getYear()));
-                    else if(!newValue && oldValue)
+                    else if (!newValue && oldValue)
                         deleteInFavourite(film.getTitle(), String.valueOf(film.getYear()));
                 });
             }
         }).start();
     }
 
-    public void deleteInFavourite(String title, String year){
+    public void deleteInFavourite(String title, String year) {
         File original = new File("Favoriten.txt");
         File copy = new File("copy.txt");
 
         int counter = 0;
         String line;
-        try{
+        try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(original)));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(copy)));
             int stringInLine = isFilmInFavourite(original, title, year);
-            while((line = br.readLine()) != null){
-                if(counter !=  stringInLine){
+            while ((line = br.readLine()) != null) {
+                if (counter != stringInLine) {
                     bw.write(line);
                     bw.write(System.getProperty("line.separator"));
                 }
@@ -223,27 +232,31 @@ public class Controller{
             }
             bw.close();
             br.close();
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        try{
+        try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(copy)));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(original)));
             line = null;
-            while ((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 bw.write(line);
                 bw.write(System.getProperty("line.separator"));
             }
             br.close();
             bw.close();
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public int isFilmInFavourite(File file, String title, String year){
+    public int isFilmInFavourite(File file, String title, String year) {
         BufferedReader br;
         String line;
         int stringInLineNumber = 0;
-        try{
-            br  = new BufferedReader(new FileReader(file));
+        try {
+            br = new BufferedReader(new FileReader(file));
             int counter = 0;
             while ((line = br.readLine()) != null) {
                 if (line.equals(title + "\t" + year)) {
@@ -252,7 +265,9 @@ public class Controller{
                 }
                 counter++;
             }
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return stringInLineNumber;
     }
 
@@ -266,57 +281,54 @@ public class Controller{
                 .map(movie -> {
                     return new Film(false, movie.getTitle(), movie.getReleaseYear(),
                             movie.getOverview(), false, "", MovieDatabase.getPoster(movie),
-                            movie.getCategories()) ;
+                            movie.getCategories());
                 })
                 .forEach(films::add);
         progressbar.setVisible(false);
         return films;
     }
 
-    public void clickYearComboBox(){
+    public void clickYearComboBox() {
         filterTableViewAccToYears(yearComboBox.getValue());
     }
 
     public void clickCategoriesComboBox() {
-        filterTableViewAccToCategories(categoriesComboBox.getValue());
+        filterTableViewAccToYears(yearComboBox.getValue());
     }
+
     //filter tableView list according to selected year
-    public void filterTableViewAccToYears(String yearOfComboBox){
+    public void filterTableViewAccToYears(String yearOfComboBox) {
         ObservableList<Film> selectedYearFilms;
         selectedYearFilms = FXCollections.observableArrayList();
         try {
             int year = Integer.parseInt(yearOfComboBox);
-            for (Film s : originalFilms){
-                if (s.getYear() == year){
+            for (Film s : originalFilms) {
+                if (s.getYear() == year)
                     selectedYearFilms.add(s);
-                }
             }
         } catch (NumberFormatException e) {
             selectedYearFilms = originalFilms;
         }
-
-        filmTable.setItems(selectedYearFilms);
+        originalFilmsForSecondFilterAction = selectedYearFilms;
+        filterTableViewAccToCategories(categoriesComboBox.getValue());
+        filmTable.setItems(originalFilmsForSecondFilterAction);
     }
 
-    //filter tableView list according to selected Categorie
-    public void filterTableViewAccToCategories(String categorieOfComboBox) {
-        ObservableList<Film> selectedCategorieFilms;
-        selectedCategorieFilms = FXCollections.observableArrayList();
-        try {
-            String categorie = categorieOfComboBox;
-            for (Film s : originalFilms){
-                if (s.getCategories().equals(categorie)){
-                    selectedCategorieFilms.add(s);
+    //filter tableView list according to selected category
+    public void filterTableViewAccToCategories(String categoryOfComboBox) {
+        ObservableList<Film> selectedCategoriesFilms;
+        selectedCategoriesFilms = FXCollections.observableArrayList();
+        if(categoryOfComboBox == null){ }
+        else if (categoryOfComboBox.equals("Alle")) { }
+        else {
+            for (Film s : originalFilmsForSecondFilterAction) {
+                Matcher matcher = Pattern.compile(categoryOfComboBox).matcher(s.getCategories());
+                if (matcher.find())
+                    selectedCategoriesFilms.add(s);
                 }
+            originalFilmsForSecondFilterAction = selectedCategoriesFilms;
             }
-
-        } catch (Exception e) {
-            selectedCategorieFilms = originalFilms;
-        }
-
-        filmTable.setItems(selectedCategorieFilms);
     }
-
 }
 
 
