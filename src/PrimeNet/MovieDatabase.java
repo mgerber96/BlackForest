@@ -19,13 +19,10 @@ public class MovieDatabase {
 
     private static final Gson GSON = new GsonBuilder()
             .create();
-
-    private static String apiKey;
-
     private static final String HOST = "api.themoviedb.org";
     private static final String PATH_PREFIX = "3/search/movie";
     private static final String POSTER_PREFIX = "3/movie/";
-
+    private static String apiKey;
 
     static {
         try (BufferedReader stream = Files.newBufferedReader(Paths.get("config.properties"))) {
