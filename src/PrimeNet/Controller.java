@@ -19,10 +19,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
-import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
+
+import java.io.*;
 
 
 public class Controller{
@@ -48,7 +48,7 @@ public class Controller{
     @FXML
     TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
-    TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorie");
+    TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
     @FXML
     ComboBox<String> yearComboBox = new ComboBox<>();
     File file;
@@ -73,6 +73,15 @@ public class Controller{
         rate.addAll("Like", "Dislike");
         progressbar.setProgress(-1.0f);
         progressbar.setVisible(false);
+/*
+        AutoCompletionBinding<Film> autoCompletionBinding =
+                TextFields.bindAutoCompletion(searchField,
+                        suggestionrequest -> MovieDatabase.getMoviesByName(suggestionrequest.getUserText()));
+        autoCompletionBinding.setOnAutoCompleted(event -> {
+            originalFilms.add(event.getCompletion());
+            searchField.clear();
+        });
+*/
     }
 
     public void setUpEverything(){
@@ -90,7 +99,7 @@ public class Controller{
 
     public void fillYearComboBox(){
         yearComboBox.getItems().add("Alle");
-        for (int n = 2000; n <= 2018; n++){
+        for (int n = 1950; n <= 2018; n++){
             yearComboBox.getItems().add(String.valueOf(n));
         }
     }
@@ -108,29 +117,20 @@ public class Controller{
         yearColumn.setStyle("-fx-alignment: CENTER;");
 
         //rememberColumn
+        rememberColumn.setEditable(true);
+        rememberColumn.setPrefWidth(60);
+        rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
         rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
         rememberColumn.setEditable(true);
         rememberColumn.setMaxWidth(55);
 
         //favouriteColumn
-        //favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
-        //favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
         favouriteColumn.setEditable(true);
-        favouriteColumn.setMaxWidth(55);
-        favouriteColumn.setCellFactory(column -> new CheckBoxTableCell<>());
-        favouriteColumn.setCellValueFactory(cellData -> {
-            Film cellValue = cellData.getValue();
-            BooleanProperty property = cellValue.favouriteProperty();
+        favouriteColumn.setPrefWidth(60);
+        favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
+        favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
 
-            // Add listener to handler change
-            property.addListener((observable, oldValue, newValue) -> {
-               cellValue.setFavourite(newValue);
-               writeInFavourite(cellValue.getTitle(), String.valueOf(cellValue.getYear()));
-            });
-
-            return property;
-        });
 
         //rateColumn
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
@@ -198,7 +198,69 @@ public class Controller{
             films.addAll(originalFilms);
             filmTable.setItems(films);
             filterTableViewAccToYears(yearComboBox.getValue());
+            //settings for the favourite column
+            //if favourite Checkbox is clicked the film will be written in a File
+            for (Film film : originalFilms) {
+                film.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
+                    if(newValue && !oldValue)
+                        writeInFavourite(film.getTitle(), String.valueOf(film.getYear()));
+                    else if(!newValue && oldValue)
+                        deleteInFavourite(film.getTitle(), String.valueOf(film.getYear()));
+                });
+            }
         }).start();
+    }
+
+    public void deleteInFavourite(String title, String year){
+        File original = new File("Favoriten.txt");
+        File copy = new File("copy.txt");
+
+        int counter = 0;
+        String line;
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(original)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(copy)));
+            int stringInLine = isFilmInFavourite(original, title, year);
+            while((line = br.readLine()) != null){
+                if(counter !=  stringInLine){
+                    bw.write(line);
+                    bw.write(System.getProperty("line.separator"));
+                }
+                counter++;
+            }
+            bw.close();
+            br.close();
+        } catch (Exception e) {e.printStackTrace();}
+
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(copy)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(original)));
+            line = null;
+            while ((line = br.readLine()) != null){
+                bw.write(line);
+                bw.write(System.getProperty("line.separator"));
+            }
+            br.close();
+            bw.close();
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public int isFilmInFavourite(File file, String title, String year){
+        BufferedReader br;
+        String line;
+        int stringInLineNumber = 0;
+        try{
+            br  = new BufferedReader(new FileReader(file));
+            int counter = 0;
+            while ((line = br.readLine()) != null) {
+                if (line.equals(title + "\t" + year)) {
+                    stringInLineNumber = counter;
+                    break;
+                }
+                counter++;
+            }
+        } catch (IOException e) {e.printStackTrace();}
+        return stringInLineNumber;
     }
 
     public ObservableList<Film> getFilm() {
