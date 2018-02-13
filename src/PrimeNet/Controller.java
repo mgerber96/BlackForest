@@ -99,7 +99,7 @@ public class Controller{
 
     public void fillYearComboBox(){
         yearComboBox.getItems().add("Alle");
-        for (int n = 1950; n <= 2018; n++){
+        for (int n = 2018; n >= 1950; n--){
             yearComboBox.getItems().add(String.valueOf(n));
         }
     }
@@ -109,15 +109,15 @@ public class Controller{
 
         //titleColumn
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        titleColumn.setMaxWidth(420);
-        titleColumn.setMinWidth(420);
-        titleColumn.setPrefWidth(420);
+        //titleColumn.setMaxWidth(400);
+        //titleColumn.setMinWidth(400);
+        titleColumn.setPrefWidth(400);
 
         //yearColumn
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        yearColumn.setMaxWidth(60);
-        yearColumn.setMinWidth(60);
-        yearColumn.setPrefWidth(60);
+        yearColumn.setMaxWidth(70);
+        yearColumn.setMinWidth(70);
+        yearColumn.setPrefWidth(70);
         yearColumn.setStyle("-fx-alignment: CENTER;");
 
         //rememberColumn
@@ -125,14 +125,15 @@ public class Controller{
         rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
         rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
-        rememberColumn.setMaxWidth(60);
-        rememberColumn.setMinWidth(60);
-        rememberColumn.setPrefWidth(60);
+        rememberColumn.setMaxWidth(70);
+        rememberColumn.setMinWidth(70);
+        rememberColumn.setPrefWidth(70);
 
         //favouriteColumn
         favouriteColumn.setEditable(true);
         favouriteColumn.setMaxWidth(60);
         favouriteColumn.setMinWidth(60);
+        favouriteColumn.setPrefWidth(60);
         favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
         favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
 
@@ -142,12 +143,14 @@ public class Controller{
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
         rateColumn.setMaxWidth(90);
         rateColumn.setMinWidth(90);
+        rateColumn.setPrefWidth(90);
         rateColumn.setStyle("-fx-alignment: CENTER;");
 
         //categoriesColumn
         categoriesColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
         categoriesColumn.setMaxWidth(200);
         categoriesColumn.setMinWidth(200);
+        categoriesColumn.setPrefWidth(200);
 
         filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, rememberColumn);
 
