@@ -18,6 +18,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -71,6 +74,15 @@ public class Controller{
         rate.addAll("Like", "Dislike");
         progressbar.setProgress(-1.0f);
         progressbar.setVisible(false);
+/*
+        AutoCompletionBinding<Film> autoCompletionBinding =
+                TextFields.bindAutoCompletion(searchField,
+                        suggestionrequest -> MovieDatabase.getMoviesByName(suggestionrequest.getUserText()));
+        autoCompletionBinding.setOnAutoCompleted(event -> {
+            originalFilms.add(event.getCompletion());
+            searchField.clear();
+        });
+*/
     }
 
     public void setUpEverything(){
@@ -254,18 +266,6 @@ public class Controller{
 
         filmTable.setItems(selectedCategorieFilms);
     }
-
-
-        /*
-        AutoCompletionBinding<MovieData> autoCompletionBinding =
-                TextFields.bindAutoCompletion(searchField,
-                        suggestionRequest -> MovieData. );
-        autoCompletionBinding.setOnAutoCompleted(event -> {
-            cities.add(event.getCompletion());
-            searchField.clear();
-            saveCitiesToDisk();
-        });*/
-
 
 }
 
