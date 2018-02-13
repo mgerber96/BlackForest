@@ -38,18 +38,23 @@
 }
 
 .table-view{
-    -fx-progress-color: #CD7F32;
+    -fx-progress-color: transparent;
 }
 
 .table-view .cell{
-    -fx-background-color: #CD7F32;
+    -fx-background-color: transparent;
+    -fx-text-fill: WHite;
 }
 .table-view .check-box{
-    -fx-progress-color: #CD7F32;
+    -fx-background-color: transparent;
+}
+.table-view .check-box.cell{
+    -fx-background-color: transparent;
 }
 
-.table-view .{
-    -fx-progress-color: #CD7F32;
+.table-view{
+
+    -fx-background-color: transparent;
 }
 
 .text-field{
@@ -58,4 +63,16 @@
     -fx-border-color: #CD7F32;
     -fx-prompt-text-fill: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
+}
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
 }

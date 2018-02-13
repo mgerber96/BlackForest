@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
@@ -22,8 +23,6 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Controller{
@@ -43,7 +42,7 @@ public class Controller{
     @FXML
     TableColumn<Film, Boolean> favouriteColumn = new TableColumn<>("Favorit");
     @FXML
-    TableColumn<Film, String> titleColumn = new TableColumn<>("Film");
+    TableColumn<Film, String> titleColumn = new TableColumn<>("Filmtitel");
     @FXML
     TableColumn<Film, Integer> yearColumn = new TableColumn<>("Jahr");
     @FXML
@@ -67,7 +66,6 @@ public class Controller{
     @FXML
     private ObservableList<String> rate = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
-    private ObservableList<Film> originalFilmsForSecondFilterAction;
 
     @FXML
     private void initialize(){
@@ -94,7 +92,7 @@ public class Controller{
 
     public void fillCategoriesComboBox(){
         categoriesComboBox.getItems().add("Alle");
-        categoriesComboBox.getItems().addAll("Abenteuer", "Action", "Animation", "Dokumentarfilm",
+        categoriesComboBox.getItems().addAll( "Abenteuer", "Action", "Animation", "Dokumentarfilm",
                 "Drama", "Familie", "Fantasy", "Historie", "Horror", "Komödie", "Kriegsfilm", "Krimi",
                 "Liebesfilm", "Musik", "Mystery", "Science", "Fiction", "TV-Film", "Thriller", "Western");
     }
@@ -112,24 +110,29 @@ public class Controller{
         //titleColumn
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         titleColumn.setMaxWidth(420);
+        titleColumn.setMinWidth(420);
+        titleColumn.setPrefWidth(420);
 
         //yearColumn
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         yearColumn.setMaxWidth(60);
+        yearColumn.setMinWidth(60);
+        yearColumn.setPrefWidth(60);
         yearColumn.setStyle("-fx-alignment: CENTER;");
 
         //rememberColumn
         rememberColumn.setEditable(true);
-        rememberColumn.setPrefWidth(60);
         rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
         rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
-        rememberColumn.setEditable(true);
-        rememberColumn.setMaxWidth(55);
+        rememberColumn.setMaxWidth(60);
+        rememberColumn.setMinWidth(60);
+        rememberColumn.setPrefWidth(60);
 
         //favouriteColumn
         favouriteColumn.setEditable(true);
-        favouriteColumn.setPrefWidth(60);
+        favouriteColumn.setMaxWidth(60);
+        favouriteColumn.setMinWidth(60);
         favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
         favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
 
@@ -138,11 +141,13 @@ public class Controller{
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
         rateColumn.setMaxWidth(90);
+        rateColumn.setMinWidth(90);
         rateColumn.setStyle("-fx-alignment: CENTER;");
 
         //categoriesColumn
         categoriesColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
         categoriesColumn.setMaxWidth(200);
+        categoriesColumn.setMinWidth(200);
 
         filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, rememberColumn);
 
@@ -199,11 +204,7 @@ public class Controller{
             ObservableList<Film> films = FXCollections.observableArrayList();
             films.addAll(originalFilms);
             filmTable.setItems(films);
-
-            //search result will be filtered according to selected years and categories
-            //filter according to category is in the method "filterTableViewAccToYears" included
             filterTableViewAccToYears(yearComboBox.getValue());
-
             //settings for the favourite column
             //if favourite Checkbox is clicked the film will be written in a File
             for (Film film : originalFilms) {
@@ -291,43 +292,57 @@ public class Controller{
     }
 
     public void clickCategoriesComboBox() {
-        filterTableViewAccToYears(yearComboBox.getValue());
+        filterTableViewAccToCategories(categoriesComboBox.getValue());
     }
-
     //filter tableView list according to selected year
     public void filterTableViewAccToYears(String yearOfComboBox){
         ObservableList<Film> selectedYearFilms;
         selectedYearFilms = FXCollections.observableArrayList();
         try {
             int year = Integer.parseInt(yearOfComboBox);
-            for (Film s : originalFilms) {
-                if (s.getYear() == year)
+            for (Film s : originalFilms){
+                if (s.getYear() == year){
                     selectedYearFilms.add(s);
                 }
             }
         } catch (NumberFormatException e) {
             selectedYearFilms = originalFilms;
         }
-        originalFilmsForSecondFilterAction = selectedYearFilms;
-        filterTableViewAccToCategories(categoriesComboBox.getValue());
-        filmTable.setItems(originalFilmsForSecondFilterAction);
+
+        filmTable.setItems(selectedYearFilms);
     }
 
-    //filter tableView list according to selected category
-    public void filterTableViewAccToCategories(String categoryOfComboBox) {
-        ObservableList<Film> selectedCategoriesFilms;
-        selectedCategoriesFilms = FXCollections.observableArrayList();
-        if(categoryOfComboBox == null){ }
-        else if (categoryOfComboBox.equals("Alle")) { }
-        else {
-            for (Film s : originalFilmsForSecondFilterAction) {
-                Matcher matcher = Pattern.compile(categoryOfComboBox).matcher(s.getCategories());
-                if (matcher.find())
-                    selectedCategoriesFilms.add(s);
+    //filter tableView list according to selected Categorie
+    public void filterTableViewAccToCategories(String categorieOfComboBox) {
+        ObservableList<Film> selectedCategorieFilms;
+        selectedCategorieFilms = FXCollections.observableArrayList();
+        try {
+            String categorie = categorieOfComboBox;
+            for (Film s : originalFilms){
+                if (s.getCategories().equals(categorie)){
+                    selectedCategorieFilms.add(s);
                 }
-            originalFilmsForSecondFilterAction = selectedCategoriesFilms;
             }
+
+        } catch (Exception e) {
+            selectedCategorieFilms = originalFilms;
+        }
+
+        filmTable.setItems(selectedCategorieFilms);
     }
+
+
+        /*
+        AutoCompletionBinding<MovieData> autoCompletionBinding =
+                TextFields.bindAutoCompletion(searchField,
+                        suggestionRequest -> MovieData. );
+        autoCompletionBinding.setOnAutoCompleted(event -> {
+            cities.add(event.getCompletion());
+            searchField.clear();
+            saveCitiesToDisk();
+        });*/
+
+
 }
 
 
