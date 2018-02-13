@@ -15,9 +15,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,7 +48,7 @@ public class Controller{
     @FXML
     TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
-    TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
+    TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorie");
     @FXML
     ComboBox<String> yearComboBox = new ComboBox<>();
     File file;
@@ -88,7 +90,7 @@ public class Controller{
 
     public void fillYearComboBox(){
         yearComboBox.getItems().add("Alle");
-        for (int n = 1950; n <= 2018; n++){
+        for (int n = 2000; n <= 2018; n++){
             yearComboBox.getItems().add(String.valueOf(n));
         }
     }
@@ -98,21 +100,24 @@ public class Controller{
 
         //titleColumn
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        titleColumn.setPrefWidth(200);
+        titleColumn.setMaxWidth(420);
 
         //yearColumn
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        yearColumn.setPrefWidth(45);
+        yearColumn.setMaxWidth(60);
+        yearColumn.setStyle("-fx-alignment: CENTER;");
 
         //rememberColumn
-        rememberColumn.setEditable(true);
-        rememberColumn.setPrefWidth(60);
-        rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
+        rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
+        rememberColumn.setEditable(true);
+        rememberColumn.setMaxWidth(55);
 
         //favouriteColumn
+        //favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
+        //favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
         favouriteColumn.setEditable(true);
-        favouriteColumn.setPrefWidth(60);
+        favouriteColumn.setMaxWidth(55);
         favouriteColumn.setCellFactory(column -> new CheckBoxTableCell<>());
         favouriteColumn.setCellValueFactory(cellData -> {
             Film cellValue = cellData.getValue();
@@ -130,12 +135,14 @@ public class Controller{
         //rateColumn
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
-        rateColumn.setPrefWidth(75);
+        rateColumn.setMaxWidth(90);
+        rateColumn.setStyle("-fx-alignment: CENTER;");
 
         //categoriesColumn
         categoriesColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
+        categoriesColumn.setMaxWidth(200);
 
-        filmTable.getColumns().addAll(favouriteColumn, titleColumn, yearColumn, rememberColumn, rateColumn, categoriesColumn);
+        filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, rememberColumn);
 
         filmTable.setOnMouseClicked((event) -> {
             Film film = filmTable.getSelectionModel().getSelectedItem();
