@@ -201,8 +201,8 @@ public class Controller{
             filmTable.setItems(films);
 
             //search result will be filtered according to selected years and categories
-            //filterTableViewAccToYears(yearComboBox.getValue());
-            //filterTableViewAccToCategories(categoriesComboBox.getValue());
+            //filter according to category is in the method "filterTableViewAccToYears" included
+            filterTableViewAccToYears(yearComboBox.getValue());
 
             //settings for the favourite column
             //if favourite Checkbox is clicked the film will be written in a File
