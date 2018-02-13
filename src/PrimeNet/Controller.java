@@ -15,12 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
-
-import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -83,13 +80,15 @@ public class Controller{
     }
 
     public void fillCategoriesComboBox(){
-        categoriesComboBox.getItems().addAll("Action","Abenteuer", "Animation", "Drama", "Familie", "Fantasie",
-                "Historie", "Horror", "Kriegsfilm", "Krimi", "Komödie", "Liebesfilm", "Science Fiction");
+        categoriesComboBox.getItems().add("Alle");
+        categoriesComboBox.getItems().addAll( "Abenteuer", "Action", "Animation", "Dokumentarfilm",
+                "Drama", "Familie", "Fantasy", "Historie", "Horror", "Komödie", "Kriegsfilm", "Krimi",
+                "Liebesfilm", "Musik", "Mystery", "Science", "Fiction", "TV-Film", "Thriller", "Western");
     }
 
     public void fillYearComboBox(){
         yearComboBox.getItems().add("Alle");
-        for (int n = 2000; n <= 2018; n++){
+        for (int n = 1950; n <= 2018; n++){
             yearComboBox.getItems().add(String.valueOf(n));
         }
     }
@@ -191,7 +190,7 @@ public class Controller{
             ObservableList<Film> films = FXCollections.observableArrayList();
             films.addAll(originalFilms);
             filmTable.setItems(films);
-            filterTableView(yearComboBox.getValue());
+            filterTableViewAccToYears(yearComboBox.getValue());
         }).start();
     }
 
@@ -213,11 +212,14 @@ public class Controller{
     }
 
     public void clickYearComboBox(){
-        filterTableView(yearComboBox.getValue());
+        filterTableViewAccToYears(yearComboBox.getValue());
     }
 
+    public void clickCategoriesComboBox() {
+        filterTableViewAccToCategories(categoriesComboBox.getValue());
+    }
     //filter tableView list according to selected year
-    public void filterTableView(String yearOfComboBox){
+    public void filterTableViewAccToYears(String yearOfComboBox){
         ObservableList<Film> selectedYearFilms;
         selectedYearFilms = FXCollections.observableArrayList();
         try {
@@ -232,6 +234,25 @@ public class Controller{
         }
 
         filmTable.setItems(selectedYearFilms);
+    }
+
+    //filter tableView list according to selected Categorie
+    public void filterTableViewAccToCategories(String categorieOfComboBox) {
+        ObservableList<Film> selectedCategorieFilms;
+        selectedCategorieFilms = FXCollections.observableArrayList();
+        try {
+            String categorie = categorieOfComboBox;
+            for (Film s : originalFilms){
+                if (s.getCategories().equals(categorie)){
+                    selectedCategorieFilms.add(s);
+                }
+            }
+
+        } catch (Exception e) {
+            selectedCategorieFilms = originalFilms;
+        }
+
+        filmTable.setItems(selectedCategorieFilms);
     }
 
 
