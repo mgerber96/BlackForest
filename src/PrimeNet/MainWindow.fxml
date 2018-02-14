@@ -37,7 +37,7 @@
                         <TextField fx:id="searchField" onAction="#onEnter" promptText="Suche"/>
                         <ComboBox fx:id="yearComboBox" onAction="#clickYearComboBox" prefWidth="150.0"
                                   promptText="Jahr"/>
-                        <ComboBox fx:id="categoriesComboBox" prefWidth="150.0" promptText="Kategorien"/>
+                        <ComboBox fx:id="categoriesComboBox" onAction="#clickCategoriesComboBox" prefWidth="150.0" promptText="Kategorien"/>
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
                         <Button fx:id="favouriteButton" mnemonicParsing="false" onAction="#clickFavourite"
                                 prefHeight="30.0" prefWidth="90.0" text="Favoriten"/>

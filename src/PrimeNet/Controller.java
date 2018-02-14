@@ -23,6 +23,8 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Controller{
@@ -66,6 +68,7 @@ public class Controller{
     @FXML
     private ObservableList<String> rate = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
+    private ObservableList<Film> originalFilmsForSecondFilterAction;
 
     @FXML
     private void initialize(){
@@ -207,7 +210,10 @@ public class Controller{
             ObservableList<Film> films = FXCollections.observableArrayList();
             films.addAll(originalFilms);
             filmTable.setItems(films);
+
+            //search result will be filtered according to selected years and categories
             filterTableViewAccToYears(yearComboBox.getValue());
+
             //settings for the favourite column
             //if favourite Checkbox is clicked the film will be written in a File
             for (Film film : originalFilms) {
@@ -295,8 +301,9 @@ public class Controller{
     }
 
     public void clickCategoriesComboBox() {
-        filterTableViewAccToCategories(categoriesComboBox.getValue());
+        filterTableViewAccToYears(yearComboBox.getValue());
     }
+
     //filter tableView list according to selected year
     public void filterTableViewAccToYears(String yearOfComboBox){
         ObservableList<Film> selectedYearFilms;
@@ -311,27 +318,25 @@ public class Controller{
         } catch (NumberFormatException e) {
             selectedYearFilms = originalFilms;
         }
-
-        filmTable.setItems(selectedYearFilms);
+        originalFilmsForSecondFilterAction = selectedYearFilms;
+        filterTableViewAccToCategories(categoriesComboBox.getValue());
+        filmTable.setItems(originalFilmsForSecondFilterAction);
     }
 
-    //filter tableView list according to selected Categorie
-    public void filterTableViewAccToCategories(String categorieOfComboBox) {
-        ObservableList<Film> selectedCategorieFilms;
-        selectedCategorieFilms = FXCollections.observableArrayList();
-        try {
-            String categorie = categorieOfComboBox;
-            for (Film s : originalFilms){
-                if (s.getCategories().equals(categorie)){
-                    selectedCategorieFilms.add(s);
+    //filter tableView list according to selected category
+    public void filterTableViewAccToCategories(String categoryOfComboBox) {
+        ObservableList<Film> selectedCategoriesFilms;
+        selectedCategoriesFilms = FXCollections.observableArrayList();
+        if(categoryOfComboBox == null){ }
+        else if (categoryOfComboBox.equals("Alle")) { }
+        else {
+            for (Film s : originalFilmsForSecondFilterAction) {
+                Matcher matcher = Pattern.compile(categoryOfComboBox).matcher(s.getCategories());
+                if (matcher.find())
+                    selectedCategoriesFilms.add(s);
                 }
+            originalFilmsForSecondFilterAction = selectedCategoriesFilms;
             }
-
-        } catch (Exception e) {
-            selectedCategorieFilms = originalFilms;
-        }
-
-        filmTable.setItems(selectedCategorieFilms);
     }
 
 
