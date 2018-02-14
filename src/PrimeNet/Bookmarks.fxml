@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.ControllerForFavourite">
     <top>
         <VBox prefHeight="358.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <TableView fx:id="favouriteTable" VBox.vgrow="ALWAYS">
+                <TableView fx:id="bookmarksTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="favouriteTitleColumn" prefWidth="202.0" text="Titel"/>
-                        <TableColumn fx:id="favouriteYearColumn" prefWidth="127.0" text="Jahr"/>
+                        <TableColumn fx:id="bookmarksTitleColumn" prefWidth="202.0" text="Titel"/>
+                        <TableColumn fx:id="bookmarksYearColumn" prefWidth="127.0" text="Jahr"/>
                     </columns>
                 </TableView>
             </children>
@@ -26,7 +25,7 @@
     <bottom>
         <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="200.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#deleteFilmInFavourite" text="Entfernen">
+                <Button mnemonicParsing="false" onAction="#deleteFilmInBookmarks" text="Entfernen">
                     <opaqueInsets>
                         <Insets/>
                     </opaqueInsets>

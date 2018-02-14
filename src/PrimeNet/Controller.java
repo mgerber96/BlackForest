@@ -28,11 +28,8 @@ import java.util.regex.Pattern;
 
 
 public class Controller{
-    public static Stage favouriteWindow = new Stage();
     @FXML
     public ProgressIndicator progressbar;
-    @FXML
-    Button favouriteButton = new Button();
     @FXML
     ComboBox<String> categoriesComboBox;
     @FXML
@@ -65,10 +62,20 @@ public class Controller{
     Label previewRate = new Label();
     @FXML
     Label previewOverview = new Label();
-    @FXML
+
     private ObservableList<String> rate = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilmsForSecondFilterAction;
+    private static Stage favouriteWindow = new Stage();
+    private static Stage bookmarksWindow = new Stage();
+
+    public static Stage getBookmarksWindow() {
+        return bookmarksWindow;
+    }
+
+    public static Stage getFavouriteWindow() {
+        return favouriteWindow;
+    }
 
     @FXML
     private void initialize(){
@@ -140,7 +147,6 @@ public class Controller{
         favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
         favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
 
-
         //rateColumn
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
@@ -176,9 +182,18 @@ public class Controller{
         });
     }
 
-    //write in favouriteFile to save favourite
+    //write in Favoriten.txt to save checkbox action from favouriteColumn
     public void writeInFavourite(String filmTitle, String filmYear){
-        file = new File ("Favoriten.txt");
+        writeInFile("Favoriten.txt", filmTitle, filmYear);
+    }
+
+    //write in Bookmarks.txt to save checkbox action from rememberColumn
+    public void writeInBookmarks(String filmTitle, String filmYear){
+        writeInFile("Bookmarks.txt", filmTitle, filmYear);
+    }
+
+    public void writeInFile(String pathname, String filmTitle, String filmYear){
+        file = new File (pathname);
         try{
             writer = new FileWriter(file, true);
             writer.write(filmTitle);
@@ -189,16 +204,26 @@ public class Controller{
         }catch (IOException e) { e.printStackTrace(); }
     }
 
-    //by clicking the button "Favoriten" a new window will be opened
+    //by clicking the button "Favoriten" favourite window will be opened
     public void clickFavourite() throws IOException{
         Parent root =  FXMLLoader.load(getClass().getResource("Favourite.fxml"));
+        openNewWindow(favouriteWindow, "Favoriten", root);
+    }
+
+    //by clicking the button "Merkliste" bookmarks window will be opened
+    public void clickBookmarks() throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("Bookmarks.fxml"));
+        openNewWindow(bookmarksWindow, "Merkliste", root);
+    }
+
+    public void openNewWindow(Stage stage, String title, Parent root){
         try{
-            favouriteWindow.setTitle("Favoriten");
-            favouriteWindow.setResizable(false);
-            favouriteWindow.setScene(new Scene(root,600, 400));
-            favouriteWindow.show();
+            stage.setTitle("Favoriten");
+            stage.setResizable(false);
+            stage.setScene(new Scene(root,600, 400));
+            stage.show();
         }catch (IllegalStateException e){
-            favouriteWindow.show();
+            stage.show();
         }
     }
 
@@ -224,19 +249,43 @@ public class Controller{
                         deleteInFavourite(film.getTitle(), String.valueOf(film.getYear()));
                 });
             }
+
+            //setting for remember column
+            //if remember Checkbox is clicked the film will be written in a File
+            for (Film film : originalFilms) {
+                film.rememberProperty().addListener((observableValue, oldValue, newValue) -> {
+                    if(newValue && !oldValue)
+                        writeInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
+                    else if(!newValue && oldValue)
+                        deleteInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
+                });
+            }
         }).start();
     }
 
     public void deleteInFavourite(String title, String year){
         File original = new File("Favoriten.txt");
-        File copy = new File("copy.txt");
+        File copy = new File("copyOfFavourite.txt");
+        copyOriginalFileBesidesOneLine(original, copy, title, year);
+        //At first we wanted to delete the original file and then rename the copy file, however the method delete()
+        //does not work because of unknown reason. So this is our second best solution to resolve this issue.
+        overwriteSecondFileWithFirstFile(copy, original);
+    }
 
+    public void deleteInBookmarks(String title, String year){
+        File original = new File("Bookmarks.txt");
+        File copy = new File("copyOfBookmarks.txt");
+        copyOriginalFileBesidesOneLine(original, copy, title, year);
+        overwriteSecondFileWithFirstFile(copy, original);
+    }
+
+    public void copyOriginalFileBesidesOneLine(File original, File copy, String title, String year){
         int counter = 0;
         String line;
         try{
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(original)));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(copy)));
-            int stringInLine = isFilmInFavourite(original, title, year);
+            int stringInLine = filmIsInLineNumber(original, title, year);
             while((line = br.readLine()) != null){
                 if(counter !=  stringInLine){
                     bw.write(line);
@@ -247,10 +296,14 @@ public class Controller{
             bw.close();
             br.close();
         } catch (Exception e) {e.printStackTrace();}
+    }
 
+    public void overwriteSecondFileWithFirstFile(File sourceFile, File overwrittenFile){
+        int counter = 0;
+        String line;
         try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(copy)));
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(original)));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(sourceFile)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(overwrittenFile)));
             line = null;
             while ((line = br.readLine()) != null){
                 bw.write(line);
@@ -261,7 +314,8 @@ public class Controller{
         } catch (Exception e) {e.printStackTrace();}
     }
 
-    public int isFilmInFavourite(File file, String title, String year){
+    //search for the line which contains the film
+    public int filmIsInLineNumber(File file, String title, String year){
         BufferedReader br;
         String line;
         int stringInLineNumber = 0;
