@@ -30,10 +30,31 @@
     -fx-font-family: Georgia;
 }
 
-.combo-box .scroll-pane{
-    -fx-background-color: linear-gradient(to bottom, #5d8be8, #d99847);
+
+
+
+
+
+.check-box .box {
+
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-radius:3px;
 
 }
+
+.check-box:selected .mark {
+
+    -fx-background-color: white;
+
+}
+
+.check-box:selected .box {
+
+    -fx-background-color: transparent;
+}
+
+
 
 
 
@@ -97,16 +118,16 @@
     -fx-font-family: Georgia;
 }
 
-
-
-.table-view .check-box.cell {
-    -fx-background-color: transparent;
-}
-
 .table-view .combo-box {
+
     -fx-background-color: transparent;
 }
 
+
+.table-view .combo-box .list-cell{
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
 
 
 
