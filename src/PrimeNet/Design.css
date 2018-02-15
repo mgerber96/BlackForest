@@ -3,7 +3,7 @@
     -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
     -fx-font-size: 15;
-    -fx-background-color: linear-gradient(to bottom, #5d8be8, #d99847);
+    -fx-background-color: linear-gradient(to bottom, #1d2b42, #bd660a);
     -fx-font-family: Georgia;
 
 }
@@ -16,7 +16,7 @@
     -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
     -fx-font-size: 15;
-    -fx-background-color: linear-gradient(to bottom, #5d8be8, #d99847);
+    -fx-background-color: linear-gradient(to bottom, #1d2b42, #bd660a);
     -fx-font-family: Georgia;
 
 }
@@ -26,7 +26,7 @@
     -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
     -fx-font-size: 15;
-    -fx-background-color: linear-gradient(to bottom, #5d8be8, #d99847);
+    -fx-background-color: linear-gradient(to bottom, #1d2b42, #bd660a);
     -fx-font-family: Georgia;
 }
 
@@ -70,7 +70,7 @@
 
 
 .progress-indicator {
-    -fx-progress-color: #CD7F32;
+    -fx-progress-color: #bd660a;
 }
 
 
@@ -88,7 +88,7 @@
     -fx-background-insets: 0, 1, 1;
     -fx-text-fill: white;
     -fx-font-size: 15;
-    -fx-background-color: linear-gradient(to bottom, #5d8be8, #d99847);
+    -fx-background-color: linear-gradient(to bottom, #1d2b42, #bd660a);
     -fx-font-family: Georgia;
     -fx-prompt-text-fill: white;
 }
