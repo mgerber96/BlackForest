@@ -1,14 +1,14 @@
 .label {
-    -fx-font-weight: normal;
-    -fx-alignment: center;
-    -fx-text-fill: black;
-}
+     -fx-alignment: center;
+     -fx-text-fill: black;
+ }
 
 .button {
     -fx-background-color: white;
     -fx-background-radius: 30;
     -fx-background-insets: 0, 1, 1;
     -fx-text-fill: black;
+    -fx-font-size: 14;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
 }
 
