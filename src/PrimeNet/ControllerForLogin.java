@@ -36,7 +36,7 @@ public class ControllerForLogin {
             PrimeNet.show();
             Main.Login.close();
         } else {
-            LabelStatus.setText("Login Failed");
+            LabelStatus.setText("! falsche Angaben !");
         }
     }
 
@@ -44,7 +44,7 @@ public class ControllerForLogin {
     public void Reset(javafx.event.ActionEvent event) {
         TextUserName.setText("");
         TextPassword.setText("");
-        LabelStatus.setText("Login");
+        LabelStatus.setText("Nochmal eingeben");
     }
 
 

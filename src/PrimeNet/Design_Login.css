@@ -1,8 +1,7 @@
 .label {
     -fx-font-weight: normal;
-    -fx-text-fill: black;
     -fx-alignment: center;
-    -fx-font-size: 24;
+    -fx-text-fill: black;
 }
 
 .button {
