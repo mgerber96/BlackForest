@@ -1,7 +1,7 @@
 .label {
-     -fx-alignment: center;
-     -fx-text-fill: black;
- }
+    -fx-alignment: center;
+    -fx-text-fill: black;
+}
 
 .button {
     -fx-background-color: white;
@@ -15,7 +15,8 @@
 .root {
     -fx-background-image: url("../Pictures/3.jpg");
 }
-.text-field{
+
+.text-field {
     -fx-background-color: white;
     -fx-text-fill: black;
     -fx-prompt-text-fill: black;

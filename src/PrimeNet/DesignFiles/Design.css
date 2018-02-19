@@ -7,9 +7,6 @@
     -fx-font-family: Georgia;
 }
 
-
-
-
 .combo-box {
 
     -fx-background-insets: 0, 1, 1;
@@ -29,16 +26,11 @@
     -fx-font-family: Georgia;
 }
 
-
-
-
-
-
 .check-box .box {
 
     -fx-background-color: transparent;
     -fx-border-color: white;
-    -fx-border-radius:3px;
+    -fx-border-radius: 3px;
 
 }
 
@@ -53,35 +45,19 @@
     -fx-background-color: transparent;
 }
 
-
-
-
-
-
-
-
 .label {
     -fx-text-fill: white;
     -fx-font-family: Georgia;
 }
 
-
-
-
 .progress-indicator {
     -fx-progress-color: #bd660a;
 }
-
-
-
 
 .root {
     -fx-background-image: url("../Pictures/5.png");
 
 }
-
-
-
 
 .text-field {
     -fx-background-insets: 0, 1, 1;
@@ -92,23 +68,11 @@
     -fx-prompt-text-fill: white;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .table-view {
-    -fx-background-color:  #1d2b42;
+    -fx-background-color: #1d2b42;
     -fx-font-family: Georgia;
     -fx-border-color: transparent;
 }
-
 
 .table-view .cell {
     -fx-background-color: transparent;
@@ -117,23 +81,15 @@
     -fx-font-family: Georgia;
 }
 
-.table-view .combo-box .list-cell{
-    -fx-background-color:#1d2b42 ;
+.table-view .combo-box .list-cell {
+    -fx-background-color: #1d2b42;
     -fx-text-fill: #bd660a;
 
 }
 
-
-
-
-
-
-
-
 .table-view .column-header-background {
     -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
 }
-
 
 .table-view .column-header-background .label {
     -fx-background-color: transparent;
@@ -147,23 +103,24 @@
 .table-row-cell:selected .table-cell {
     -fx-background-color: #bd660a;
 }
-.table-view .increment-button ,.mylistview .decrement-button {
-    -fx-background-color:transparent;
+
+.table-view .increment-button, .table-view .decrement-button {
+    -fx-background-color: transparent;
     -fx-background-radius: 2em;
 
 }
 
 .table-view .scroll-bar:horizontal .track,
-.table-view .scroll-bar:vertical .track{
+.table-view .scroll-bar:vertical .track {
     -fx-background-color: transparent;
-    -fx-border-color: #bd660a ;
+    -fx-border-color: #bd660a;
     -fx-background-radius: 2em;
-    -fx-border-radius:2em;
+    -fx-border-radius: 2em;
 }
 
 .table-view .scroll-bar:horizontal .thumb,
 .table-view .scroll-bar:vertical .thumb {
-    -fx-background-color:#bd660a;
+    -fx-background-color: #bd660a;
     -fx-background-insets: 2, 0, 0;
     -fx-background-radius: 2em;
 
