@@ -16,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
-
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
