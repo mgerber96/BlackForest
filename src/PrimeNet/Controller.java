@@ -70,7 +70,7 @@ public class Controller{
     private static String filmsInFavouriteAsString;
     private static String filmsInBookmarksAsString;
 
-    public static void setSimpleBooleanProperty(){
+    public static void setWindowCloseAction(){
         if(windowCloseAction.getValue())
             windowCloseAction.set(false);
         else

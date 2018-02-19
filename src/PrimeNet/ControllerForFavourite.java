@@ -178,7 +178,7 @@ public class ControllerForFavourite {
     public void closingFavouriteWindowAction(Stage stage) {
         stage.setOnHiding(event ->{
             overwriteFavourite();
-            Controller.setSimpleBooleanProperty();
+            Controller.setWindowCloseAction();
         });
     }
 
@@ -186,7 +186,7 @@ public class ControllerForFavourite {
     public void closingBookmarksWindowAction(Stage stage) {
         stage.setOnHiding(event -> {
             overwriteInBookmarks();
-            Controller.setSimpleBooleanProperty();
+            Controller.setWindowCloseAction();
         });
     }
 
