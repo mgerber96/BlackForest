@@ -45,7 +45,7 @@ public class Controller{
     @FXML
     TableColumn<Film, Integer> yearColumn = new TableColumn<>("Jahr");
     @FXML
-    TableColumn<Film, Boolean> bookmarkColumn = new TableColumn<>("Merken");
+    TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
     TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
     @FXML
@@ -129,12 +129,12 @@ public class Controller{
         yearColumn.setStyle("-fx-alignment: CENTER;");
 
         //rememberColumn
-        bookmarkColumn.setEditable(true);
-        bookmarkColumn.setCellFactory(column -> new CheckBoxTableCell<>());
-        bookmarkColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
-        bookmarkColumn.setCellFactory(CheckBoxTableCell.forTableColumn(bookmarkColumn));
-        bookmarkColumn.setMaxWidth(70);
-        bookmarkColumn.setMinWidth(70);
+        rememberColumn.setEditable(true);
+        rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
+        rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
+        rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
+        rememberColumn.setMaxWidth(70);
+        rememberColumn.setMinWidth(70);
 
         //favouriteColumn
         favouriteColumn.setEditable(true);
@@ -155,7 +155,7 @@ public class Controller{
         categoriesColumn.setMaxWidth(300);
         categoriesColumn.setMinWidth(300);
 
-        filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, bookmarkColumn);
+        filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, rememberColumn);
 
         filmTable.setOnMouseClicked((event) -> {
             Film film = filmTable.getSelectionModel().getSelectedItem();

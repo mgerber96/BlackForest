@@ -5,7 +5,6 @@
     -fx-font-size: 15;
     -fx-background-color: linear-gradient(to bottom, #1d2b42, #bd660a);
     -fx-font-family: Georgia;
-
 }
 
 
@@ -107,8 +106,8 @@
 .table-view {
     -fx-background-color:  #1d2b42;
     -fx-font-family: Georgia;
+    -fx-border-color: transparent;
 }
-
 
 
 .table-view .cell {
@@ -118,15 +117,10 @@
     -fx-font-family: Georgia;
 }
 
-.table-view .combo-box {
-
-    -fx-background-color: transparent;
-}
-
-
 .table-view .combo-box .list-cell{
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-background-color:#1d2b42 ;
+    -fx-text-fill: #bd660a;
+
 }
 
 
@@ -150,10 +144,6 @@
     -fx-background-color: transparent;
 }
 
-.table-view .combo-box. cell {
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
-}
-.table-row-cell:selected {
+.table-row-cell:selected .table-cell {
     -fx-background-color: #bd660a;
 }
