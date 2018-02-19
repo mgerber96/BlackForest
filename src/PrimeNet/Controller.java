@@ -23,6 +23,7 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.*;
+import java.rmi.MarshalledObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,7 +80,9 @@ public class Controller{
 
     @FXML
     private void initialize(){
-        setUpEverything();
+        bookmarksWindow.initModality(Modality.APPLICATION_MODAL);
+        favouriteWindow.initModality(Modality.APPLICATION_MODAL);
+        setUpTables();
         rate.addAll("Like", "Dislike");
         progressbar.setProgress(-1.0f);
         progressbar.setVisible(false);
@@ -94,7 +97,7 @@ public class Controller{
 */
     }
 
-    public void setUpEverything(){
+    public void setUpTables(){
         fillCategoriesComboBox();
         fillYearComboBox();
         setUpTableOfFilm();
