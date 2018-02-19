@@ -2,6 +2,7 @@ package PrimeNet;
 
 import PrimeNet.movies.Movie;
 import PrimeNet.movies.Results;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -63,10 +64,21 @@ public class Controller{
     private ObservableList<String> rate = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilmsForSecondFilterAction;
+    private static SimpleBooleanProperty windowCloseAction = new SimpleBooleanProperty(false);
     private static Stage favouriteWindow = new Stage();
     private static Stage bookmarksWindow = new Stage();
-    private String filmsInFavouriteAsString;
-    private String filmsInBookmarksAsString;
+    private static String filmsInFavouriteAsString;
+    private static String filmsInBookmarksAsString;
+
+    public static void setSimpleBooleanProperty(){
+        if(windowCloseAction.getValue())
+            windowCloseAction.set(false);
+        else
+            windowCloseAction.set(true);
+    }
+    public static String getFilmsInFavouriteAsString(){
+        return filmsInFavouriteAsString;
+    }
 
     public static Stage getBookmarksWindow() {
         return bookmarksWindow;
@@ -80,6 +92,7 @@ public class Controller{
     private void initialize(){
         bookmarksWindow.initModality(Modality.APPLICATION_MODAL);
         favouriteWindow.initModality(Modality.APPLICATION_MODAL);
+        windowCloseAction.addListener((observableValue, oldValue, newValue) -> onEnter());
         setUpTables();
         rate.addAll("Like", "Dislike");
         progressbar.setProgress(-1.0f);
@@ -379,7 +392,6 @@ public class Controller{
             fileString += line;
             fileString += "\n";
         }
-        System.out.println(fileString);
         return fileString;
     }
 

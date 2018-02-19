@@ -31,6 +31,7 @@ public class Film {
     public Film(String title, int year) {
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
+        this.favourite = new SimpleBooleanProperty(false);
     }
 
     public Image getPoster() {
