@@ -1,7 +1,6 @@
 package PrimeNet;
 
 import PrimeNet.movies.Results;
-import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,19 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
-
 import java.io.*;
 import java.rmi.MarshalledObject;
 import java.util.regex.Matcher;
@@ -46,7 +40,7 @@ public class Controller{
     @FXML
     TableColumn<Film, Integer> yearColumn = new TableColumn<>("Jahr");
     @FXML
-    TableColumn<Film, Boolean> bookmarkColumn = new TableColumn<>("Merken");
+    TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
     TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
     @FXML
@@ -132,12 +126,12 @@ public class Controller{
         yearColumn.setStyle("-fx-alignment: CENTER;");
 
         //rememberColumn
-        bookmarkColumn.setEditable(true);
-        bookmarkColumn.setCellFactory(column -> new CheckBoxTableCell<>());
-        bookmarkColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
-        bookmarkColumn.setCellFactory(CheckBoxTableCell.forTableColumn(bookmarkColumn));
-        bookmarkColumn.setMaxWidth(70);
-        bookmarkColumn.setMinWidth(70);
+        rememberColumn.setEditable(true);
+        rememberColumn.setCellFactory(column -> new CheckBoxTableCell<>());
+        rememberColumn.setCellValueFactory(new PropertyValueFactory<>("remember"));
+        rememberColumn.setCellFactory(CheckBoxTableCell.forTableColumn(rememberColumn));
+        rememberColumn.setMaxWidth(70);
+        rememberColumn.setMinWidth(70);
 
         //favouriteColumn
         favouriteColumn.setEditable(true);
@@ -158,7 +152,7 @@ public class Controller{
         categoriesColumn.setMaxWidth(300);
         categoriesColumn.setMinWidth(300);
 
-        filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, bookmarkColumn);
+        filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, rememberColumn);
 
         filmTable.setOnMouseClicked((event) -> {
             Film film = filmTable.getSelectionModel().getSelectedItem();
@@ -203,13 +197,13 @@ public class Controller{
 
     //by clicking the button "Favoriten" favourite window will be opened
     public void clickFavourite() throws IOException{
-        Parent root =  FXMLLoader.load(getClass().getResource("Favourite.fxml"));
+        Parent root =  FXMLLoader.load(getClass().getResource("FxmlFiles/Favourite.fxml"));
         openNewWindow(favouriteWindow, "Favoriten", root);
     }
 
     //by clicking the button "Merkliste" bookmarks window will be opened
     public void clickBookmarks() throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("Bookmarks.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/Bookmarks.fxml"));
         openNewWindow(bookmarksWindow, "Merkliste", root);
     }
 

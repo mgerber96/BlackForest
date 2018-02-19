@@ -15,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <stylesheets>
-        <URL value="@Design.css" />
+        <URL value="@../DesignFiles/Design.css" />
     </stylesheets>
     <top>
         <VBox prefHeight="389.0" prefWidth="780.0" BorderPane.alignment="CENTER">

@@ -2,11 +2,10 @@ package PrimeNet;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -26,7 +25,7 @@ public class ControllerForLogin {
 
         if (TextUserName.getText().equals("") && TextPassword.getText().equals("")) {
 
-            Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/MainWindow.fxml"));
             Stage PrimeNet = new Stage();
             PrimeNet.setTitle("PrimeNet");
             Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

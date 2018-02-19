@@ -5,7 +5,6 @@
     -fx-font-size: 15;
     -fx-background-color: linear-gradient(to bottom, #1d2b42, #bd660a);
     -fx-font-family: Georgia;
-
 }
 
 
@@ -77,7 +76,7 @@
 
 
 .root {
-    -fx-background-image: url("Pictures/5.png");
+    -fx-background-image: url("../Pictures/5.png");
 
 }
 
@@ -107,8 +106,8 @@
 .table-view {
     -fx-background-color:  #1d2b42;
     -fx-font-family: Georgia;
+    -fx-border-color: transparent;
 }
-
 
 
 .table-view .cell {
@@ -118,15 +117,10 @@
     -fx-font-family: Georgia;
 }
 
-.table-view .combo-box {
-
-    -fx-background-color: transparent;
-}
-
-
 .table-view .combo-box .list-cell{
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-background-color:#1d2b42 ;
+    -fx-text-fill: #bd660a;
+
 }
 
 
@@ -150,10 +144,27 @@
     -fx-background-color: transparent;
 }
 
-.table-view .combo-box. cell {
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
-}
-.table-row-cell:selected {
+.table-row-cell:selected .table-cell {
     -fx-background-color: #bd660a;
+}
+.table-view .increment-button ,.mylistview .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 2em;
+
+}
+
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: #bd660a ;
+    -fx-background-radius: 2em;
+    -fx-border-radius:2em;
+}
+
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color:#bd660a;
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+
 }

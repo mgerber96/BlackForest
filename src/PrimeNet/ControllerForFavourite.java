@@ -13,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.NoSuchElementException;
 
 public class ControllerForFavourite {

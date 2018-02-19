@@ -2,6 +2,7 @@ package PrimeNet;
 
 import PrimeNet.movies.Movie;
 import PrimeNet.movies.Results;
+import PrimeNet.movies.Titles;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.scene.image.Image;
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -24,6 +26,7 @@ public class MovieDatabase {
     private static final String POSTER_PREFIX = "3/movie/";
     private static String apiKey;
 
+    
     static {
         try (BufferedReader stream = Files.newBufferedReader(Paths.get("config.properties"))) {
             Properties properties = new Properties();
@@ -64,6 +67,40 @@ public class MovieDatabase {
         }
 
         return getEmpty();
+    }
+
+    public static List<Film> getMovieList(String query) {
+        query = query.trim();
+        if (query.isEmpty()) {
+            return null;
+        }
+
+        String queryString = "api_key=" + apiKey + "&query=" + query
+                + "&page=" + "1" + "&include_adult=" + "false";
+
+        HttpsURLConnection conn = null;
+        try {
+            URL url = new URL("https://" + HOST + "/" + PATH_PREFIX + "?" + queryString);
+            conn = (HttpsURLConnection) url.openConnection();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            System.out.println(GSON.fromJson(reader, Titles.class));
+            Titles titles = GSON.fromJson(reader, Titles.class);
+            //List<Film> filme = GSON.fromJson(reader, Results.class);
+        } catch (IOException ioException) {
+            if (conn != null) {
+                try {
+                    if (conn.getResponseCode() == 422) {
+                        return null;
+                    }
+                } catch (IOException ioException2) {
+                }
+            }
+
+            ioException.printStackTrace(System.err);
+            System.err.println("An error occurred while requesting data from API.");
+        }
+
+        return null;
     }
 
     public static Image getPoster(Movie movie) {
