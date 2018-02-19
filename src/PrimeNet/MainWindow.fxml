@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <stylesheets>
         <URL value="@Design.css" />
     </stylesheets>
@@ -37,7 +37,7 @@
                         <ComboBox fx:id="categoriesComboBox" onAction="#clickCategoriesComboBox" prefWidth="150.0" promptText="Kategorien" />
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="favouriteButton" mnemonicParsing="false" onAction="#clickFavourite" prefHeight="30.0" prefWidth="90.0" text="Favoriten" />
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Merkliste" />
+                        <Button mnemonicParsing="false" onAction="#clickBookmarks" prefHeight="30.0" prefWidth="90.0" text="Merkliste" />
                     </children>
                     <VBox.margin>
                         <Insets />
