@@ -7,9 +7,13 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import java.net.URL?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.ControllerForFavourite">
+    <stylesheets>
+        <URL value="@Design.css" />
+    </stylesheets>
     <top>
         <VBox prefHeight="358.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>

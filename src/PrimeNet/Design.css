@@ -154,3 +154,6 @@
     -fx-background-color: transparent;
     -fx-text-fill: black;
 }
+.table-row-cell:selected {
+    -fx-background-color: #bd660a;
+}
