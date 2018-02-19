@@ -1,5 +1,6 @@
 package PrimeNet;
 
+import PrimeNet.movies.Movie;
 import PrimeNet.movies.Results;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
@@ -63,6 +65,8 @@ public class Controller{
     private ObservableList<Film> originalFilmsForSecondFilterAction;
     private static Stage favouriteWindow = new Stage();
     private static Stage bookmarksWindow = new Stage();
+    private String filmsInFavouriteAsString;
+    private String filmsInBookmarksAsString;
 
     public static Stage getBookmarksWindow() {
         return bookmarksWindow;
@@ -219,10 +223,12 @@ public class Controller{
     }
 
     //if enter is pressed table of film will be filled with new content
-    public void onEnter() {
+    public void onEnter(){
         progressbar.setVisible(true);
         new Thread(() -> {
-            originalFilms = getFilm();
+            try{
+                originalFilms = getFilm();
+            } catch (Exception e ){e.printStackTrace();}
             ObservableList<Film> films = FXCollections.observableArrayList();
             films.addAll(originalFilms);
             filmTable.setItems(films);
@@ -324,7 +330,19 @@ public class Controller{
         return stringInLineNumber;
     }
 
-    public ObservableList<Film> getFilm() {
+    public ObservableList<Film> getFilm() throws Exception {
+        try{
+            File fileFavourite = new File ("Favoriten.txt");
+            filmsInFavouriteAsString = makeFileToString(fileFavourite);
+        } catch (NullPointerException e) {
+            filmsInFavouriteAsString = "";
+        }
+        try{
+            File fileBookmarks = new File ("Bookmarks.txt");
+            filmsInBookmarksAsString = makeFileToString(fileBookmarks);
+        } catch (NullPointerException e) {
+            filmsInBookmarksAsString = "";
+        }
         ObservableList<Film> films = FXCollections.observableArrayList();
         String pattern = "\\s+";
         String searchCorrection = searchField.getText().replaceAll(pattern, "+");
@@ -332,13 +350,46 @@ public class Controller{
         r.getMovies()
                 .stream()
                 .map(movie -> {
-                    return new Film(false, movie.getTitle(), movie.getReleaseYear(),
-                            movie.getOverview(), false, "", MovieDatabase.getPoster(movie),
+                    return new Film(isThisMovieInFavourite(movie), movie.getTitle(), movie.getReleaseYear(),
+                            movie.getOverview(), isThisMovieInBookmarks(movie), "", MovieDatabase.getPoster(movie),
                             movie.getCategories()) ;
                 })
                 .forEach(films::add);
         progressbar.setVisible(false);
         return films;
+    }
+
+    public boolean isThisMovieInFavourite(Movie movie){
+        String findMovieKeyword = movie.getTitle() + "\t" + movie.getReleaseYear();
+        if(filmsInFavouriteAsString == null){
+            filmsInFavouriteAsString = "";
+        }
+        Matcher matcher = Pattern.compile(findMovieKeyword).matcher(filmsInFavouriteAsString);
+        if (matcher.find())
+            return true;
+        else
+            return false;
+    }
+
+    public String makeFileToString(File file) throws Exception{
+        String fileString = "";
+        String line = null;
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        while((line = br.readLine()) != null){
+            fileString += line;
+            fileString += "\n";
+        }
+        System.out.println(fileString);
+        return fileString;
+    }
+
+    public boolean isThisMovieInBookmarks(Movie movie){
+        String findMovieKeyword = movie.getTitle() + "\t" + movie.getReleaseYear();
+        Matcher matcher = Pattern.compile(findMovieKeyword).matcher(filmsInBookmarksAsString);
+        if (matcher.find())
+            return true;
+        else
+            return false;
     }
 
     public void clickYearComboBox(){
