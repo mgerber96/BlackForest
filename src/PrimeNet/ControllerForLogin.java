@@ -25,7 +25,7 @@ public class ControllerForLogin {
 
         if (TextUserName.getText().equals("") && TextPassword.getText().equals("")) {
 
-            Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/MainWindow.fxml"));
             Stage PrimeNet = new Stage();
             PrimeNet.setTitle("PrimeNet");
             Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

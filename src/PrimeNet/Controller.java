@@ -1,7 +1,6 @@
 package PrimeNet;
 
 import PrimeNet.movies.Results;
-import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,18 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.scene.image.ImageView;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.io.*;
 import java.util.regex.Matcher;
@@ -200,13 +195,13 @@ public class Controller{
 
     //by clicking the button "Favoriten" favourite window will be opened
     public void clickFavourite() throws IOException{
-        Parent root =  FXMLLoader.load(getClass().getResource("Favourite.fxml"));
+        Parent root =  FXMLLoader.load(getClass().getResource("FxmlFiles/Favourite.fxml"));
         openNewWindow(favouriteWindow, "Favoriten", root);
     }
 
     //by clicking the button "Merkliste" bookmarks window will be opened
     public void clickBookmarks() throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("Bookmarks.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/Bookmarks.fxml"));
         openNewWindow(bookmarksWindow, "Merkliste", root);
     }
 

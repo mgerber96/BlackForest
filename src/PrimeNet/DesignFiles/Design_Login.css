@@ -13,7 +13,7 @@
 }
 
 .root {
-    -fx-background-image: url("Pictures/3.jpg");
+    -fx-background-image: url("../Pictures/3.jpg");
 }
 .text-field{
     -fx-background-color: white;
