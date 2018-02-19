@@ -30,13 +30,14 @@ public class ControllerForLogin {
             Stage PrimeNet = new Stage();
             PrimeNet.setTitle("PrimeNet");
             Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+            PrimeNet.setResizable(false);
             //PrimeNet.setScene(new Scene(root, screen.width, screen.height));
             PrimeNet.setScene(new Scene(root, screen.width / 1.5, screen.height / 1.1 - 65));
             //PrimeNet.setScene(new Scene(root,800,600));
             PrimeNet.show();
             Main.Login.close();
         } else {
-            LabelStatus.setText("Login Failed");
+            LabelStatus.setText("! falsche Angaben !");
         }
     }
 
@@ -44,7 +45,7 @@ public class ControllerForLogin {
     public void Reset(javafx.event.ActionEvent event) {
         TextUserName.setText("");
         TextPassword.setText("");
-        LabelStatus.setText("Login");
+        LabelStatus.setText("Nochmal eingeben");
     }
 
 

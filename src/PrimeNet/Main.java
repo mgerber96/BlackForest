@@ -18,6 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Login = primaryStage;
+        primaryStage.setResizable(false);
         Parent root = FXMLLoader.load(getClass().getResource("LoginWindow.fxml"));
         Login.setTitle("Login for PrimeNet");
         Login.setScene(new Scene(root, 300, 300));
