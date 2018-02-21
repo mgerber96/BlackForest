@@ -18,13 +18,10 @@ abstract class HelperMethods{
             stringOfFile = "";
         }
         Matcher matcher = Pattern.compile(findMovieKeyword).matcher(stringOfFile);
-        if (matcher.find())
-            return true;
-        else
-            return false;
+        return matcher.find();
     }
     //search for the line which contains the film
-    public static int filmIsInLineNumber(File file, String title, String year){
+    private static int filmIsInLineNumber(File file, String title, String year){
         String stringOfFile = makeFileToString(file);
         if(isThisFilmInFile(new Film(title, Integer.parseInt(year)), stringOfFile)){
             BufferedReader br;
@@ -99,12 +96,10 @@ abstract class HelperMethods{
     }
 
     public static void overwriteSecondFileWithFirstFile(File sourceFile, File overwrittenFile){
-        int counter = 0;
         String line;
         try{
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(sourceFile)));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(overwrittenFile)));
-            line = null;
             while ((line = br.readLine()) != null){
                 bw.write(line);
                 bw.write(System.getProperty("line.separator"));
@@ -127,7 +122,7 @@ abstract class HelperMethods{
 
     public static String makeFileToString(File file){
         String fileString = "";
-        String line = null;
+        String line;
         try{
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             while((line = br.readLine()) != null){
@@ -147,7 +142,7 @@ abstract class HelperMethods{
         BufferedReader in = null;
         try {
             in = new BufferedReader(new FileReader(datName));
-            String line = null;
+            String line;
             String[] word;
             //read lines by lines and add the films to favouriteTableView
             while ((line = in.readLine()) != null) {
@@ -162,15 +157,13 @@ abstract class HelperMethods{
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {
-                }
+                } catch (IOException e) { e.printStackTrace();}
             }
         }
     }
 
-    public static Film makeFilm(String title, int year) {
-        Film film = new Film(title, year);
-        return film;
+    private static Film makeFilm(String title, int year) {
+        return new Film(title, year);
     }
 
     public static void overwriteFile(String pathname, ObservableList<Film> allFilms){
@@ -199,7 +192,7 @@ abstract class HelperMethods{
         BufferedReader in = null;
         try {
             in = new BufferedReader(new FileReader(pathname));
-            String line = null;
+            String line;
             //read lines by lines and add the films to favouriteTableView
             while ((line = in.readLine()) != null) {
                 //Strings in these lines are separated by a tab, we will get each of them and create a instance of film
@@ -212,8 +205,7 @@ abstract class HelperMethods{
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {
-                }
+                } catch (IOException e) { e.printStackTrace();}
             }
         }
     }

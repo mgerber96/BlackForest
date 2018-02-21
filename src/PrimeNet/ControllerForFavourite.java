@@ -32,9 +32,9 @@ public class ControllerForFavourite {
     @FXML
     TableColumn<Film, Boolean> bookmarksFavouriteColumn = new TableColumn<>();
 
-    ObservableList<Film> allFilmsInFavourite = FXCollections.observableArrayList();
+    private ObservableList<Film> allFilmsInFavourite = FXCollections.observableArrayList();
 
-    ObservableList<Film> allFilmsInBookmarks = FXCollections.observableArrayList();
+    private ObservableList<Film> allFilmsInBookmarks = FXCollections.observableArrayList();
 
     private boolean doubleClick = false;
 
@@ -50,7 +50,7 @@ public class ControllerForFavourite {
         closingBookmarksWindowAction(Controller.getBookmarksWindow());
     }
 
-    public void setUpFavouriteColumnInBookmarks(){
+    private void setUpFavouriteColumnInBookmarks(){
         for (Film filmInBookmarks : allFilmsInBookmarks) {
              filmInBookmarks.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
                  if (newValue && !oldValue) {
@@ -65,11 +65,11 @@ public class ControllerForFavourite {
         }
     }
 
-    public void writeInFavouriteFile(String filmTitle, String filmYear){
+    private void writeInFavouriteFile(String filmTitle, String filmYear){
         HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear);
     }
 
-    public void setUpTableForFavourite() {
+    private void setUpTableForFavourite() {
         //favouriteTitleColumn
         favouriteTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
@@ -96,7 +96,7 @@ public class ControllerForFavourite {
         });
     }
 
-    public void setUpTableForBookmarks(){
+    private void setUpTableForBookmarks(){
         bookmarksTable.setEditable(true);
 
         //bookmarksTitleColumn
@@ -127,19 +127,20 @@ public class ControllerForFavourite {
                 }
             }
         });
+
     }
 
-    public void readLinesFromFavourite(String fileName){
+    private void readLinesFromFavourite(String fileName){
         HelperMethods.readLinesFromFile(fileName, allFilmsInFavourite);
     }
 
-    public void readLinesFromBookmarks(String fileName){
+    private void readLinesFromBookmarks(String fileName){
         HelperMethods.readLinesFromFile(fileName, allFilmsInBookmarks);
     }
 
     //Before finally closing the window
     //Favourite.txt will be changed according to latest ObservableList allFilmsInFavourite
-    public void closingFavouriteWindowAction(Stage stage) {
+    private void closingFavouriteWindowAction(Stage stage) {
         stage.setOnHiding(event ->{
             overwriteFavourite();
             if(!doubleClick){
@@ -148,19 +149,19 @@ public class ControllerForFavourite {
         });
     }
 
-    public void overwriteFavourite() {
+    private void overwriteFavourite() {
         HelperMethods.overwriteFile("Favoriten.txt", allFilmsInFavourite);
     }
 
     //Bookmarks.txt will be changed acoording to latest ObservableList allFilmsInBookmarks
-    public void closingBookmarksWindowAction(Stage stage) {
+    private void closingBookmarksWindowAction(Stage stage) {
         stage.setOnHiding(event -> {
             overwriteInBookmarks();
             Controller.setWindowCloseAction();
         });
     }
 
-    public void overwriteInBookmarks(){
+    private void overwriteInBookmarks(){
         HelperMethods.overwriteFile("Bookmarks.txt", allFilmsInBookmarks);
     }
 
