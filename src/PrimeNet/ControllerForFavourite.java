@@ -36,8 +36,7 @@ public class ControllerForFavourite {
 
     ObservableList<Film> allFilmsInBookmarks = FXCollections.observableArrayList();
 
-    File file;
-    FileWriter writer;
+    private boolean doubleClick = false;
 
     @FXML
     private void initialize() {
@@ -67,17 +66,7 @@ public class ControllerForFavourite {
     }
 
     public void writeInFavouriteFile(String filmTitle, String filmYear){
-        writeInFile("Favoriten.txt", filmTitle, filmYear);
-    }
-
-    public void writeInFile(String pathname, String filmTitle, String filmYear){
-        file = new File (pathname);
-        try{
-            writer = new FileWriter(file, true);
-            writer.write(filmTitle + "\t" + filmYear);
-            writer.write(System.getProperty("line.separator"));
-            writer.flush();
-        }catch (IOException e) { e.printStackTrace(); }
+        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear);
     }
 
     public void setUpTableForFavourite() {
@@ -95,7 +84,12 @@ public class ControllerForFavourite {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        System.out.println("Double click");
+                        doubleClick = true;
+                        Controller.getFavouriteWindow().close();
+                        Controller.setDoubleClickInFavouriteOrBookmarksWindow(
+                                favouriteTable.getSelectionModel().getSelectedItem().getTitle(),
+                                favouriteTable.getSelectionModel().getSelectedItem().getYear()
+                        );
                     }
                 }
             }
@@ -124,7 +118,11 @@ public class ControllerForFavourite {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        System.out.println("Double click");
+                        Controller.getBookmarksWindow().close();
+                        Controller.setDoubleClickInFavouriteOrBookmarksWindow(
+                                bookmarksTable.getSelectionModel().getSelectedItem().getTitle(),
+                                bookmarksTable.getSelectionModel().getSelectedItem().getYear()
+                        );
                     }
                 }
             }
@@ -132,45 +130,11 @@ public class ControllerForFavourite {
     }
 
     public void readLinesFromFavourite(String fileName){
-        readLinesFromFile(fileName, allFilmsInFavourite);
+        HelperMethods.readLinesFromFile(fileName, allFilmsInFavourite);
     }
 
     public void readLinesFromBookmarks(String fileName){
-        readLinesFromFile(fileName, allFilmsInBookmarks);
-    }
-    private void readLinesFromFile(String datName, ObservableList<Film> allFilms) {
-        File file = new File(datName);
-
-        if (!file.canRead() || !file.isFile())
-            System.exit(0);
-
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new FileReader(datName));
-            String line = null;
-            String[] word;
-            //read lines by lines and add the films to favouriteTableView
-            while ((line = in.readLine()) != null) {
-                //Strings in these lines are separated by a tab, we will get each of them and create a instance of film
-                //then we will add it to a new list which we will later use to generate our list in favouriteTableView
-                word = line.split("\t");
-                allFilms.add(makeFilm(word[0], Integer.parseInt(word[1])));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                }
-            }
-        }
-    }
-
-    public Film makeFilm(String title, int year) {
-        Film film = new Film(title, year);
-        return film;
+        HelperMethods.readLinesFromFile(fileName, allFilmsInBookmarks);
     }
 
     //Before finally closing the window
@@ -178,8 +142,14 @@ public class ControllerForFavourite {
     public void closingFavouriteWindowAction(Stage stage) {
         stage.setOnHiding(event ->{
             overwriteFavourite();
-            Controller.setWindowCloseAction();
+            if(!doubleClick){
+                Controller.setWindowCloseAction();
+            }
         });
+    }
+
+    public void overwriteFavourite() {
+        HelperMethods.overwriteFile("Favoriten.txt", allFilmsInFavourite);
     }
 
     //Bookmarks.txt will be changed acoording to latest ObservableList allFilmsInBookmarks
@@ -188,6 +158,10 @@ public class ControllerForFavourite {
             overwriteInBookmarks();
             Controller.setWindowCloseAction();
         });
+    }
+
+    public void overwriteInBookmarks(){
+        HelperMethods.overwriteFile("Bookmarks.txt", allFilmsInBookmarks);
     }
 
     //Action by pressing the delete button in favourite table
@@ -207,39 +181,5 @@ public class ControllerForFavourite {
             productSelected.forEach(allFilmsInBookmarks::remove);
         } catch (NoSuchElementException e){Controller.getBookmarksWindow().close();}
     }
-
-    public void overwriteFavourite() {
-        overwriteFile("Favoriten.txt", allFilmsInFavourite);
-    }
-
-    public void overwriteInBookmarks(){
-        overwriteFile("Bookmarks.txt", allFilmsInBookmarks);
-    }
-
-    public void overwriteFile(String pathname, ObservableList<Film> allFilms){
-        file = new File(pathname);
-        try {
-            writer = new FileWriter(file);
-            for (Film f : allFilms) {
-                writer.write(f.getTitle());
-                writer.write("\t");
-                writer.write(String.valueOf(f.getYear()));
-                writer.write(System.getProperty("line.separator"));
-            }
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-
-
-    //
-    //
-    //
-
-
 }
 

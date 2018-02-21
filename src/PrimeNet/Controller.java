@@ -63,8 +63,11 @@ public class Controller{
 
     private ObservableList<String> rate = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
-    private ObservableList<Film> originalFilmsForSecondFilterAction;
+    private ObservableList<Film> originalFilmsForSecondFilterAction = FXCollections.observableArrayList();
+    private static String titleForSearch;
+    private static int yearForSearch;
     private static SimpleBooleanProperty windowCloseAction = new SimpleBooleanProperty(false);
+    private static SimpleBooleanProperty doubleClickInFavouriteOrBookmarksWindow = new SimpleBooleanProperty(false);
     private static Stage favouriteWindow = new Stage();
     private static Stage bookmarksWindow = new Stage();
     private static String filmsInFavouriteAsString;
@@ -76,8 +79,14 @@ public class Controller{
         else
             windowCloseAction.set(true);
     }
-    public static String getFilmsInFavouriteAsString(){
-        return filmsInFavouriteAsString;
+
+    public static void setDoubleClickInFavouriteOrBookmarksWindow(String title, int year){
+        titleForSearch = title;
+        yearForSearch = year;
+        if(doubleClickInFavouriteOrBookmarksWindow.getValue())
+            doubleClickInFavouriteOrBookmarksWindow.set(false);
+        else
+            doubleClickInFavouriteOrBookmarksWindow.set(true);
     }
 
     public static Stage getBookmarksWindow() {
@@ -92,9 +101,16 @@ public class Controller{
     private void initialize(){
         bookmarksWindow.initModality(Modality.APPLICATION_MODAL);
         favouriteWindow.initModality(Modality.APPLICATION_MODAL);
-        windowCloseAction.addListener((observableValue, oldValue, newValue) -> onEnter());
+        windowCloseAction.addListener((observableValue, oldValue, newValue) -> {
+            try{
+                refreshFilmList();
+            } catch (Exception e){e.printStackTrace();}
+        });
+        doubleClickInFavouriteOrBookmarksWindow.addListener(((observable, oldValue, newValue) ->{
+            searchForThis(titleForSearch, yearForSearch);
+            filmTable.getSelectionModel().select(1);
+        }));
         setUpTables();
-        rate.addAll("Like", "Dislike");
         progressbar.setProgress(-1.0f);
         progressbar.setVisible(false);
 /*
@@ -106,6 +122,65 @@ public class Controller{
             searchField.clear();
         });
 */
+    }
+
+    public void refreshFilmList() throws Exception{
+        makeFavouriteFileToString();
+        makeBookmarksFileToString();
+        for(Film film : originalFilmsForSecondFilterAction){
+            if(isThisFilmInFavourite(film))
+                film.setFavourite(true);
+            else
+                film.setFavourite(false);
+
+            if(isThisFilmInBookmarks(film))
+                film.setRemember(true);
+            else
+                film.setRemember(false);
+        }
+    }
+
+    public boolean isThisFilmInFavourite(Film film){
+       return HelperMethods.isThisFilmInFile(film, filmsInFavouriteAsString);
+    }
+
+    public boolean isThisFilmInBookmarks(Film film){
+        return HelperMethods.isThisFilmInFile(film, filmsInBookmarksAsString);
+    }
+
+    public ObservableList<Film> getFilmForRefreshList(Results filmResults){
+        ObservableList<Film> films = FXCollections.observableArrayList();
+        filmResults.getMovies()
+                .stream()
+                .map(movie -> {
+                    return new Film(isThisMovieInFavourite(movie), movie.getTitle(), movie.getReleaseYear(),
+                            movie.getOverview(), isThisMovieInBookmarks(movie), "", MovieDatabase.getPoster(movie),
+                            movie.getCategories()) ;
+                })
+                .forEach(films::add);
+        return films;
+    }
+
+    public void searchForThis (String title, int year){
+
+        new Thread(() -> {
+            progressbar.setVisible(true);
+            try{
+                makeFavouriteFileToString();
+                makeBookmarksFileToString();
+            } catch (Exception e){e.printStackTrace();}
+            try{
+                originalFilms = getFilm(correctStringForSearch(title));
+            } catch (Exception e ){e.printStackTrace();}
+
+            progressbar.setVisible(false);
+            filmTable.setItems(originalFilms);
+
+            filterTableViewAccToYears(String.valueOf(year));
+
+            addListenerToCheckBoxInFavouriteColumn();
+            addListenerToCheckBoxInBookmarksColumn();
+        }).start();
     }
 
     public void setUpTables(){
@@ -158,6 +233,7 @@ public class Controller{
         favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
 
         //rateColumn
+        rate.addAll("Like", "Dislike");
         rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
         rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
         rateColumn.setMaxWidth(90);
@@ -170,69 +246,36 @@ public class Controller{
         categoriesColumn.setMinWidth(300);
 
         filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, rememberColumn);
-
-        filmTable.setOnMouseClicked((event) -> {
-            Film film = filmTable.getSelectionModel().getSelectedItem();
-            if (film == null) {
-                previewPane.setImage(null);
-                previewTitle.setText("");
-                previewDate.setText("");
-                previewRate.setText("");
-                previewOverview.setText("");
-                return;
-            }
-            previewPane.setImage(film.getPoster());
-            previewTitle.setText(film.getTitle());
-            String year = Integer.toString(film.getYear());
-            previewDate.setText("(" + year + ")");
-            previewRate.setText(film.getRate());
-            previewOverview.setText(film.getOverview());
-        });
     }
 
-    //write in Favoriten.txt to save checkbox action from favouriteColumn
-    public void writeInFavourite(String filmTitle, String filmYear){
-        writeInFile("Favoriten.txt", filmTitle, filmYear);
-    }
-
-    //write in Bookmarks.txt to save checkbox action from rememberColumn
-    public void writeInBookmarks(String filmTitle, String filmYear){
-        writeInFile("Bookmarks.txt", filmTitle, filmYear);
-    }
-
-    public void writeInFile(String pathname, String filmTitle, String filmYear){
-        file = new File (pathname);
-        try{
-            writer = new FileWriter(file, true);
-            writer.write(filmTitle);
-            writer.write("\t");
-            writer.write(filmYear);
-            writer.write(System.getProperty("line.separator"));
-            writer.flush();
-        }catch (IOException e) { e.printStackTrace(); }
+    public void filmTableIsClicked(){
+        Film film = filmTable.getSelectionModel().getSelectedItem();
+        if (film == null) {
+            previewPane.setImage(null);
+            previewTitle.setText("");
+            previewDate.setText("");
+            previewRate.setText("");
+            previewOverview.setText("");
+            return;
+        }
+        previewPane.setImage(film.getPoster());
+        previewTitle.setText(film.getTitle());
+        String year = Integer.toString(film.getYear());
+        previewDate.setText("(" + year + ")");
+        previewRate.setText(film.getRate());
+        previewOverview.setText(film.getOverview());
     }
 
     //by clicking the button "Favoriten" favourite window will be opened
     public void clickFavourite() throws IOException{
         Parent root =  FXMLLoader.load(getClass().getResource("FxmlFiles/Favourite.fxml"));
-        openNewWindow(favouriteWindow, "Favoriten", root);
+        HelperMethods.openNewWindow(favouriteWindow, "Favoriten", root);
     }
 
     //by clicking the button "Merkliste" bookmarks window will be opened
     public void clickBookmarks() throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/Bookmarks.fxml"));
-        openNewWindow(bookmarksWindow, "Merkliste", root);
-    }
-
-    public void openNewWindow(Stage stage, String title, Parent root){
-        try{
-            stage.setTitle("Favoriten");
-            stage.setResizable(false);
-            stage.setScene(new Scene(root,600, 400));
-            stage.show();
-        }catch (IllegalStateException e){
-            stage.show();
-        }
+        HelperMethods.openNewWindow(bookmarksWindow, "Merkliste", root);
     }
 
     //if enter is pressed table of film will be filled with new content
@@ -240,125 +283,51 @@ public class Controller{
         progressbar.setVisible(true);
         new Thread(() -> {
             try{
-                originalFilms = getFilm();
+                makeFavouriteFileToString();
+                makeBookmarksFileToString();
+            } catch (Exception e){e.printStackTrace();}
+            try{
+                originalFilms = getFilm(correctStringForSearch(searchField.getText()));
             } catch (Exception e ){e.printStackTrace();}
-            ObservableList<Film> films = FXCollections.observableArrayList();
-            films.addAll(originalFilms);
-            filmTable.setItems(films);
 
-            //search result will be filtered according to selected years and categories
+            progressbar.setVisible(false);
+            filmTable.setItems(originalFilms);
+
+            //search result will be filtered according to selected years
+            //AND categories. This is implemented in method filterTableViewAccToYears
             filterTableViewAccToYears(yearComboBox.getValue());
 
-            //settings for the favourite column
-            //if favourite Checkbox is clicked the film will be written in a File
-            for (Film film : originalFilms) {
-                film.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
-                    if(newValue && !oldValue)
-                        writeInFavourite(film.getTitle(), String.valueOf(film.getYear()));
-                    else if(!newValue && oldValue)
-                        deleteInFavourite(film.getTitle(), String.valueOf(film.getYear()));
-                });
-            }
-
-            //setting for remember column
-            //if remember Checkbox is clicked the film will be written in a File
-            for (Film film : originalFilms) {
-                film.rememberProperty().addListener((observableValue, oldValue, newValue) -> {
-                    if(newValue && !oldValue)
-                        writeInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
-                    else if(!newValue && oldValue)
-                        deleteInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
-                });
-            }
+            addListenerToCheckBoxInFavouriteColumn();
+            addListenerToCheckBoxInBookmarksColumn();
         }).start();
     }
 
-    public void deleteInFavourite(String title, String year){
-        File original = new File("Favoriten.txt");
-        File copy = new File("copyOfFavourite.txt");
-        copyOriginalFileBesidesOneLine(original, copy, title, year);
-        //At first we wanted to delete the original file and then rename the copy file, however the method delete()
-        //does not work because of unknown reason. So this is our second best solution to resolve this issue.
-        overwriteSecondFileWithFirstFile(copy, original);
-    }
-
-    public void deleteInBookmarks(String title, String year){
-        File original = new File("Bookmarks.txt");
-        File copy = new File("copyOfBookmarks.txt");
-        copyOriginalFileBesidesOneLine(original, copy, title, year);
-        overwriteSecondFileWithFirstFile(copy, original);
-    }
-
-    public void copyOriginalFileBesidesOneLine(File original, File copy, String title, String year){
-        int counter = 0;
-        String line;
-        try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(original)));
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(copy)));
-            int stringInLine = filmIsInLineNumber(original, title, year);
-            while((line = br.readLine()) != null){
-                if(counter !=  stringInLine){
-                    bw.write(line);
-                    bw.write(System.getProperty("line.separator"));
-                }
-                counter++;
-            }
-            bw.close();
-            br.close();
-        } catch (Exception e) {e.printStackTrace();}
-    }
-
-    public void overwriteSecondFileWithFirstFile(File sourceFile, File overwrittenFile){
-        int counter = 0;
-        String line;
-        try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(sourceFile)));
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(overwrittenFile)));
-            line = null;
-            while ((line = br.readLine()) != null){
-                bw.write(line);
-                bw.write(System.getProperty("line.separator"));
-            }
-            br.close();
-            bw.close();
-        } catch (Exception e) {e.printStackTrace();}
-    }
-
-    //search for the line which contains the film
-    public int filmIsInLineNumber(File file, String title, String year){
-        BufferedReader br;
-        String line;
-        int stringInLineNumber = 0;
-        try{
-            br  = new BufferedReader(new FileReader(file));
-            int counter = 0;
-            while ((line = br.readLine()) != null) {
-                if (line.equals(title + "\t" + year)) {
-                    stringInLineNumber = counter;
-                    break;
-                }
-                counter++;
-            }
-        } catch (IOException e) {e.printStackTrace();}
-        return stringInLineNumber;
-    }
-
-    public ObservableList<Film> getFilm() throws Exception {
-        try{
-            File fileFavourite = new File ("Favoriten.txt");
-            filmsInFavouriteAsString = makeFileToString(fileFavourite);
+    public void makeFavouriteFileToString() throws Exception{
+        try {
+            File fileFavourite = new File("Favoriten.txt");
+            filmsInFavouriteAsString = HelperMethods.makeFileToString(fileFavourite);
         } catch (NullPointerException e) {
             filmsInFavouriteAsString = "";
         }
+    }
+
+    public void makeBookmarksFileToString() throws Exception{
         try{
             File fileBookmarks = new File ("Bookmarks.txt");
-            filmsInBookmarksAsString = makeFileToString(fileBookmarks);
+            filmsInBookmarksAsString = HelperMethods.makeFileToString(fileBookmarks);
         } catch (NullPointerException e) {
             filmsInBookmarksAsString = "";
         }
-        ObservableList<Film> films = FXCollections.observableArrayList();
+    }
+
+    public String correctStringForSearch(String keyword){
         String pattern = "\\s+";
-        String searchCorrection = searchField.getText().replaceAll(pattern, "+");
+        String searchCorrection = keyword.replaceAll(pattern, "+");
+        return searchCorrection;
+    }
+
+    public ObservableList<Film> getFilm(String searchCorrection) throws Exception {
+        ObservableList<Film> films = FXCollections.observableArrayList();
         Results r = MovieDatabase.getMoviesByName(searchCorrection);
         r.getMovies()
                 .stream()
@@ -368,8 +337,57 @@ public class Controller{
                             movie.getCategories()) ;
                 })
                 .forEach(films::add);
-        progressbar.setVisible(false);
         return films;
+    }
+
+    //if favourite Checkbox is clicked the film will be written in a File
+    public void addListenerToCheckBoxInFavouriteColumn(){
+        for (Film film : originalFilms) {
+            film.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
+                if(newValue)
+                    writeInFavourite(film.getTitle(), String.valueOf(film.getYear()));
+                else if(!newValue)
+                    deleteInFavourite(film.getTitle(), String.valueOf(film.getYear()));
+            });
+        }
+    }
+
+    //if remember Checkbox is clicked the film will be written in a File
+    public void addListenerToCheckBoxInBookmarksColumn(){
+        for (Film film : originalFilms) {
+            film.rememberProperty().addListener((observableValue, oldValue, newValue) -> {
+                if(newValue)
+                    writeInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
+                else if(!newValue && oldValue)
+                    deleteInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
+            });
+        }
+    }
+
+    //write in Favoriten.txt to save checkbox action from favouriteColumn
+    public void writeInFavourite(String filmTitle, String filmYear){
+        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear);
+    }
+
+    //write in Bookmarks.txt to save checkbox action from rememberColumn
+    public void writeInBookmarks(String filmTitle, String filmYear){
+        HelperMethods.writeInFile("Bookmarks.txt", filmTitle, filmYear);
+    }
+
+    public void deleteInFavourite(String title, String year){
+        File original = new File("Favoriten.txt");
+        File copy = new File("copyOfFavourite.txt");
+        HelperMethods.copyOriginalFileBesidesOneLine(original, copy, title, year);
+        //At first we wanted to delete the original file and then rename the copy file, however the method delete()
+        //does not work because of unknown reason. So this is our second best solution to resolve this issue.
+        HelperMethods.overwriteSecondFileWithFirstFile(copy, original);
+    }
+
+    public void deleteInBookmarks(String title, String year){
+        File original = new File("Bookmarks.txt");
+        File copy = new File("copyOfBookmarks.txt");
+        HelperMethods.copyOriginalFileBesidesOneLine(original, copy, title, year);
+        HelperMethods.overwriteSecondFileWithFirstFile(copy, original);
     }
 
     public boolean isThisMovieInFavourite(Movie movie){
@@ -382,17 +400,6 @@ public class Controller{
             return true;
         else
             return false;
-    }
-
-    public String makeFileToString(File file) throws Exception{
-        String fileString = "";
-        String line = null;
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-        while((line = br.readLine()) != null){
-            fileString += line;
-            fileString += "\n";
-        }
-        return fileString;
     }
 
     public boolean isThisMovieInBookmarks(Movie movie){
@@ -457,6 +464,4 @@ public class Controller{
             searchField.clear();
             saveCitiesToDisk();
         });*/
-
-
 }
