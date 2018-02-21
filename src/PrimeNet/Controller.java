@@ -35,21 +35,19 @@ public class Controller{
     @FXML
     TableView<Film> filmTable = new TableView<>();
     @FXML
-    TableColumn<Film, String> rateColumn = new TableColumn<>("Bewerten");
+    private TableColumn<Film, String> rateColumn = new TableColumn<>("Bewerten");
     @FXML
-    TableColumn<Film, Boolean> favouriteColumn = new TableColumn<>("Favorit");
+    private TableColumn<Film, Boolean> favouriteColumn = new TableColumn<>("Favorit");
     @FXML
-    TableColumn<Film, String> titleColumn = new TableColumn<>("Filmtitel");
+    private TableColumn<Film, String> titleColumn = new TableColumn<>("Filmtitel");
     @FXML
-    TableColumn<Film, Integer> yearColumn = new TableColumn<>("Jahr");
+    private TableColumn<Film, Integer> yearColumn = new TableColumn<>("Jahr");
     @FXML
-    TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
+    private TableColumn<Film, Boolean> rememberColumn = new TableColumn<>("Merken");
     @FXML
-    TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
+    private TableColumn<Film, String> categoriesColumn = new TableColumn<>("Kategorien");
     @FXML
     ComboBox<String> yearComboBox = new ComboBox<>();
-    File file;
-    FileWriter writer;
     @FXML
     ImageView previewPane = new ImageView();
     @FXML
@@ -57,7 +55,7 @@ public class Controller{
     @FXML
     Label previewDate = new Label();
     @FXML
-    Label previewRate = new Label();
+    private Label previewRate = new Label();
     @FXML
     Label previewOverview = new Label();
 
@@ -123,8 +121,7 @@ public class Controller{
         });
 */
     }
-
-    public void refreshFilmList() throws Exception{
+    private void refreshFilmList(){
         makeFavouriteFileToString();
         makeBookmarksFileToString();
         for(Film film : originalFilmsForSecondFilterAction){
@@ -140,28 +137,15 @@ public class Controller{
         }
     }
 
-    public boolean isThisFilmInFavourite(Film film){
+    private boolean isThisFilmInFavourite(Film film){
        return HelperMethods.isThisFilmInFile(film, filmsInFavouriteAsString);
     }
 
-    public boolean isThisFilmInBookmarks(Film film){
+    private boolean isThisFilmInBookmarks(Film film){
         return HelperMethods.isThisFilmInFile(film, filmsInBookmarksAsString);
     }
 
-    public ObservableList<Film> getFilmForRefreshList(Results filmResults){
-        ObservableList<Film> films = FXCollections.observableArrayList();
-        filmResults.getMovies()
-                .stream()
-                .map(movie -> {
-                    return new Film(isThisMovieInFavourite(movie), movie.getTitle(), movie.getReleaseYear(),
-                            movie.getOverview(), isThisMovieInBookmarks(movie), "", MovieDatabase.getPoster(movie),
-                            movie.getCategories()) ;
-                })
-                .forEach(films::add);
-        return films;
-    }
-
-    public void searchForThis (String title, int year){
+    private void searchForThis (String title, int year){
 
         new Thread(() -> {
             progressbar.setVisible(true);
@@ -183,27 +167,27 @@ public class Controller{
         }).start();
     }
 
-    public void setUpTables(){
+    private void setUpTables(){
         fillCategoriesComboBox();
         fillYearComboBox();
         setUpTableOfFilm();
     }
 
-    public void fillCategoriesComboBox(){
+    private void fillCategoriesComboBox(){
         categoriesComboBox.getItems().add("Alle");
         categoriesComboBox.getItems().addAll( "Abenteuer", "Action", "Animation", "Dokumentarfilm",
                 "Drama", "Familie", "Fantasy", "Historie", "Horror", "Komödie", "Kriegsfilm", "Krimi",
                 "Liebesfilm", "Musik", "Mystery", "Science", "Fiction", "TV-Film", "Thriller", "Western");
     }
 
-    public void fillYearComboBox(){
+    private void fillYearComboBox(){
         yearComboBox.getItems().add("Alle");
         for (int n = 2018; n >= 1950; n--){
             yearComboBox.getItems().add(String.valueOf(n));
         }
     }
 
-    public void setUpTableOfFilm() {
+    private void setUpTableOfFilm() {
         filmTable.setEditable(true);
 
         //titleColumn
@@ -302,7 +286,7 @@ public class Controller{
         }).start();
     }
 
-    public void makeFavouriteFileToString() throws Exception{
+    private void makeFavouriteFileToString(){
         try {
             File fileFavourite = new File("Favoriten.txt");
             filmsInFavouriteAsString = HelperMethods.makeFileToString(fileFavourite);
@@ -311,7 +295,7 @@ public class Controller{
         }
     }
 
-    public void makeBookmarksFileToString() throws Exception{
+    private void makeBookmarksFileToString(){
         try{
             File fileBookmarks = new File ("Bookmarks.txt");
             filmsInBookmarksAsString = HelperMethods.makeFileToString(fileBookmarks);
@@ -320,28 +304,27 @@ public class Controller{
         }
     }
 
-    public String correctStringForSearch(String keyword){
+    private String correctStringForSearch(String keyword){
         String pattern = "\\s+";
-        String searchCorrection = keyword.replaceAll(pattern, "+");
-        return searchCorrection;
+        return keyword.replaceAll(pattern, "+");
     }
 
-    public ObservableList<Film> getFilm(String searchCorrection) throws Exception {
+    private ObservableList<Film> getFilm(String searchCorrection) {
         ObservableList<Film> films = FXCollections.observableArrayList();
         Results r = MovieDatabase.getMoviesByName(searchCorrection);
         r.getMovies()
                 .stream()
-                .map(movie -> {
-                    return new Film(isThisMovieInFavourite(movie), movie.getTitle(), movie.getReleaseYear(),
-                            movie.getOverview(), isThisMovieInBookmarks(movie), "", MovieDatabase.getPoster(movie),
-                            movie.getCategories()) ;
-                })
+                .map(movie ->
+                        new Film(isThisMovieInFavourite(movie), movie.getTitle(), movie.getReleaseYear(),
+                                movie.getOverview(), isThisMovieInBookmarks(movie), "", MovieDatabase.getPoster(movie),
+                                movie.getCategories())
+                )
                 .forEach(films::add);
         return films;
     }
 
     //if favourite Checkbox is clicked the film will be written in a File
-    public void addListenerToCheckBoxInFavouriteColumn(){
+    private void addListenerToCheckBoxInFavouriteColumn(){
         for (Film film : originalFilms) {
             film.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
                 if(newValue)
@@ -353,7 +336,7 @@ public class Controller{
     }
 
     //if remember Checkbox is clicked the film will be written in a File
-    public void addListenerToCheckBoxInBookmarksColumn(){
+    private void addListenerToCheckBoxInBookmarksColumn(){
         for (Film film : originalFilms) {
             film.rememberProperty().addListener((observableValue, oldValue, newValue) -> {
                 if(newValue)
@@ -365,16 +348,16 @@ public class Controller{
     }
 
     //write in Favoriten.txt to save checkbox action from favouriteColumn
-    public void writeInFavourite(String filmTitle, String filmYear){
+    private void writeInFavourite(String filmTitle, String filmYear){
         HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear);
     }
 
     //write in Bookmarks.txt to save checkbox action from rememberColumn
-    public void writeInBookmarks(String filmTitle, String filmYear){
+    private void writeInBookmarks(String filmTitle, String filmYear){
         HelperMethods.writeInFile("Bookmarks.txt", filmTitle, filmYear);
     }
 
-    public void deleteInFavourite(String title, String year){
+    private void deleteInFavourite(String title, String year){
         File original = new File("Favoriten.txt");
         File copy = new File("copyOfFavourite.txt");
         HelperMethods.copyOriginalFileBesidesOneLine(original, copy, title, year);
@@ -383,32 +366,29 @@ public class Controller{
         HelperMethods.overwriteSecondFileWithFirstFile(copy, original);
     }
 
-    public void deleteInBookmarks(String title, String year){
+    private void deleteInBookmarks(String title, String year){
         File original = new File("Bookmarks.txt");
         File copy = new File("copyOfBookmarks.txt");
         HelperMethods.copyOriginalFileBesidesOneLine(original, copy, title, year);
         HelperMethods.overwriteSecondFileWithFirstFile(copy, original);
     }
 
-    public boolean isThisMovieInFavourite(Movie movie){
+    private boolean isThisMovieInFavourite(Movie movie){
         String findMovieKeyword = movie.getTitle() + "\t" + movie.getReleaseYear();
         if(filmsInFavouriteAsString == null){
             filmsInFavouriteAsString = "";
         }
         Matcher matcher = Pattern.compile(findMovieKeyword).matcher(filmsInFavouriteAsString);
-        if (matcher.find())
-            return true;
-        else
-            return false;
+        return matcher.find();
     }
 
-    public boolean isThisMovieInBookmarks(Movie movie){
+    private boolean isThisMovieInBookmarks(Movie movie){
         String findMovieKeyword = movie.getTitle() + "\t" + movie.getReleaseYear();
+        if(filmsInBookmarksAsString == null){
+            filmsInBookmarksAsString = "";
+        }
         Matcher matcher = Pattern.compile(findMovieKeyword).matcher(filmsInBookmarksAsString);
-        if (matcher.find())
-            return true;
-        else
-            return false;
+        return matcher.find();
     }
 
     public void clickYearComboBox(){
@@ -420,7 +400,7 @@ public class Controller{
     }
 
     //filter tableView list according to selected year
-    public void filterTableViewAccToYears(String yearOfComboBox){
+    private void filterTableViewAccToYears(String yearOfComboBox){
         ObservableList<Film> selectedYearFilms;
         selectedYearFilms = FXCollections.observableArrayList();
         try {
@@ -439,7 +419,7 @@ public class Controller{
     }
 
     //filter tableView list according to selected category
-    public void filterTableViewAccToCategories(String categoryOfComboBox) {
+    private void filterTableViewAccToCategories(String categoryOfComboBox) {
         ObservableList<Film> selectedCategoriesFilms;
         selectedCategoriesFilms = FXCollections.observableArrayList();
         if(categoryOfComboBox == null){ }
@@ -453,8 +433,6 @@ public class Controller{
             originalFilmsForSecondFilterAction = selectedCategoriesFilms;
             }
     }
-
-
         /*
         AutoCompletionBinding<MovieData> autoCompletionBinding =
                 TextFields.bindAutoCompletion(searchField,
