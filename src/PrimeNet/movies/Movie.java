@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class Movie {
 
     private static Map<Integer, String> categories = new HashMap<>();
+
     static {
         categories.put(12, "Abenteuer");
         categories.put(28, "Action");
@@ -119,7 +120,7 @@ public class Movie {
         }
     }
 
-    public String getCategories(){
+    public String getCategories() {
         return Arrays.stream(genres).mapToObj(genre -> categories.getOrDefault(genre, "nicht bekannt"))
                 .collect(Collectors.joining(", "));
     }
