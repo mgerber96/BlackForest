@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.ControllerForLogin">
     <stylesheets>
-        <URL value="@../DesignFiles/Design_Login.css"/>
+        <URL value="@../DesignFiles/Design_Login.css" />
     </stylesheets>
     <children>
         <ImageView fitHeight="28.0" fitWidth="29.0" layoutX="10.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
@@ -25,8 +25,14 @@
                 <Image url="@../Pictures/2.png" />
             </image>
         </ImageView>
-          <Button layoutX="26.0" layoutY="244.0" mnemonicParsing="false" onAction="#Login" prefHeight="27.0" prefWidth="89.0" text="Login" />
-          <Button layoutX="177.0" layoutY="244.0" mnemonicParsing="false" onAction="#Reset" prefHeight="28.0" prefWidth="96.0" text="Reset" />
+          <Button layoutX="38.0" layoutY="231.0" mnemonicParsing="false" onAction="#Login" prefHeight="27.0" prefWidth="89.0" text="Login">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
+          <Button layoutX="152.0" layoutY="230.0" mnemonicParsing="false" onAction="#Reset" prefHeight="28.0" prefWidth="96.0" text="Reset">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
           <Label layoutX="8.0" layoutY="6.0" prefHeight="79.0" prefWidth="280.0" text="Wilkommen bei PrimeNet" textAlignment="CENTER" textFill="#ff000000" underline="true" wrapText="true">
               <font>
                   <Font size="30.0" />
@@ -47,5 +53,10 @@
                   <Font size="14.0" />
               </font>
           </PasswordField>
+      <Button fx:id="createUserButton" layoutX="93.0" layoutY="267.0" mnemonicParsing="false" onAction="#openCreateUser" prefHeight="28.0" prefWidth="96.0" text="User erstellen">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
