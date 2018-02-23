@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ControllerCreateUser implements Initializable {
+public class ControllerCreateUser {
 
 
     public Button CreateNewUser;
@@ -37,12 +37,4 @@ public class ControllerCreateUser implements Initializable {
         P.close();
         U.close();
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-
-    }
-
-
 }

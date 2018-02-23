@@ -31,7 +31,7 @@ public class ControllerForLogin implements Initializable {
     @FXML
     public Button createUserButton;
 
-    //login with username and password
+    //read created Userdata +login with username and password
     public void Login(javafx.event.ActionEvent event) throws Exception {
         try {
             FileReader UsernameFile = new FileReader("UserName.txt");
