@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PrimeNet.Controller">
     <stylesheets>
         <URL value="@../DesignFiles/Design.css" />
     </stylesheets>
@@ -83,7 +83,7 @@
                             </font>
                         </Label>
                         <Region prefHeight="30.0" />
-                        <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="626.0" text="Handlung" textAlignment="CENTER" underline="true">
+                        <Label fx:id="StoryLabel" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="626.0" text="Handlung" textAlignment="CENTER" underline="true">
                             <font>
                                 <Font size="20.0" />
                             </font>

@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 public class Controller{
     @FXML
     public ProgressIndicator progressbar;
+    public Label StoryLabel;
     @FXML
     ComboBox<String> categoriesComboBox;
     @FXML
@@ -97,6 +98,12 @@ public class Controller{
 
     @FXML
     private void initialize(){
+        previewPane.setImage(null);
+        previewTitle.setText("");
+        previewDate.setText("");
+        previewRate.setText("");
+        previewOverview.setText("");
+        StoryLabel.setVisible(false);
         bookmarksWindow.initModality(Modality.APPLICATION_MODAL);
         favouriteWindow.initModality(Modality.APPLICATION_MODAL);
         windowCloseAction.addListener((observableValue, oldValue, newValue) -> {
@@ -240,6 +247,7 @@ public class Controller{
             previewDate.setText("");
             previewRate.setText("");
             previewOverview.setText("");
+            StoryLabel.setVisible(false);
             return;
         }
         previewPane.setImage(film.getPoster());
