@@ -1,7 +1,5 @@
 package PrimeNet;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -31,47 +28,49 @@ public class ControllerForLogin implements Initializable {
     @FXML
     public Button createUserButton;
 
+    PasswordAuthentication auth = new PasswordAuthentication(20);
+
     //read created Userdata +login with username and password
     public void Login(javafx.event.ActionEvent event) throws Exception {
         try {
-            FileReader UsernameFile = new FileReader("UserName.txt");
-            FileReader PasswordFile = new FileReader("Password.txt");
-            BufferedReader UsernameReader = new BufferedReader(UsernameFile);
-            BufferedReader PasswordReader = new BufferedReader(PasswordFile);
-            String Usernameline = UsernameReader.readLine();
-            String Passwordline = PasswordReader.readLine();
-            String text1 = "";
-            String text2 = "";
+            FileReader passwords = new FileReader("passwords.txt");
+            BufferedReader PasswordReader = new BufferedReader(passwords);
+            String line = null;
+            while(true) {
+                line = PasswordReader.readLine();
+                if (line == null) {
+                    LabelStatus.setText("! falsche Angaben !");
+                    return;
+                }
 
-            while (Usernameline != null) {
+                String[] parts = line.split(":");
+                if (parts.length != 2) {
+                    continue;
+                }
 
-                text1 += Usernameline;
-                Usernameline = UsernameReader.readLine();
-            }
-            while (Passwordline !=null){
+                String username = parts[0];
+                String password = parts[1];
 
-                text2 += Passwordline;
-                Passwordline = PasswordReader.readLine();
+                if (!username.equalsIgnoreCase(TextUserName.getText())) {
+                    continue;
+                }
 
-            }
-
-
-            if (TextUserName.getText().equals(text1) && TextPassword.getText().equals(text2)) {
-
-                Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/MainWindow.fxml"));
-                Stage PrimeNet = new Stage();
-                PrimeNet.setTitle("PrimeNet");
-                Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-                //PrimeNet.setResizable(false);
-                //PrimeNet.setScene(new Scene(root, screen.width, screen.height));
-                PrimeNet.setScene(new Scene(root, screen.width / 1.5, screen.height / 1.1 - 65));
-                //PrimeNet.setScene(new Scene(root,800,600));
-                PrimeNet.show();
-                Main.Login.close();
-            } else {
-                LabelStatus.setText("! falsche Angaben !");
+                if (auth.authenticate(TextPassword.getText().toCharArray(), password)) {
+                    Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/MainWindow.fxml"));
+                    Stage PrimeNet = new Stage();
+                    PrimeNet.setTitle("PrimeNet");
+                    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+                    //PrimeNet.setResizable(false);
+                    //PrimeNet.setScene(new Scene(root, screen.width, screen.height));
+                    PrimeNet.setScene(new Scene(root, screen.width / 1.5, screen.height / 1.1 - 65));
+                    //PrimeNet.setScene(new Scene(root,800,600));
+                    PrimeNet.show();
+                    Main.Login.close();
+                    return;
+                }
             }
         } catch (IOException e) {
+            LabelStatus.setText("! falsche Angaben !");
             e.printStackTrace();
         }
     }

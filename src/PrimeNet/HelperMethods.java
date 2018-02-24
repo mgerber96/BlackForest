@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

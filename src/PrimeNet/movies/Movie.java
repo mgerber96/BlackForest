@@ -1,7 +1,6 @@
 package PrimeNet.movies;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

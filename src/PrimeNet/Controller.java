@@ -8,21 +8,21 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
-import javafx.scene.image.ImageView;
-import java.io.*;
-import java.rmi.MarshalledObject;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
+import java.io.File;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 public class Controller{
@@ -118,15 +118,19 @@ public class Controller{
         setUpTables();
         progressbar.setProgress(-1.0f);
         progressbar.setVisible(false);
-/*
-        AutoCompletionBinding<Film> autoCompletionBinding =
-                TextFields.bindAutoCompletion(searchField,
-                        suggestionrequest -> MovieDatabase.getMoviesByName(suggestionrequest.getUserText()));
+
+        AutoCompletionBinding<String> autoCompletionBinding =
+                TextFields.bindAutoCompletion(searchField, suggestionrequest -> {
+                    Results movies = MovieDatabase.getMoviesByName(suggestionrequest.getUserText());
+                    return movies.getMovies().stream().map(Movie::getTitle).collect(Collectors.toList());
+                });
+
         autoCompletionBinding.setOnAutoCompleted(event -> {
-            originalFilms.add(event.getCompletion());
-            searchField.clear();
+            event.consume();
+            searchField.setText(event.getCompletion());
+            searchField.positionCaret(event.getCompletion().length());
+            onEnter();
         });
-*/
     }
     private void refreshFilmList(){
         makeFavouriteFileToString();
