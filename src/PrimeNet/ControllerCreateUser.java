@@ -52,5 +52,7 @@ public class ControllerCreateUser {
             writer.write(CreateUserUsername.getText() + ":" + auth.hash(CreateUserPassword.getText().toCharArray()));
             writer.newLine();
         } catch (IOException ioException) { }
+
+        CreateNewUser.getScene().getWindow().hide();
     }
 }
