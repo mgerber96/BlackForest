@@ -45,7 +45,7 @@ abstract class HelperMethods{
 
     //first the file will be checked whether it has the film already inside
     //if so nothing happens
-    public static void writeInFile(String pathname, String filmTitle, String filmYear){
+    public static void writeInFile(String pathname, String filmTitle, String filmYear, String filmRate){
         File file = new File (pathname);
         FileWriter writer;
         String stringOfFile = makeFileToString(file);
@@ -55,6 +55,8 @@ abstract class HelperMethods{
                 writer.write(filmTitle);
                 writer.write("\t");
                 writer.write(filmYear);
+                writer.write("\t");
+                writer.write(filmRate);
                 writer.write(System.getProperty("line.separator"));
                 writer.flush();
             }catch (IOException e) { e.printStackTrace(); }
@@ -148,7 +150,11 @@ abstract class HelperMethods{
                 //Strings in these lines are separated by a tab, we will get each of them and create a instance of film
                 //then we will add it to a new list which we will later use to generate our list in favouriteTableView
                 word = line.split("\t");
-                allFilms.add(makeFilm(word[0], Integer.parseInt(word[1])));
+                try{
+                    allFilms.add(makeFilm(word[0], Integer.parseInt(word[1]), word[2]));
+                } catch (ArrayIndexOutOfBoundsException e){
+                    allFilms.add(makeFilm(word[0], Integer.parseInt(word[1])));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -161,7 +167,11 @@ abstract class HelperMethods{
         }
     }
 
-    private static Film makeFilm(String title, int year) {
+    private static Film makeFilm(String title, int year, String filmRate) {
+        return new Film(title, year, filmRate);
+    }
+
+    private static Film makeFilm(String title, int year){
         return new Film(title, year);
     }
 
@@ -174,6 +184,8 @@ abstract class HelperMethods{
                 writer.write(f.getTitle());
                 writer.write("\t");
                 writer.write(String.valueOf(f.getYear()));
+                writer.write("\t");
+                writer.write(f.getRate());
                 writer.write(System.getProperty("line.separator"));
             }
             writer.flush();

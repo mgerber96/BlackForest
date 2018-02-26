@@ -28,10 +28,15 @@ public class Film {
     }
 
     //this constructor will only be used in ControllerForFavourite
-    public Film(String title, int year) {
+    public Film(String title, int year, String rate) {
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
         this.favourite = new SimpleBooleanProperty(false);
+        this.rate = new SimpleStringProperty(rate);
+    }
+
+    public Film(String title, int year) {
+        this(title , year, " ");
     }
 
     public Image getPoster() {

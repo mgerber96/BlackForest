@@ -8,10 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.converter.DefaultStringConverter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,14 +27,19 @@ public class ControllerForFavourite {
     @FXML
     TableColumn<Film, Integer> favouriteYearColumn = new TableColumn<>();
     @FXML
+    TableColumn<Film, String> favouriteRateColumn = new TableColumn<>();
+    @FXML
     TableView<Film> bookmarksTable = new TableView();
     @FXML
     TableColumn<Film, String> bookmarksTitleColumn = new TableColumn<>();
     @FXML
     TableColumn<Film, Integer> bookmarksYearColumn = new TableColumn<>();
     @FXML
+    TableColumn<Film, String> bookmarksRateColumn = new TableColumn<>();
+    @FXML
     TableColumn<Film, Boolean> bookmarksFavouriteColumn = new TableColumn<>();
 
+    private ObservableList<String> favouriteRate = FXCollections.observableArrayList();
     private ObservableList<Film> allFilmsInFavourite = FXCollections.observableArrayList();
 
     private ObservableList<Film> allFilmsInBookmarks = FXCollections.observableArrayList();
@@ -54,7 +62,8 @@ public class ControllerForFavourite {
         for (Film filmInBookmarks : allFilmsInBookmarks) {
              filmInBookmarks.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
                  if (newValue && !oldValue) {
-                     writeInFavouriteFile(filmInBookmarks.getTitle(), String.valueOf(filmInBookmarks.getYear()));
+                     writeInFavouriteFile(filmInBookmarks.getTitle(), String.valueOf(filmInBookmarks.getYear()),
+                             filmInBookmarks.getRate());
                      try{
                          List<Film> productSelected = new ArrayList<>();
                          productSelected.add(filmInBookmarks);
@@ -65,16 +74,26 @@ public class ControllerForFavourite {
         }
     }
 
-    private void writeInFavouriteFile(String filmTitle, String filmYear){
-        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear);
+    private void writeInFavouriteFile(String filmTitle, String filmYear, String filmRate){
+        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear, filmRate);
     }
 
     private void setUpTableForFavourite() {
+        favouriteTable.setEditable(true);
+
         //favouriteTitleColumn
         favouriteTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
         //favouriteYearColumn
         favouriteYearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+
+        //favouriteRateColumn
+        favouriteRateColumn.setEditable(true);
+        favouriteRate.addAll("Like", "Dislike");
+        favouriteRateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
+        favouriteRateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), favouriteRate));
+        favouriteRateColumn.setStyle("-fx-alignment: CENTER;");
+
 
         favouriteTable.setItems(allFilmsInFavourite);
 
@@ -104,6 +123,12 @@ public class ControllerForFavourite {
 
         //bookmarksYearColumn
         bookmarksYearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+
+        //bookmarksRateColumn
+        bookmarksRateColumn.setEditable(true);
+        bookmarksRateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
+        bookmarksRateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), favouriteRate));
+        bookmarksRateColumn.setStyle("-fx-alignment: CENTER;");
 
         //bookmarksFavouriteColumn
         bookmarksFavouriteColumn.setEditable(true);

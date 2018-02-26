@@ -146,6 +146,7 @@ public class Controller{
                 film.setRemember(true);
             else
                 film.setRemember(false);
+
         }
     }
 
@@ -233,20 +234,12 @@ public class Controller{
         favouriteColumn.setCellValueFactory(new PropertyValueFactory<>("favourite"));
         favouriteColumn.setCellFactory(CheckBoxTableCell.forTableColumn(favouriteColumn));
 
-        //rateColumn
-        rate.addAll("Like", "Dislike");
-        rateColumn.setCellValueFactory(new PropertyValueFactory<>("rate"));
-        rateColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),rate));
-        rateColumn.setMaxWidth(90);
-        rateColumn.setMinWidth(90);
-        rateColumn.setStyle("-fx-alignment: CENTER;");
-
         //categoriesColumn
         categoriesColumn.setCellValueFactory(new PropertyValueFactory<>("categories"));
         categoriesColumn.setMaxWidth(300);
         categoriesColumn.setMinWidth(300);
 
-        filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rateColumn, rememberColumn);
+        filmTable.getColumns().addAll(favouriteColumn,titleColumn,categoriesColumn, yearColumn, rememberColumn);
     }
 
     public void filmTableIsClicked(){
@@ -346,7 +339,7 @@ public class Controller{
         for (Film film : originalFilms) {
             film.favouriteProperty().addListener((observableValue, oldValue, newValue) -> {
                 if(newValue)
-                    writeInFavourite(film.getTitle(), String.valueOf(film.getYear()));
+                    writeInFavourite(film.getTitle(), String.valueOf(film.getYear()), film.getRate());
                 else if(!newValue)
                     deleteInFavourite(film.getTitle(), String.valueOf(film.getYear()));
             });
@@ -358,7 +351,7 @@ public class Controller{
         for (Film film : originalFilms) {
             film.rememberProperty().addListener((observableValue, oldValue, newValue) -> {
                 if(newValue)
-                    writeInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
+                    writeInBookmarks(film.getTitle(), String.valueOf(film.getYear()), film.getRate());
                 else if(!newValue && oldValue)
                     deleteInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
             });
@@ -366,13 +359,13 @@ public class Controller{
     }
 
     //write in Favoriten.txt to save checkbox action from favouriteColumn
-    private void writeInFavourite(String filmTitle, String filmYear){
-        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear);
+    private void writeInFavourite(String filmTitle, String filmYear, String filmRate){
+        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear, filmRate);
     }
 
     //write in Bookmarks.txt to save checkbox action from rememberColumn
-    private void writeInBookmarks(String filmTitle, String filmYear){
-        HelperMethods.writeInFile("Bookmarks.txt", filmTitle, filmYear);
+    private void writeInBookmarks(String filmTitle, String filmYear, String filmRate){
+        HelperMethods.writeInFile("Bookmarks.txt", filmTitle, filmYear, filmRate);
     }
 
     private void deleteInFavourite(String title, String year){

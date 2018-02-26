@@ -1,6 +1,5 @@
-Batman: Gotham by Gaslight	2018
-Batman Begins	2005
-Batman Forever	1995
-Batman Returns	1992
-Batman	1989
-Batman	1966
+Batman	1989	Like
+Batman Begins	2005	Dislike
+Batman	1966	Dislike
+Batman Forever	1995	Like
+Batman Returns	1992	Dislike
