@@ -113,7 +113,8 @@ public class Controller{
         });
         doubleClickInFavouriteOrBookmarksWindow.addListener(((observable, oldValue, newValue) ->{
             searchForThis(titleForSearch, yearForSearch);
-            filmTable.getSelectionModel().select(1);
+            filmTable.getSelectionModel().selectFirst();
+            filmTableIsClicked();
         }));
         setUpTables();
         progressbar.setProgress(-1.0f);
@@ -157,9 +158,7 @@ public class Controller{
     }
 
     private void searchForThis (String title, int year){
-
-        new Thread(() -> {
-            progressbar.setVisible(true);
+        Thread t = new Thread(() -> {
             try{
                 makeFavouriteFileToString();
                 makeBookmarksFileToString();
@@ -168,14 +167,21 @@ public class Controller{
                 originalFilms = getFilm(correctStringForSearch(title));
             } catch (Exception e ){e.printStackTrace();}
 
-            progressbar.setVisible(false);
+
             filmTable.setItems(originalFilms);
 
             filterTableViewAccToYears(String.valueOf(year));
 
             addListenerToCheckBoxInFavouriteColumn();
             addListenerToCheckBoxInBookmarksColumn();
-        }).start();
+        });
+        Thread spinner = new Thread( () -> progressbar.setVisible(true));
+        t.start();
+        spinner.start();
+        try{
+            t.join();
+        } catch (InterruptedException e){e.printStackTrace();}
+        progressbar.setVisible(false);
     }
 
     private void setUpTables(){
