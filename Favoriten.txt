@@ -1,5 +1,5 @@
-Batman	1989	Like
-Batman Begins	2005	Dislike
-Batman	1966	Dislike
-Batman Forever	1995	Like
-Batman Returns	1992	Dislike
+Batman & Robin	1997	Dislike
+Batman and Harley Quinn	2017	Dislike
+Scooby-Doo! & Batman: The Brave and the Bold	2018	Like
+The Lego Batman Movie	2017	 
+Batman v Superman: Dawn of Justice	2016	 

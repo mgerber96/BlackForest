@@ -1,9 +1,11 @@
 package PrimeNet;
 
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import java.io.*;
 import java.util.regex.Matcher;
@@ -19,6 +21,7 @@ abstract class HelperMethods{
         Matcher matcher = Pattern.compile(findMovieKeyword).matcher(stringOfFile);
         return matcher.find();
     }
+
     //search for the line which contains the film
     private static int filmIsInLineNumber(File file, String title, String year){
         String stringOfFile = makeFileToString(file);
@@ -219,5 +222,28 @@ abstract class HelperMethods{
                 } catch (IOException e) { e.printStackTrace();}
             }
         }
+    }
+
+    public static void simpleFilter(String comboBoxValue, TableView<Film> table, ObservableList<Film> filmList){
+        String keyword = comboBoxValue;
+        ObservableList<Film> selectedFilms;
+        selectedFilms = FXCollections.observableArrayList();
+        if (keyword == null) {
+        } else if (keyword.equals("Alle")) {
+            selectedFilms = filmList;
+        } else if (keyword.equals("Unbewertet")){
+            for (Film s : filmList) {
+                Matcher matcher = Pattern.compile(" ").matcher(s.getRate());
+                if (matcher.find())
+                    selectedFilms.add(s);
+            }
+        } else{
+            for (Film s : filmList) {
+                Matcher matcher = Pattern.compile(keyword).matcher(s.getRate());
+                if (matcher.find())
+                    selectedFilms.add(s);
+            }
+        }
+        table.setItems(selectedFilms);
     }
 }
