@@ -444,13 +444,4 @@ public class Controller{
             originalFilmsForSecondFilterAction = selectedCategoriesFilms;
             }
     }
-        /*
-        AutoCompletionBinding<MovieData> autoCompletionBinding =
-                TextFields.bindAutoCompletion(searchField,
-                        suggestionRequest -> MovieData. );
-        autoCompletionBinding.setOnAutoCompleted(event -> {
-            cities.add(event.getCompletion());
-            searchField.clear();
-            saveCitiesToDisk();
-        });*/
 }
