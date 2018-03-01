@@ -98,12 +98,7 @@ public class Controller{
 
     @FXML
     private void initialize(){
-        previewPane.setImage(null);
-        previewTitle.setText("");
-        previewDate.setText("");
-        previewRate.setText("");
-        previewOverview.setText("");
-        StoryLabel.setVisible(false);
+        setUpPreview();
         bookmarksWindow.initModality(Modality.APPLICATION_MODAL);
         favouriteWindow.initModality(Modality.APPLICATION_MODAL);
         windowCloseAction.addListener((observableValue, oldValue, newValue) -> {
@@ -113,8 +108,6 @@ public class Controller{
         });
         doubleClickInFavouriteOrBookmarksWindow.addListener(((observable, oldValue, newValue) ->{
             searchForThis(titleForSearch, yearForSearch);
-            filmTable.getSelectionModel().selectFirst();
-            filmTableIsClicked();
         }));
         setUpTables();
         progressbar.setProgress(-1.0f);
@@ -133,6 +126,16 @@ public class Controller{
             onEnter();
         });
     }
+
+    private void setUpPreview(){
+        previewPane.setImage(null);
+        previewTitle.setText("");
+        previewDate.setText("");
+        previewRate.setText("");
+        previewOverview.setText("");
+        StoryLabel.setVisible(false);
+    }
+
     private void refreshFilmList(){
         makeFavouriteFileToString();
         makeBookmarksFileToString();
@@ -159,7 +162,8 @@ public class Controller{
     }
 
     private void searchForThis (String title, int year){
-        Thread t = new Thread(() -> {
+        progressbar.setVisible(true);
+        Thread t1 = new Thread(() -> {
             try{
                 makeFavouriteFileToString();
                 makeBookmarksFileToString();
@@ -168,21 +172,17 @@ public class Controller{
                 originalFilms = getFilm(correctStringForSearch(title));
             } catch (Exception e ){e.printStackTrace();}
 
-
+            progressbar.setVisible(false);
             filmTable.setItems(originalFilms);
 
+            //search result will be filtered according to selected years
+            //AND categories. This is implemented in method filterTableViewAccToYears
             filterTableViewAccToYears(String.valueOf(year));
 
             addListenerToCheckBoxInFavouriteColumn();
             addListenerToCheckBoxInBookmarksColumn();
         });
-        Thread spinner = new Thread( () -> progressbar.setVisible(true));
-        t.start();
-        spinner.start();
-        try{
-            t.join();
-        } catch (InterruptedException e){e.printStackTrace();}
-        progressbar.setVisible(false);
+        t1.start();
     }
 
     private void setUpTables(){
