@@ -48,7 +48,7 @@ abstract class HelperMethods{
 
     //first the file will be checked whether it has the film already inside
     //if so nothing happens
-    public static void writeInFile(String pathname, String filmTitle, String filmYear, String filmRate){
+    public static void writeFilmInFile(String pathname, String filmTitle, String filmYear, String filmRate){
         File file = new File (pathname);
         FileWriter writer;
         String stringOfFile = makeFileToString(file);
@@ -64,6 +64,17 @@ abstract class HelperMethods{
                 writer.flush();
             }catch (IOException e) { e.printStackTrace(); }
         }
+    }
+
+    public static void writeTextInFile(String pathname, String line) {
+        File file = new File (pathname);
+        FileWriter writer;
+        try{
+            writer = new FileWriter(file, true);
+            writer.write(line);
+            writer.write(System.getProperty("line.separator"));
+            writer.flush();
+        } catch (IOException e) {e.printStackTrace(); }
     }
 
     public static void copyOriginalFileBesidesOneLine(File original, File copy, String title, String year){
@@ -137,7 +148,7 @@ abstract class HelperMethods{
         return fileString;
     }
 
-    public static void readLinesFromFile(String datName, ObservableList<Film> allFilms) {
+    public static void readFilmFromFile(String datName, ObservableList<Film> allFilms) {
         File file = new File(datName);
 
         if (!file.canRead() || !file.isFile())
@@ -148,10 +159,10 @@ abstract class HelperMethods{
             in = new BufferedReader(new FileReader(datName));
             String line;
             String[] word;
-            //read lines by lines and add the films to favouriteTableView
+            //read lines by lines and add the films to TableView
             while ((line = in.readLine()) != null) {
                 //Strings in these lines are separated by a tab, we will get each of them and create a instance of film
-                //then we will add it to a new list which we will later use to generate our list in favouriteTableView
+                //then we will add it to a new list which we will later use to generate our list in TableView
                 word = line.split("\t");
                 try{
                     allFilms.add(makeFilm(word[0], Integer.parseInt(word[1]), word[2]));
@@ -170,6 +181,42 @@ abstract class HelperMethods{
         }
     }
 
+    public static void readFilmAndDateFromFile(String pathname, ObservableList<Film> keywordAndTimeList){
+        File file = new File(pathname);
+
+        if (!file.canRead() || !file.isFile())
+            System.exit(0);
+
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new FileReader(pathname));
+            String line;
+            String[] word;
+            //read lines by lines and add the films to TableView
+            while ((line = in.readLine()) != null) {
+                //Strings in these lines are separated by a tab, we will get each of them and create a instance of film
+                //then we will add it to a new list which we will later use to generate our list in TableView
+                word = line.split("\t");
+                try{
+                    keywordAndTimeList.add(makeFilmWithTime(word[0], word[1]));
+                } catch (ArrayIndexOutOfBoundsException e){
+                    keywordAndTimeList.add(makeFilmWithTime(word[0], word[1]));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) { e.printStackTrace();}
+            }
+        }
+    }
+
+    private static Film makeFilmWithTime(String keyword, String timeAndDate){
+        return new Film(keyword, timeAndDate);
+    }
     private static Film makeFilm(String title, int year, String filmRate) {
         return new Film(title, year, filmRate);
     }
@@ -178,7 +225,7 @@ abstract class HelperMethods{
         return new Film(title, year);
     }
 
-    public static void overwriteFile(String pathname, ObservableList<Film> allFilms){
+    public static void overwriteFileWithFilm(String pathname, ObservableList<Film> allFilms){
         File file = new File(pathname);
         FileWriter writer;
         try {
@@ -245,5 +292,12 @@ abstract class HelperMethods{
             }
         }
         table.setItems(selectedFilms);
+    }
+
+    public static void createAFile(String filename){
+        try{
+            FileWriter writer = new FileWriter(filename, true);
+            writer.flush();
+        } catch (IOException e) {e.printStackTrace();}
     }
 }

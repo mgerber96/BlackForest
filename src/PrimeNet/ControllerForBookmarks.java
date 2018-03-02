@@ -48,7 +48,7 @@ public class ControllerForBookmarks {
         closingBookmarksWindowAction(Controller.getBookmarksWindow());
     }
 
-    public void setUpBookmarksLikeDislikeComboBox() {
+    private void setUpBookmarksLikeDislikeComboBox() {
         bookmarksLikeDislikeComboBox.getItems().addAll("Alle", "Like", "Dislike", "Unbewertet");
     }
 
@@ -71,7 +71,7 @@ public class ControllerForBookmarks {
     }
 
     private void writeInFavouriteFile(String filmTitle, String filmYear, String filmRate) {
-        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear, filmRate);
+        HelperMethods.writeFilmInFile("Favoriten.txt", filmTitle, filmYear, filmRate);
     }
 
 
@@ -118,9 +118,8 @@ public class ControllerForBookmarks {
     }
 
     private void readLinesFromBookmarks(String fileName) {
-        HelperMethods.readLinesFromFile(fileName, allFilmsInBookmarks);
+        HelperMethods.readFilmFromFile(fileName, allFilmsInBookmarks);
     }
-
 
     //Bookmarks.txt will be changed acoording to latest ObservableList allFilmsInBookmarks
     private void closingBookmarksWindowAction(Stage stage) {
@@ -132,7 +131,7 @@ public class ControllerForBookmarks {
     }
 
     private void overwriteInBookmarks() {
-        HelperMethods.overwriteFile("Bookmarks.txt", allFilmsInBookmarks);
+        HelperMethods.overwriteFileWithFilm("Bookmarks.txt", allFilmsInBookmarks);
     }
 
     //Action by pressing the delete button in bookmarks table

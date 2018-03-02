@@ -20,14 +20,15 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-
 public class Controller{
     @FXML
     public ProgressIndicator progressbar;
+    @FXML
     public Label StoryLabel;
     @FXML
     ComboBox<String> categoriesComboBox;
@@ -35,8 +36,6 @@ public class Controller{
     TextField searchField = new TextField();
     @FXML
     TableView<Film> filmTable = new TableView<>();
-    @FXML
-    private TableColumn<Film, String> rateColumn = new TableColumn<>("Bewerten");
     @FXML
     private TableColumn<Film, Boolean> favouriteColumn = new TableColumn<>("Favorit");
     @FXML
@@ -60,15 +59,16 @@ public class Controller{
     @FXML
     Label previewOverview = new Label();
 
-    private ObservableList<String> rate = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilmsForSecondFilterAction = FXCollections.observableArrayList();
     private static String titleForSearch;
     private static int yearForSearch;
     private static SimpleBooleanProperty windowCloseAction = new SimpleBooleanProperty(false);
-    private static SimpleBooleanProperty doubleClickInFavouriteOrBookmarksWindow = new SimpleBooleanProperty(false);
+    private static SimpleBooleanProperty doubleClickSecondaryWindow = new SimpleBooleanProperty(false);
+    private static SimpleBooleanProperty doubleClickSearchHistoryWindow = new SimpleBooleanProperty(false);
     private static Stage favouriteWindow = new Stage();
     private static Stage bookmarksWindow = new Stage();
+    private static Stage searchHistoryWindow = new Stage();
     private static String filmsInFavouriteAsString;
     private static String filmsInBookmarksAsString;
 
@@ -79,15 +79,6 @@ public class Controller{
             windowCloseAction.set(true);
     }
 
-    public static void setDoubleClickInFavouriteOrBookmarksWindow(String title, int year){
-        titleForSearch = title;
-        yearForSearch = year;
-        if(doubleClickInFavouriteOrBookmarksWindow.getValue())
-            doubleClickInFavouriteOrBookmarksWindow.set(false);
-        else
-            doubleClickInFavouriteOrBookmarksWindow.set(true);
-    }
-
     public static Stage getBookmarksWindow() {
         return bookmarksWindow;
     }
@@ -96,18 +87,44 @@ public class Controller{
         return favouriteWindow;
     }
 
+    public static Stage getSearchHistoryWindow() {
+        return searchHistoryWindow;
+    }
+
+    public static void setDoubleClickInFavouriteOrBookmarksWindow(String title, int year){
+        titleForSearch = title;
+        yearForSearch = year;
+        if(doubleClickSecondaryWindow.getValue())
+            doubleClickSecondaryWindow.set(false);
+        else
+            doubleClickSecondaryWindow.set(true);
+    }
+
+    public static void setDoubleClickInSearchHistory(String keyword){
+        titleForSearch = keyword;
+        if(doubleClickSearchHistoryWindow.getValue())
+            doubleClickSearchHistoryWindow.set(false);
+        else
+            doubleClickSearchHistoryWindow.set(true);
+    }
+
     @FXML
     private void initialize(){
+        createAllNeededFiles();
         setUpPreview();
         bookmarksWindow.initModality(Modality.APPLICATION_MODAL);
         favouriteWindow.initModality(Modality.APPLICATION_MODAL);
+        searchHistoryWindow.initModality(Modality.APPLICATION_MODAL);
         windowCloseAction.addListener((observableValue, oldValue, newValue) -> {
             try{
                 refreshFilmList();
             } catch (Exception e){e.printStackTrace();}
         });
-        doubleClickInFavouriteOrBookmarksWindow.addListener(((observable, oldValue, newValue) ->{
+        doubleClickSecondaryWindow.addListener(((observable, oldValue, newValue) ->{
             searchForThis(titleForSearch, yearForSearch);
+        }));
+        doubleClickSearchHistoryWindow.addListener(((observable, oldValue, newValue) ->{
+            searchForThis(titleForSearch);
         }));
         setUpTables();
         progressbar.setProgress(-1.0f);
@@ -125,6 +142,15 @@ public class Controller{
             searchField.positionCaret(event.getCompletion().length());
             onEnter();
         });
+    }
+
+    private void createAllNeededFiles(){
+        HelperMethods.createAFile("Favoriten.txt");
+        HelperMethods.createAFile("copyOfFavoriten.txt");
+        HelperMethods.createAFile("Bookmarks.txt");
+        HelperMethods.createAFile("copyOfBookmarks.txt");
+        HelperMethods.createAFile("SearchHistory.txt");
+        HelperMethods.createAFile("copyOfSearchHistory.txt");
     }
 
     private void setUpPreview(){
@@ -181,6 +207,26 @@ public class Controller{
 
             addListenerToCheckBoxInFavouriteColumn();
             addListenerToCheckBoxInBookmarksColumn();
+        });
+        t1.start();
+    }
+
+    private void searchForThis(String keyword){
+        progressbar.setVisible(true);
+        Thread t1 = new Thread(() -> {
+            try{
+                makeFavouriteFileToString();
+                makeBookmarksFileToString();
+            } catch (Exception e){e.printStackTrace();}
+            try{
+                originalFilms = getFilm(correctStringForSearch(keyword));
+            } catch (Exception e ){e.printStackTrace();}
+
+            progressbar.setVisible(false);
+            filmTable.setItems(originalFilms);
+            addListenerToCheckBoxInFavouriteColumn();
+            addListenerToCheckBoxInBookmarksColumn();
+            searchField.setText(keyword);
         });
         t1.start();
     }
@@ -261,6 +307,11 @@ public class Controller{
         previewOverview.setText(film.getOverview());
     }
 
+    //by clicking the button "Chronik" the latest searchHistory will be opened
+    public void clickSearchHistory() throws IOException{
+        Parent root =  FXMLLoader.load(getClass().getResource("FxmlFiles/SearchHistory.fxml"));
+        HelperMethods.openNewWindow(favouriteWindow, "Favoriten", root);
+    }
     //by clicking the button "Favoriten" favourite window will be opened
     public void clickFavourite() throws IOException{
         Parent root =  FXMLLoader.load(getClass().getResource("FxmlFiles/Favourite.fxml"));
@@ -274,16 +325,20 @@ public class Controller{
     }
 
     //if enter is pressed table of film will be filled with new content
-    public void onEnter(){
+    public void onEnter() {
         progressbar.setVisible(true);
         new Thread(() -> {
-            try{
+            try {
                 makeFavouriteFileToString();
                 makeBookmarksFileToString();
-            } catch (Exception e){e.printStackTrace();}
-            try{
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
                 originalFilms = getFilm(correctStringForSearch(searchField.getText()));
-            } catch (Exception e ){e.printStackTrace();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             progressbar.setVisible(false);
             filmTable.setItems(originalFilms);
@@ -294,9 +349,20 @@ public class Controller{
 
             addListenerToCheckBoxInFavouriteColumn();
             addListenerToCheckBoxInBookmarksColumn();
+            writeKeywordAndTimeInFile(searchField.getText());
         }).start();
+
     }
 
+    private void writeKeywordAndTimeInFile(String keyword){
+        Calendar cal = Calendar.getInstance ();
+        String date = String.valueOf(cal.get(Calendar.YEAR)) + "." + String.valueOf(cal.get(Calendar.MONTH)+1)
+                + "." + String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+        String timeOfDay = String.valueOf(cal.get(Calendar.HOUR_OF_DAY)) + ":" +
+                cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND);
+        String keywordAndDate = keyword + "\t" + date + " " + timeOfDay;
+        HelperMethods.writeTextInFile("SearchHistory.txt", keywordAndDate);
+    }
     private void makeFavouriteFileToString(){
         try {
             File fileFavourite = new File("Favoriten.txt");
@@ -352,7 +418,7 @@ public class Controller{
             film.rememberProperty().addListener((observableValue, oldValue, newValue) -> {
                 if(newValue)
                     writeInBookmarks(film.getTitle(), String.valueOf(film.getYear()), film.getRate());
-                else if(!newValue && oldValue)
+                else if(!newValue)
                     deleteInBookmarks(film.getTitle(), String.valueOf(film.getYear()));
             });
         }
@@ -360,12 +426,12 @@ public class Controller{
 
     //write in Favoriten.txt to save checkbox action from favouriteColumn
     private void writeInFavourite(String filmTitle, String filmYear, String filmRate){
-        HelperMethods.writeInFile("Favoriten.txt", filmTitle, filmYear, filmRate);
+        HelperMethods.writeFilmInFile("Favoriten.txt", filmTitle, filmYear, filmRate);
     }
 
     //write in Bookmarks.txt to save checkbox action from rememberColumn
     private void writeInBookmarks(String filmTitle, String filmYear, String filmRate){
-        HelperMethods.writeInFile("Bookmarks.txt", filmTitle, filmYear, filmRate);
+        HelperMethods.writeFilmInFile("Bookmarks.txt", filmTitle, filmYear, filmRate);
     }
 
     private void deleteInFavourite(String title, String year){

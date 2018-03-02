@@ -15,6 +15,7 @@ public class Film {
     private SimpleStringProperty rate;
     private Image poster;
     private SimpleStringProperty categories;
+    private SimpleStringProperty timeAndDate;
 
     public Film(boolean favourite, String title, int year, String overview, boolean remember, String rate, Image poster, String categories) {
         this.favourite = new SimpleBooleanProperty(favourite);
@@ -27,13 +28,25 @@ public class Film {
         this.categories = new SimpleStringProperty(categories);
     }
 
-    //this constructor will only be used in ControllerForFavourite
+    //this constructor will only be used for ControllerForFavourite and ControllerForBookmarks
     public Film(String title, int year, String rate) {
         this.title = new SimpleStringProperty(title);
         this.year = new SimpleIntegerProperty(year);
         this.favourite = new SimpleBooleanProperty(false);
         this.rate = new SimpleStringProperty(rate);
     }
+
+    //this constructor will only be used for ControllerForSearchHistory
+    public Film(String title, String timeAndDate) {
+        this.title = new SimpleStringProperty(title);
+        this.timeAndDate = new SimpleStringProperty(timeAndDate);
+    }
+
+    public String getTimeAndDate() { return timeAndDate.get(); }
+
+    public SimpleStringProperty timeAndDateProperty() { return timeAndDate; }
+
+    public void setTimeAndDate(String timeAndDate) { this.timeAndDate.set(timeAndDate); }
 
     public Film(String title, int year) {
         this(title , year, " ");

@@ -35,9 +35,9 @@ public class ControllerForFavourite {
 
     @FXML
     private void initialize() {
+        readLinesFromFavourite("Favoriten.txt");
         setUpTableForFavourite();
         setUpFavouriteLikeDislikeComboBox();
-        readLinesFromFavourite("Favoriten.txt");
         closingFavouriteWindowAction(Controller.getFavouriteWindow());
     }
 
@@ -82,7 +82,7 @@ public class ControllerForFavourite {
     }
 
     private void readLinesFromFavourite(String fileName) {
-        HelperMethods.readLinesFromFile(fileName, allFilmsInFavourite);
+        HelperMethods.readFilmFromFile(fileName, allFilmsInFavourite);
     }
 
     //Before finally closing the window
@@ -97,7 +97,7 @@ public class ControllerForFavourite {
     }
 
     private void overwriteFavourite() {
-        HelperMethods.overwriteFile("Favoriten.txt", allFilmsInFavourite);
+        HelperMethods.overwriteFileWithFilm("Favoriten.txt", allFilmsInFavourite);
     }
 
     //Action by pressing the delete button in favourite table
@@ -115,5 +115,3 @@ public class ControllerForFavourite {
         HelperMethods.simpleFilter(favouriteLikeDislikeComboBox.getValue(), favouriteTable, allFilmsInFavourite);
     }
 }
-
-
