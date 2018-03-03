@@ -43,7 +43,7 @@ public class ControllerForBookmarks {
     public void initialize(){
         setUpTableForBookmarks();
         setUpBookmarksLikeDislikeComboBox();
-        readLinesFromBookmarks("Bookmarks.txt");
+        readLinesFromBookmarks(Controller.getUsername() + "Bookmarks.txt");
         setUpFavouriteColumnInBookmarks();
         closingBookmarksWindowAction(Controller.getBookmarksWindow());
     }
@@ -71,7 +71,7 @@ public class ControllerForBookmarks {
     }
 
     private void writeInFavouriteFile(String filmTitle, String filmYear, String filmRate) {
-        HelperMethods.writeFilmInFile("Favoriten.txt", filmTitle, filmYear, filmRate);
+        HelperMethods.writeFilmInFile(Controller.getUsername() + "Favoriten.txt", filmTitle, filmYear, filmRate);
     }
 
 
@@ -106,10 +106,12 @@ public class ControllerForBookmarks {
                     if (mouseEvent.getClickCount() == 2) {
                         doubleClick = true;
                         Controller.getBookmarksWindow().close();
-                        Controller.setDoubleClickInFavouriteOrBookmarksWindow(
-                                bookmarksTable.getSelectionModel().getSelectedItem().getTitle(),
-                                bookmarksTable.getSelectionModel().getSelectedItem().getYear()
-                        );
+                        try{
+                            Controller.setDoubleClickInFavouriteOrBookmarksWindow(
+                                    bookmarksTable.getSelectionModel().getSelectedItem().getTitle(),
+                                    bookmarksTable.getSelectionModel().getSelectedItem().getYear());
+                            //sometimes if you do not accurately click a row, a NullPointerException will occur.
+                        } catch (NullPointerException e){e.printStackTrace();}
                     }
                 }
             }
@@ -131,7 +133,8 @@ public class ControllerForBookmarks {
     }
 
     private void overwriteInBookmarks() {
-        HelperMethods.overwriteFileWithFilm("Bookmarks.txt", allFilmsInBookmarks);
+        HelperMethods.overwriteFileWithFilm(
+                Controller.getUsername() + "Bookmarks.txt", allFilmsInBookmarks);
     }
 
     //Action by pressing the delete button in bookmarks table

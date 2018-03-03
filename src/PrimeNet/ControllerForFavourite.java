@@ -35,7 +35,7 @@ public class ControllerForFavourite {
 
     @FXML
     private void initialize() {
-        readLinesFromFavourite("Favoriten.txt");
+        readLinesFromFavourite(Controller.getUsername() + "Favoriten.txt");
         setUpTableForFavourite();
         setUpFavouriteLikeDislikeComboBox();
         closingFavouriteWindowAction(Controller.getFavouriteWindow());
@@ -71,10 +71,12 @@ public class ControllerForFavourite {
                     if (mouseEvent.getClickCount() == 2) {
                         doubleClick = true;
                         Controller.getFavouriteWindow().close();
-                        Controller.setDoubleClickInFavouriteOrBookmarksWindow(
-                                favouriteTable.getSelectionModel().getSelectedItem().getTitle(),
-                                favouriteTable.getSelectionModel().getSelectedItem().getYear()
-                        );
+                        try{
+                            Controller.setDoubleClickInFavouriteOrBookmarksWindow(
+                                    favouriteTable.getSelectionModel().getSelectedItem().getTitle(),
+                                    favouriteTable.getSelectionModel().getSelectedItem().getYear());
+                            //sometimes if you do not accurately click a row, a NullPointerException will occur.
+                        } catch (NullPointerException e){e.printStackTrace();}
                     }
                 }
             }
@@ -97,7 +99,7 @@ public class ControllerForFavourite {
     }
 
     private void overwriteFavourite() {
-        HelperMethods.overwriteFileWithFilm("Favoriten.txt", allFilmsInFavourite);
+        HelperMethods.overwriteFileWithFilm(Controller.getUsername() + "Favoriten.txt", allFilmsInFavourite);
     }
 
     //Action by pressing the delete button in favourite table

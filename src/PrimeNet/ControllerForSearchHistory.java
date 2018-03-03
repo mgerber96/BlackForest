@@ -26,7 +26,7 @@ public class ControllerForSearchHistory {
 
     @FXML
     public void initialize(){
-        HelperMethods.readFilmAndDateFromFile("SearchHistory.txt", keywordAndTimeList);
+        HelperMethods.readFilmAndDateFromFile(Controller.getUsername() + "SearchHistory.txt", keywordAndTimeList);
         setUpSearchHistoryTable();
     }
 
@@ -45,9 +45,12 @@ public class ControllerForSearchHistory {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
                         doubleClick = true;
-                        Controller.getFavouriteWindow().close();
-                        Controller.setDoubleClickInSearchHistory(
-                                searchHistoryTable.getSelectionModel().getSelectedItem().getTitle());
+                        try{
+                            Controller.setDoubleClickInSearchHistory(
+                                    searchHistoryTable.getSelectionModel().getSelectedItem().getTitle());
+                            //sometimes if you do not accurately click a row, a NullPointerException will occur.
+                        } catch (NullPointerException e){e.printStackTrace();}
+                        Controller.getSearchHistoryWindow().close();
                     }
                 }
             }
@@ -58,8 +61,8 @@ public class ControllerForSearchHistory {
         ObservableList<Film> emptyList = FXCollections.observableArrayList();
         keywordAndTimeList = emptyList;
         searchHistoryTable.setItems(keywordAndTimeList);
-        File copy = new File("copyOfSearchHistory.txt");
-        File original = new File("SearchHistory.txt");
+        File copy = new File(Controller.getUsername() + "copyOfSearchHistory.txt");
+        File original = new File(Controller.getUsername() + "SearchHistory.txt");
         HelperMethods.overwriteSecondFileWithFirstFile(copy, original);
     }
 }
