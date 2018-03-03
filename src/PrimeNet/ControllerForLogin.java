@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -70,6 +71,15 @@ public class ControllerForLogin {
     //if login is successful this program will only used txt.file in this format
     //"usernameFilename" all existing Filenames have got as prefix a username
     public void generateUserProfile(String username){
+        //Create directory: Profile/Username/
+        File file = new File("Profile/" + username + "/");
+        if(!file.exists())
+            file.mkdir();
+
+        String userDirectiory = "Profile/" + username + "/";
+        //add directory as a prefix for username so that the program knows in which directory .txt file lies
+        username = userDirectiory + username;
+        System.out.println(username);
         Controller.setUsername(username);
         HelperMethods.createAFile(username + "Favoriten.txt");
         HelperMethods.createAFile(username + "copyOfFavoriten.txt");
@@ -108,6 +118,5 @@ public class ControllerForLogin {
         CreateUser.setTitle("Create_User");
         CreateUser.setScene(new Scene(root, 250, 150));
         CreateUser.show();
-
     }
 }
