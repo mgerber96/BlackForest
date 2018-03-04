@@ -35,7 +35,7 @@ public class ControllerForFavourite {
 
     @FXML
     private void initialize() {
-        readLinesFromFavourite(Controller.getUsername() + "Favoriten.txt");
+        readLinesFromFavourite(Controller.getUsername() + "/Favoriten.txt");
         setUpTableForFavourite();
         setUpFavouriteLikeDislikeComboBox();
         closingFavouriteWindowAction(Controller.getFavouriteWindow());
@@ -99,7 +99,7 @@ public class ControllerForFavourite {
     }
 
     private void overwriteFavourite() {
-        HelperMethods.overwriteFileWithFilm(Controller.getUsername() + "Favoriten.txt", allFilmsInFavourite);
+        HelperMethods.overwriteFileWithFilm(Controller.getUsername() + "/Favoriten.txt", allFilmsInFavourite);
     }
 
     //Action by pressing the delete button in favourite table

@@ -23,14 +23,8 @@ public class MovieDatabase {
     private static final String POSTER_PREFIX = "3/movie/";
     private static String apiKey;
 
-    static {
-        try (BufferedReader stream = Files.newBufferedReader(Paths.get("config.properties"))) {
-            Properties properties = new Properties();
-            properties.load(stream);
-            apiKey = properties.getProperty("api.key");
-        } catch (IOException ioException) {
-            ioException.printStackTrace(System.err);
-        }
+    public static void setApiKey(String apiKey) {
+        MovieDatabase.apiKey = apiKey;
     }
 
     public static Results getMoviesByName(String query) {

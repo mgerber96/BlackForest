@@ -32,70 +32,40 @@ public class ControllerCreateUser {
     @FXML
     private void CreateNewUser(ActionEvent e) throws IOException {
         List<String> lines = new ArrayList<>();
-        List<String> oldusers = new ArrayList<>();
         try {
-            oldusers = lines = Files.readAllLines(Paths.get("passwords.txt"));
+            lines = Files.readAllLines(Paths.get("passwords.txt"));
         } catch (IOException e1) { }
 
         boolean written = false;
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("passwords.txt"))) {
             for (String line : lines) {
                 String[] parts = line.split(":");
-                if (parts.length != 2) {
+                if (parts.length != 3) {
                     writer.write(line);
                     writer.newLine();
                     continue;
                 }
 
                 String username = parts[0];
-                String password = parts[1];
 
                 if (username.equalsIgnoreCase(CreateUserUsername.getText())) {
-                    for (String olduser : oldusers){
-                        String string = String.valueOf(oldusers);
-                        writer.write(string.replaceAll("\\[+\\]+", ""));
-                        writer.newLine();
-                    }
                     writer.write(username + ":"
-                            + auth.hash(CreateUserPassword.getText().toCharArray()));
+                            + auth.hash(CreateUserPassword.getText().toCharArray()) + ":"
+                            + CreateUserAPIkey.getText());
                     writer.newLine();
                     written = true;
-                    break;
-                }
-            }
-
-            for (String olduser : oldusers){
-                String string = String.valueOf(oldusers);
-                writer.write(string.replaceAll("\\[+\\]+", ""));
-                writer.newLine();
-            }
-            writer.write(CreateUserUsername.getText() + ":"
-                    + auth.hash(CreateUserPassword.getText().toCharArray()));
-            writer.newLine();
-        } catch (IOException ioException) { }
-
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("config.properties"))) {
-            for (String line : lines) {
-                String[] parts = line.split(":");
-                if (parts.length != 2) {
+                } else {
                     writer.write(line);
                     writer.newLine();
-                    break;
-                }
-
-                String username = parts[0];
-                String apikey = parts[1];
-
-                if (username.equalsIgnoreCase(CreateUserUsername.getText())) {
-                    writer.write("api.key = " + CreateUserAPIkey.getText());
-                    writer.newLine();
-                    written = true;
-                    return;
                 }
             }
 
-            writer.write("api.key = " + CreateUserAPIkey.getText());
-            writer.newLine();
+            if (!written) {
+                writer.write(CreateUserUsername.getText() + ":"
+                        + auth.hash(CreateUserPassword.getText().toCharArray()) + ":"
+                        + CreateUserAPIkey.getText());
+                writer.newLine();
+            }
         } catch (IOException ioException) { }
 
         CreateNewUser.getScene().getWindow().hide();

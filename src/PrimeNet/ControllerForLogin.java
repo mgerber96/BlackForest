@@ -14,6 +14,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ControllerForLogin {
 
@@ -44,18 +47,20 @@ public class ControllerForLogin {
                    }
 
                    String[] parts = line.split(":");
-                   if (parts.length != 2) {
+                   if (parts.length != 3) {
                        continue;
                    }
 
                    String username = parts[0];
                    String password = parts[1];
+                   String apiKey = parts[2];
 
                    if (!username.equalsIgnoreCase(TextUserName.getText())) {
                        continue;
                    }
 
                    if (auth.authenticate(TextPassword.getText().toCharArray(), password)) {
+                       MovieDatabase.setApiKey(apiKey);
                        generateUserProfile(username);
                        setMainStageAndCloseLoginWindow();
                        return;
@@ -70,22 +75,20 @@ public class ControllerForLogin {
     //if login is successful this program will only used txt.file in this format
     //"usernameFilename" all existing Filenames have got as prefix a username
     public void generateUserProfile(String username){
+        Path userDirectory = Paths.get("Profile").resolve(username);
         //Create directory: Profile/Username/
-        File file = new File("Profile/" + username + "/");
-        if(!file.exists())
-            file.mkdir();
+        try {
+            Files.createDirectories(userDirectory);
+        } catch (IOException ioException) { }
 
-        String userDirectiory = "Profile/" + username + "/";
-        //add directory as a prefix for username so that the program knows in which directory .txt file lies
-        username = userDirectiory + username;
-        System.out.println(username);
-        Controller.setUsername(username);
-        HelperMethods.createAFile(username + "Favoriten.txt");
-        HelperMethods.createAFile(username + "copyOfFavoriten.txt");
-        HelperMethods.createAFile(username + "Bookmarks.txt");
-        HelperMethods.createAFile(username + "copyOfBookmarks.txt");
-        HelperMethods.createAFile(username + "SearchHistory.txt");
-        HelperMethods.createAFile(username + "copyOfSearchHistory.txt");
+        System.out.println(userDirectory);
+        Controller.setUsername(userDirectory.toString());
+        HelperMethods.createAFile(userDirectory.resolve("Favoriten.txt").toString());
+        HelperMethods.createAFile(userDirectory.resolve("copyOfFavoriten.txt").toString());
+        HelperMethods.createAFile(userDirectory.resolve("Bookmarks.txt").toString());
+        HelperMethods.createAFile(userDirectory.resolve("copyOfBookmarks.txt").toString());
+        HelperMethods.createAFile(userDirectory.resolve("SearchHistory.txt").toString());
+        HelperMethods.createAFile(userDirectory.resolve("copyOfSearchHistory.txt").toString());
     }
 
     public void setMainStageAndCloseLoginWindow(){

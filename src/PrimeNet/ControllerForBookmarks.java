@@ -43,7 +43,7 @@ public class ControllerForBookmarks {
     public void initialize(){
         setUpTableForBookmarks();
         setUpBookmarksLikeDislikeComboBox();
-        readLinesFromBookmarks(Controller.getUsername() + "Bookmarks.txt");
+        readLinesFromBookmarks(Controller.getUsername() + "/Bookmarks.txt");
         setUpFavouriteColumnInBookmarks();
         closingBookmarksWindowAction(Controller.getBookmarksWindow());
     }
@@ -71,7 +71,7 @@ public class ControllerForBookmarks {
     }
 
     private void writeInFavouriteFile(String filmTitle, String filmYear, String filmRate) {
-        HelperMethods.writeFilmInFile(Controller.getUsername() + "Favoriten.txt", filmTitle, filmYear, filmRate);
+        HelperMethods.writeFilmInFile(Controller.getUsername() + "/Favoriten.txt", filmTitle, filmYear, filmRate);
     }
 
 
@@ -134,7 +134,7 @@ public class ControllerForBookmarks {
 
     private void overwriteInBookmarks() {
         HelperMethods.overwriteFileWithFilm(
-                Controller.getUsername() + "Bookmarks.txt", allFilmsInBookmarks);
+                Controller.getUsername() + "/Bookmarks.txt", allFilmsInBookmarks);
     }
 
     //Action by pressing the delete button in bookmarks table

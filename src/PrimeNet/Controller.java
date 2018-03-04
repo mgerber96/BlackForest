@@ -363,12 +363,12 @@ public class Controller{
         String timeOfDay = String.valueOf(cal.get(Calendar.HOUR_OF_DAY)) + ":" +
                 cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND);
         String keywordAndDate = keyword + "\t" + date + " " + timeOfDay;
-        HelperMethods.writeTextInFile(username + "SearchHistory.txt", keywordAndDate);
+        HelperMethods.writeTextInFile(username + "/SearchHistory.txt", keywordAndDate);
     }
 
     private void makeFavouriteFileToString(){
         try {
-            File fileFavourite = new File(username + "Favoriten.txt");
+            File fileFavourite = new File(username + "/Favoriten.txt");
             filmsInFavouriteAsString = HelperMethods.makeFileToString(fileFavourite);
         } catch (NullPointerException e) {
             filmsInFavouriteAsString = "";
@@ -377,7 +377,7 @@ public class Controller{
 
     private void makeBookmarksFileToString(){
         try{
-            File fileBookmarks = new File (username + "Bookmarks.txt");
+            File fileBookmarks = new File (username + "/Bookmarks.txt");
             filmsInBookmarksAsString = HelperMethods.makeFileToString(fileBookmarks);
         } catch (NullPointerException e) {
             filmsInBookmarksAsString = "";
@@ -430,17 +430,17 @@ public class Controller{
 
     //write in Favoriten.txt to save checkbox action from favouriteColumn
     private void writeInFavourite(String filmTitle, String filmYear, String filmRate){
-        HelperMethods.writeFilmInFile(username + "Favoriten.txt", filmTitle, filmYear, filmRate);
+        HelperMethods.writeFilmInFile(username + "/Favoriten.txt", filmTitle, filmYear, filmRate);
     }
 
     //write in Bookmarks.txt to save checkbox action from rememberColumn
     private void writeInBookmarks(String filmTitle, String filmYear, String filmRate){
-        HelperMethods.writeFilmInFile(username + "Bookmarks.txt", filmTitle, filmYear, filmRate);
+        HelperMethods.writeFilmInFile(username + "/Bookmarks.txt", filmTitle, filmYear, filmRate);
     }
 
     private void deleteInFavourite(String title, String year){
-        File original = new File(username + "Favoriten.txt");
-        File copy = new File(username + "copyOfFavourite.txt");
+        File original = new File(username + "/Favoriten.txt");
+        File copy = new File(username + "/copyOfFavourite.txt");
         HelperMethods.copyOriginalFileBesidesOneLine(original, copy, title, year);
         //At first we wanted to delete the original file and then rename the copy file, however the method delete()
         //does not work because of unknown reason. So this is our second best solution to resolve this issue.
@@ -448,8 +448,8 @@ public class Controller{
     }
 
     private void deleteInBookmarks(String title, String year){
-        File original = new File(username + "Bookmarks.txt");
-        File copy = new File(username + "copyOfBookmarks.txt");
+        File original = new File(username + "/Bookmarks.txt");
+        File copy = new File(username + "/copyOfBookmarks.txt");
         HelperMethods.copyOriginalFileBesidesOneLine(original, copy, title, year);
         HelperMethods.overwriteSecondFileWithFirstFile(copy, original);
     }

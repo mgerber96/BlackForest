@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,14 +69,11 @@ abstract class HelperMethods{
     }
 
     public static void writeTextInFile(String pathname, String line) {
-        File file = new File (pathname);
-        FileWriter writer;
-        try{
-            writer = new FileWriter(file, true);
-            writer.write(line);
-            writer.write(System.getProperty("line.separator"));
-            writer.flush();
-        } catch (IOException e) {e.printStackTrace(); }
+        try {
+            Files.write(Paths.get(pathname), String.format("%s\n", line).getBytes());
+        } catch (IOException ioExeption) {
+            ioExeption.printStackTrace(System.err);
+        }
     }
 
     public static void copyOriginalFileBesidesOneLine(File original, File copy, String title, String year){

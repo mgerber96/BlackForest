@@ -26,7 +26,7 @@ public class ControllerForSearchHistory {
 
     @FXML
     public void initialize(){
-        HelperMethods.readFilmAndDateFromFile(Controller.getUsername() + "SearchHistory.txt", keywordAndTimeList);
+        HelperMethods.readFilmAndDateFromFile(Controller.getUsername() + "/SearchHistory.txt", keywordAndTimeList);
         setUpSearchHistoryTable();
     }
 
@@ -61,8 +61,8 @@ public class ControllerForSearchHistory {
         ObservableList<Film> emptyList = FXCollections.observableArrayList();
         keywordAndTimeList = emptyList;
         searchHistoryTable.setItems(keywordAndTimeList);
-        File copy = new File(Controller.getUsername() + "copyOfSearchHistory.txt");
-        File original = new File(Controller.getUsername() + "SearchHistory.txt");
+        File copy = new File(Controller.getUsername() + "/copyOfSearchHistory.txt");
+        File original = new File(Controller.getUsername() + "/SearchHistory.txt");
         HelperMethods.overwriteSecondFileWithFirstFile(copy, original);
     }
 }
