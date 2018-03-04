@@ -16,6 +16,7 @@ public class Movie {
 
     private static Map<Integer, String> categories = new HashMap<>();
 
+    //categories to filter the movies
     static {
         categories.put(12, "Abenteuer");
         categories.put(28, "Action");
@@ -38,6 +39,7 @@ public class Movie {
         categories.put(37, "Western");
     }
 
+    //variables which we are getting from the JSON code
     @SerializedName("title")
     private String title;
 
@@ -56,6 +58,7 @@ public class Movie {
     @SerializedName("genre_ids")
     private int[] genres;
 
+    //getter and setter for such variables
     public String getTitle() {
         return title;
     }
@@ -104,6 +107,7 @@ public class Movie {
         this.genres = genres;
     }
 
+    //we just wanted the year not the exact releaseDate
     public int getReleaseYear() {
         if (releaseDate == null) {
             return 0;
@@ -123,6 +127,7 @@ public class Movie {
         return Arrays.stream(genres).mapToObj(genre -> categories.getOrDefault(genre, "nicht bekannt"))
                 .collect(Collectors.joining(", "));
     }
+
 
     @Override
     public String toString() {

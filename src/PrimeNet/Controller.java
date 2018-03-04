@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Controller{
+    //main window
     @FXML
     public ProgressIndicator progressbar;
     @FXML
@@ -59,6 +60,7 @@ public class Controller{
     @FXML
     Label previewOverview = new Label();
 
+    //mostly constructors
     private ObservableList<Film> originalFilms = FXCollections.observableArrayList();
     private ObservableList<Film> originalFilmsForSecondFilterAction = FXCollections.observableArrayList();
     private static String username;
@@ -353,6 +355,7 @@ public class Controller{
 
     }
 
+    //making searchHistory
     private void writeKeywordAndTimeInFile(String keyword){
         Calendar cal = Calendar.getInstance ();
         String date = String.valueOf(cal.get(Calendar.YEAR)) + "." + String.valueOf(cal.get(Calendar.MONTH)+1)
@@ -362,6 +365,7 @@ public class Controller{
         String keywordAndDate = keyword + "\t" + date + " " + timeOfDay;
         HelperMethods.writeTextInFile(username + "SearchHistory.txt", keywordAndDate);
     }
+
     private void makeFavouriteFileToString(){
         try {
             File fileFavourite = new File(username + "Favoriten.txt");
@@ -385,6 +389,7 @@ public class Controller{
         return keyword.replaceAll(pattern, "+");
     }
 
+    //getting all films into the filmTabel
     private ObservableList<Film> getFilm(String searchCorrection) {
         ObservableList<Film> films = FXCollections.observableArrayList();
         Results r = MovieDatabase.getMoviesByName(searchCorrection);

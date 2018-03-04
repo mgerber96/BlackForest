@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 
 
 public class Film {
+
     private SimpleBooleanProperty favourite;
     private SimpleStringProperty title;
     private SimpleIntegerProperty year;

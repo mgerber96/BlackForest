@@ -23,7 +23,6 @@ public class MovieDatabase {
     private static final String POSTER_PREFIX = "3/movie/";
     private static String apiKey;
 
-    
     static {
         try (BufferedReader stream = Files.newBufferedReader(Paths.get("config.properties"))) {
             Properties properties = new Properties();

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public class Posters {
 
+    //JSON variable
     @SerializedName("posters")
     private List<String> posterURLs;
 
@@ -24,6 +25,7 @@ public class Posters {
         this.posterURLs = posterURLs;
     }
 
+    //return the moviecover
     @Override
     public String toString() {
         return posterURLs.stream().map(Object::toString).collect(Collectors.joining(", "));

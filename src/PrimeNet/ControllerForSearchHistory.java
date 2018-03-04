@@ -9,11 +9,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
 import java.io.File;
 
 
 public class ControllerForSearchHistory {
+
     @FXML
     TableView<Film> searchHistoryTable = new TableView<>();
     @FXML

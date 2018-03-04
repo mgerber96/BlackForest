@@ -2,7 +2,6 @@ package PrimeNet;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,8 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class ControllerForLogin {
 
@@ -29,43 +26,45 @@ public class ControllerForLogin {
     @FXML
     public Button createUserButton;
 
-    PasswordAuthentication auth = new PasswordAuthentication(20);
+    public boolean enter = false;
 
-    //read created Userdata +login with username and password
+    PasswordAuthentication auth = new PasswordAuthentication(18);
+
+    //read created Userdata + login with username and password
     public void Login(javafx.event.ActionEvent event) throws Exception {
-        try {
-            FileReader passwords = new FileReader("passwords.txt");
-            BufferedReader PasswordReader = new BufferedReader(passwords);
-            String line = null;
-            while(true) {
-                line = PasswordReader.readLine();
-                if (line == null) {
-                    LabelStatus.setText("! falsche Angaben !");
-                    return;
-                }
+           try {
+               FileReader passwords = new FileReader("passwords.txt");
+               BufferedReader PasswordReader = new BufferedReader(passwords);
+               String line = null;
+               while (true) {
+                   line = PasswordReader.readLine();
+                   if (line == null) {
+                       LabelStatus.setText("! falsche Angaben !");
+                       return;
+                   }
 
-                String[] parts = line.split(":");
-                if (parts.length != 2) {
-                    continue;
-                }
+                   String[] parts = line.split(":");
+                   if (parts.length != 2) {
+                       continue;
+                   }
 
-                String username = parts[0];
-                String password = parts[1];
+                   String username = parts[0];
+                   String password = parts[1];
 
-                if (!username.equalsIgnoreCase(TextUserName.getText())) {
-                    continue;
-                }
+                   if (!username.equalsIgnoreCase(TextUserName.getText())) {
+                       continue;
+                   }
 
-                if (auth.authenticate(TextPassword.getText().toCharArray(), password)) {
-                    generateUserProfile(username);
-                    setMainStageAndCloseLoginWindow();
-                    return;
-                }
-            }
-        } catch (IOException e) {
-            LabelStatus.setText("! falsche Angaben !");
-            e.printStackTrace();
-        }
+                   if (auth.authenticate(TextPassword.getText().toCharArray(), password)) {
+                       generateUserProfile(username);
+                       setMainStageAndCloseLoginWindow();
+                       return;
+                   }
+               }
+           } catch (IOException e) {
+               LabelStatus.setText("! falsche Angaben !");
+               e.printStackTrace();
+           }
     }
 
     //if login is successful this program will only used txt.file in this format
@@ -95,10 +94,7 @@ public class ControllerForLogin {
             Stage PrimeNet = new Stage();
             PrimeNet.setTitle("PrimeNet");
             Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-            //PrimeNet.setResizable(false);
-            //PrimeNet.setScene(new Scene(root, screen.width, screen.height));
             PrimeNet.setScene(new Scene(root, screen.width / 1.5, screen.height / 1.1 - 65));
-            //PrimeNet.setScene(new Scene(root,800,600));
             PrimeNet.show();
             Main.Login.close();
         } catch (IOException e){ e.printStackTrace(); }
@@ -116,7 +112,7 @@ public class ControllerForLogin {
         Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/CreateUserWindow.fxml"));
         Stage CreateUser = new Stage();
         CreateUser.setTitle("Create_User");
-        CreateUser.setScene(new Scene(root, 250, 150));
+        CreateUser.setScene(new Scene(root, 300, 250));
         CreateUser.show();
     }
 }

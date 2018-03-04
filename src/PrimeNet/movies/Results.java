@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Results {
 
+    //JSON variable
     @SerializedName("results")
     private List<Movie> movies;
 
